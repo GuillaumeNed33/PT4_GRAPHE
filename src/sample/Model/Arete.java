@@ -45,4 +45,8 @@ public class Arete {
 
         return m_id;
     }
+
+    public void supprimer() {
+        m_id=-1;
+    }
 }

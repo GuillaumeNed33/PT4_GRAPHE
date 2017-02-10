@@ -1,28 +1,28 @@
 package sample.Model;
 
+import com.sun.glass.ui.Size;
 import javafx.util.Pair;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static java.lang.Float.parseFloat;
 
 /**
  * Created by audreylentilhac on 06/02/2017.
  */
-
-/**
- *  Classe Graphe
- */
 public class Graphe {
+    private static String m_name;
+    private static Size m_size;
+    private static ArrayList<Sommet> m_sommets;
+    private static ArrayList<Arete> m_aretes;
+    private static HashMap<Sommet, ArrayList<Arete> > m_incidentes;
+    private static HashMap<Arete, Pair<Sommet,Sommet>> m_extremites;
 
-    private static ArrayList<Sommet> m_sommets; // liste de sommets
-    private static ArrayList<Arete> m_aretes;   // liste d'aretes
-    private static HashMap<Sommet, ArrayList<Arete> > m_incidentes;     // conteneur liant pour chaque sommet sa liste d'aretes
-    private static HashMap<Arete, Pair<Sommet,Sommet>> m_extremites;    // conteneur liant pour chaque arete sa paire de sommets
-
-    /**
-     * Constructeur de la classe Graphe lisant un fichier .DOT ou .GRAPHML
-     * @param fichier
-     */
     public Graphe (String fichier) {
         if (fichier.contains(".dot"))
             lectureGraphe(fichier, 1);
@@ -30,18 +30,8 @@ public class Graphe {
             lectureGraphe(fichier, 2);
     }
 
-    /**
-     * Constructeur par defaut de la classe Graphe
-     */
-    public Graphe(){}
-
-    /**
-     * fonction
-     * @param fichier
-     * @param type
-     */
     private void lectureGraphe(String fichier, int type){
-        String lecture = null;
+        String lecture = fichier;
         if (type == 1){
             chargerGrapheDOT(lecture);
         }
@@ -50,9 +40,53 @@ public class Graphe {
     }
 
     private void chargerGrapheDOT(String fichier){
+        String chaine = "";
+        try{
+            InputStream ips=new FileInputStream(fichier);
+            InputStreamReader ipsr=new InputStreamReader(ips);
+            BufferedReader br=new BufferedReader(ipsr);
+            String ligne = br.readLine();
+            String [] decoup = ligne.split(" ");
 
+            if(decoup[0].equals("graph") || decoup[0].equals("digraph") ){
+                m_name = decoup[1];
+            }
+            else {
+                throw new Exception("Error syntax in the .dot file : '"+fichier+"'.");
+            }
+            while ((ligne=br.readLine())!=null){
+/*
+                if(ligne.contains("size=")) {
+                    decoup = ligne.split("\"");
+                    String [] decoup2 = decoup[1].split(",");
+                    m_size = new Size(Integer.parseInt(decoup2[0]), Integer.parseInt(decoup2[1]));
+                    System.out.println(m_size);
+                }
+                */
+
+                //GESTION DES ARRETES
+                if(ligne.contains("->")) {
+                    decoup = ligne.split("\"");
+                    Sommet s1 = new Sommet(decoup[1]);
+                    Sommet s2 = new Sommet(decoup[3]);
+                    ajouterArete(s1,s2);
+                    if(ligne.contains("[")) {
+                        //decoup1 = ligne.split("\[");
+                        String [] decoup2 = decoup[1].split("]");
+                        //PROPRIETE CSS DE L'ARETE
+                        String properties = decoup2[0];
+                    }
+                }
+
+                System.out.println(ligne);
+                chaine+=ligne+"\n";
+            }
+            br.close();
+        }
+        catch (Exception e){
+            System.out.println(e.toString());
+        }
     }
-
 
     private void chargerGrapheGRAPHML(String fichier) {
 
@@ -62,38 +96,31 @@ public class Graphe {
         m_sommets.add(s);
     }
 
-    public void supprimerSommet(Sommet s){
+    public void supprimetSommet(Sommet s){
         m_sommets.remove(s);
-        for (Arete a: m_incidentes.get(s)) {
-            m_extremites.remove(a);
-        }
         m_incidentes.remove(s);
     }
 
-    public Arete ajouterArete(Sommet n1, Sommet n2){
+    public void ajouterArete(Sommet n1, Sommet n2){
         Arete a = new Arete(true, n1, n2);
         m_aretes.add(a);
         Pair<Sommet,Sommet> sommets = new Pair<>(n1, n2);
         m_extremites.put(a, sommets);
         lierAreteAuSommet(a, n1);
         lierAreteAuSommet(a, n2);
-        return a;
     }
 
-    private void lierAreteAuSommet (Arete a, Sommet s) {
+    private void lierAreteAuSommet (Arete a, Sommet s){
         ArrayList<Arete> aretesLocalesSommet = m_incidentes.get(s);
-        if (aretesLocalesSommet.size() == 0) {
+        if (aretesLocalesSommet.size() == 0){
             ArrayList<Arete> setArete = new ArrayList<>();
             setArete.add(a);
             m_incidentes.put(s, setArete);
-        } else {
+        }
+        else {
             aretesLocalesSommet.add(a);
             m_incidentes.put(s, aretesLocalesSommet);
         }
-    }
-
-    public void supprimerArete (Arete a){
-        
     }
 
     public static ArrayList<Sommet> getM_sommets() { return m_sommets; }
@@ -122,5 +149,4 @@ public class Graphe {
     public static void setM_extremites(HashMap<Arete, Pair<Sommet, Sommet>> m_extremites) {
         Graphe.m_extremites = m_extremites;
     }
-
 }

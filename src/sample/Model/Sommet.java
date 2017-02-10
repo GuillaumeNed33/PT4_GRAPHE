@@ -18,6 +18,10 @@ public class Sommet {
             m_id = -1;
     }
 
+    public Sommet(String id){
+            m_id = m_curId++;
+    }
+
     public int id(){
         return m_id;
     }

@@ -20,6 +20,10 @@ public class Graphe {
             lectureGraphe(fichier, 2);
     }
 
+    public Graphe() {
+
+    }
+
     private void lectureGraphe(String fichier, int type){
         String lecture = null;
         if (type == 1){
@@ -72,12 +76,16 @@ public class Graphe {
 
     public static ArrayList<Sommet> getM_sommets() { return m_sommets; }
 
-    public static void setM_sommets(ArrayList<Sommet> m_sommets) { Graphe.m_sommets = m_sommets; }
+    public static void setM_sommets(ArrayList<Sommet> m_sommets) {
+        Graphe.m_sommets = m_sommets;
+    }
 
-    public static ArrayList<Arete> getM_aretes() { return m_aretes;
+    public static ArrayList<Arete> getM_aretes() {
+        return m_aretes;
     }
 
     public static void setM_aretes(ArrayList<Arete> m_aretes) {
+
         Graphe.m_aretes = m_aretes;
     }
 

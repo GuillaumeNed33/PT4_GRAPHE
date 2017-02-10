@@ -80,17 +80,20 @@ public class Graphe {
         return a;
     }
 
-    private void lierAreteAuSommet (Arete a, Sommet s){
+    private void lierAreteAuSommet (Arete a, Sommet s) {
         ArrayList<Arete> aretesLocalesSommet = m_incidentes.get(s);
-        if (aretesLocalesSommet.size() == 0){
+        if (aretesLocalesSommet.size() == 0) {
             ArrayList<Arete> setArete = new ArrayList<>();
             setArete.add(a);
             m_incidentes.put(s, setArete);
-        }
-        else {
+        } else {
             aretesLocalesSommet.add(a);
             m_incidentes.put(s, aretesLocalesSommet);
         }
+    }
+
+    public void supprimerArete (Arete a){
+        
     }
 
     public static ArrayList<Sommet> getM_sommets() { return m_sommets; }

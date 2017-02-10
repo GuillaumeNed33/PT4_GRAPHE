@@ -5,7 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import sample.Model.Arete;
 import sample.Model.Sommet;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Main extends Application {
 
@@ -20,9 +24,10 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
+
     }
 
     public static void addSommet(float x, float y) {
-        Sommet s = new Sommet(true, x,y);
+        Sommet s = new Sommet("name", x,y);
     }
 }

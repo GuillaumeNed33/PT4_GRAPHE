@@ -62,10 +62,10 @@ public class Graphe {
      */
     public Graphe (String fichier) {
         if (fichier.contains(".dot")) {
-            lectureGraphe(fichier, 1);
+            lectureGraphe(fichier, (byte)1);
         }
         else {
-            lectureGraphe(fichier, 2);
+            lectureGraphe(fichier, (byte)2);
         }
     }
 
@@ -273,7 +273,7 @@ public class Graphe {
             setArete.add(arete);
             m_incidentes.put(sommet, setArete);
         } else {
-            
+
             aretesLocalesSommet.add(arete);
             m_incidentes.put(sommet, aretesLocalesSommet);
         }

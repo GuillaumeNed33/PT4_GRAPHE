@@ -45,14 +45,4 @@ public class Arete {
 
         return m_id;
     }
-
-    public boolean valide(){
-
-        return (m_id != -1);
-    }
-
-    public void supprimer() {
-
-        m_id=-1;
-    }
 }

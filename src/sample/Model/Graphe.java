@@ -79,7 +79,7 @@ public class Graphe {
      * @param fichier Représente le path du fichier à charger.
      * @param type Représente le type de fichier à charger.
      */
-    private void lectureGraphe(String fichier, int type){
+    private void lectureGraphe(String fichier, byte type){
         String lecture = null;
         if (type == 1){
             chargerGrapheDOT(lecture);
@@ -226,14 +226,14 @@ public class Graphe {
     public boolean ajouterArete(Sommet sommet_1, Sommet sommet_2) {
 
         if (verificationPossibiliteAjoutArete(sommet_1, sommet_2)) {
-            Arete a = new Arete(sommet_1, sommet_2);
-            m_aretes.add(a);
+            Arete arete = new Arete(sommet_1, sommet_2);
+            m_aretes.add(arete);
 
             Pair<Sommet, Sommet> sommets = new Pair<>(sommet_1, sommet_2);
 
-            m_extremites.put(a, sommets);
-            lierAreteAuSommet(a, sommet_1);
-            lierAreteAuSommet(a, sommet_2);
+            m_extremites.put(arete, sommets);
+            lierAreteAuSommet(arete, sommet_1);
+            lierAreteAuSommet(arete, sommet_2);
         }
         else {
             return false;
@@ -251,7 +251,7 @@ public class Graphe {
      */
     private boolean verificationPossibiliteAjoutArete(Sommet sommet_1, Sommet sommet_2) {
 
-        if (sommet_1.equals(sommet_2) && (sommet_1 == null || sommet_2 == null)) {
+        if (sommet_1.equals(sommet_2) && (sommet_1.equals(null) || sommet_2.equals(null))) {
             return false;
         }
 
@@ -266,11 +266,14 @@ public class Graphe {
     private void lierAreteAuSommet (Arete arete, Sommet sommet) {
 
         ArrayList<Arete> aretesLocalesSommet = m_incidentes.get(sommet);
+
         if (aretesLocalesSommet.size() == 0) {
+
             ArrayList<Arete> setArete = new ArrayList<>();
             setArete.add(arete);
             m_incidentes.put(sommet, setArete);
         } else {
+            
             aretesLocalesSommet.add(arete);
             m_incidentes.put(sommet, aretesLocalesSommet);
         }

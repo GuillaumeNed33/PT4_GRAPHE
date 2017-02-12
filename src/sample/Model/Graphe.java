@@ -46,8 +46,7 @@ public class Graphe {
     }
 
     public void ajouterSommet(Sommet s){
-        if (s.valide())
-            m_sommets.add(s);
+        m_sommets.add(s);
     }
 
     public void supprimetSommet(Sommet s){
@@ -56,7 +55,7 @@ public class Graphe {
     }
 
     public Arete ajouterArete(Sommet n1, Sommet n2){
-        Arete a = new Arete(true, n1, n2);
+        Arete a = new Arete(n1, n2);
         m_aretes.add(a);
         Pair<Sommet,Sommet> sommets = new Pair<>(n1, n2);
         m_extremites.put(a, sommets);

@@ -14,8 +14,8 @@ public class GrapheTest {
     @Test
     public void testAjoutSommet() throws Exception{
         Graphe g = new Graphe();
-        Sommet s = new Sommet(true,1,1);
-        Sommet s2 = new Sommet(false,2,2);
+        Sommet s = new Sommet("s1",1,1);
+        Sommet s2 = new Sommet("s2",2,2);
 
         //Test ajout sommet valide
         g.ajouterSommet(s);
@@ -30,8 +30,8 @@ public class GrapheTest {
     @Test
     public void testSuppressionSommet() throws Exception{
         Graphe g = new Graphe();
-        Sommet s = new Sommet(true,1,1);
-        Sommet s2 = new Sommet(false,2,2);
+        Sommet s = new Sommet("s1",1,1);
+        Sommet s2 = new Sommet("s2",2,2);
 
         g.ajouterSommet(s);
         g.ajouterSommet(s2);
@@ -49,10 +49,10 @@ public class GrapheTest {
     public void testAjoutArete() throws Exception{
         Graphe g = new Graphe();
 
-        Sommet s = new Sommet(true,1,1);
-        Sommet s2 = new Sommet(true,2,2);
-        Sommet s3 = new Sommet(false,3,3);
-        Sommet s4 = new Sommet(false,4,4);
+        Sommet s = new Sommet("s1",1,1);
+        Sommet s2 = new Sommet("s2",2,2);
+        Sommet s3 = new Sommet("s3",3,3);
+        Sommet s4 = new Sommet("s4",4,4);
 
         g.ajouterSommet(s);
         g.ajouterSommet(s2);
@@ -74,10 +74,10 @@ public class GrapheTest {
     public void testSuppressionArete() throws Exception {
         Graphe g = new Graphe();
 
-        Sommet s = new Sommet(true,1,1);
-        Sommet s2 = new Sommet(true,2,2);
-        Sommet s3 = new Sommet(false,3,3);
-        Sommet s4 = new Sommet(false,4,4);
+        Sommet s = new Sommet("s1",1,1);
+        Sommet s2 = new Sommet("s2",2,2);
+        Sommet s3 = new Sommet("s3",3,3);
+        Sommet s4 = new Sommet("s4",4,4);
 
         g.ajouterSommet(s);
         g.ajouterSommet(s2);

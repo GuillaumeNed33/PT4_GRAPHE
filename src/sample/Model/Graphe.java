@@ -21,7 +21,10 @@ public class Graphe {
     }
 
     public Graphe() {
-
+        m_sommets = new ArrayList<Sommet>();
+        m_aretes = new ArrayList<Arete>();
+        m_incidentes = new HashMap<Sommet, ArrayList<Arete>>();
+        m_extremites = new HashMap<Arete, Pair<Sommet, Sommet>>();
     }
 
     private void lectureGraphe(String fichier, int type){
@@ -43,7 +46,8 @@ public class Graphe {
     }
 
     public void ajouterSommet(Sommet s){
-        m_sommets.add(s);
+        if (s.valide())
+            m_sommets.add(s);
     }
 
     public void supprimetSommet(Sommet s){

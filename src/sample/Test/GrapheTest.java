@@ -2,6 +2,7 @@ package sample.Test;
 
 import org.junit.Assert;
 import org.junit.Test;
+import sample.Model.Arete;
 import sample.Model.Graphe;
 import sample.Model.Sommet;
 
@@ -59,13 +60,13 @@ public class GrapheTest {
         g.ajouterSommet(s4);
 
         //Test ajout arete valide sur sommets valides
-        g.ajouterArete(s,s2);
+        Arete a = g.ajouterArete(s,s2);
         Assert.assertEquals(1,g.getM_aretes().size());
 
         //Test ajout arete valide sur sommets invalides
-        g.ajouterArete(s,s3);
-        g.ajouterArete(s4,s2);
-        g.ajouterArete(s3,s4);
+        Arete b = g.ajouterArete(s,s3);
+        Arete c = g.ajouterArete(s4,s2);
+        Arete d = g.ajouterArete(s3,s4);
         Assert.assertEquals(1,g.getM_aretes().size());
     }
 

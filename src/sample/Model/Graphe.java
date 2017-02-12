@@ -1,8 +1,5 @@
 package sample.Model;
 
-import javafx.util.Pair;
-
-import java.util.ArrayList;
 import com.sun.glass.ui.Size;
 import javafx.util.Pair;
 
@@ -10,12 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-
-import static java.lang.Float.isFinite;
-import static java.lang.Float.parseFloat;
+import java.util.*;
 
 /**
  * Created by audreylentilhac on 06/02/2017.
@@ -55,6 +47,15 @@ public class Graphe {
      */
     private static HashMap<Arete, Pair<Sommet,Sommet>> m_extremites;    // conteneur liant pour chaque arete sa paire de sommets
 
+    /**
+     * Représente la marge entre chaque sommet du graphe
+     */
+    private static final int MARGE = 10;
+
+    /**
+     *  Représente une valeur aléatoire
+     */
+    private static Random rand = new Random();
 
     /**
      * Constructeur de la classe Graphe lisant un fichier .DOT ou .GRAPHML.
@@ -80,12 +81,11 @@ public class Graphe {
      * @param type Représente le type de fichier à charger.
      */
     private void lectureGraphe(String fichier, byte type){
-        String lecture = null;
         if (type == 1){
-            chargerGrapheDOT(lecture);
+            chargerGrapheDOT(fichier);
         }
         else {
-            chargerGrapheGRAPHML(lecture);
+            chargerGrapheGRAPHML(fichier);
         }
     }
 
@@ -148,6 +148,118 @@ public class Graphe {
      */
     private void chargerGrapheGRAPHML(String fichier) {
 
+    }
+
+    /**
+     *  distribution uniforme rectangulaire des sommets
+     */
+    public void distributionAleatoire(){
+        for (Sommet s: m_sommets) {
+            s.setX((rand.nextFloat()*m_size.width)+MARGE);
+            s.setY((rand.nextFloat()*m_size.width)+MARGE);
+        }
+
+    }
+
+    /**
+     * distribution circulaire des sommets
+     */
+    public void distributionCirculaire(){
+        for (Sommet s: m_sommets) {
+            float r = rand.nextFloat() * m_size.width;
+            double a = rand.nextDouble() * 2 * Math.PI;
+            s.setX((float)(((m_size.width + r * Math.cos(a))/2)+(2*Math.PI/m_sommets.size())));
+            s.setY((float)(((m_size.width + r * Math.sin(a))/2)+(2*Math.PI/m_sommets.size())));
+        }
+    }
+
+    /**
+     *  distribution par modele de Forces
+     */
+    public void distributionModeleForces(){
+        distributionAleatoire();
+        for (Sommet s: m_sommets) {
+            float forceTotale = forceAttraction(s) + forceRepulsion(s);
+            s.setX(s.getX() + forceTotale);
+            s.setY(s.getY() + forceTotale);
+        }
+    }
+
+    /**
+     * fonction calculant la force d'attraction qu'exerce chacun des voisins u sur un sommet s
+     * f(s) = Somme (log distance(u,s))
+     * @param s
+     * @return
+     */
+    private float forceAttraction(Sommet s){
+        ArrayList<Sommet> voisins = this.sommmetsVoisins(s);
+        float force = 0;
+        for (Sommet v: voisins) {
+            double distance = Math.sqrt(Math.pow((double)(v.getX() - s.getX()), 2.) + Math.pow((double)(v.getY() - s.getY()), 2.));
+            force += Math.log(distance);
+        }
+        return force;
+    }
+
+    /**
+     * fonction calculant la force de repulsion qu'exerce chacun des non voisins u sur un sommet s
+     * f(s) = Somme (1 / distance(u,s)^2)
+     * @param s
+     * @return
+     */
+    private float forceRepulsion(Sommet s){
+        ArrayList<Sommet> voisins = this.sommetsNonVoisins(this.sommmetsVoisins(s));
+        float force = 0;
+        for (Sommet v: voisins) {
+            double distanceCarre = Math.pow((double)(v.getX() - s.getX()), 2.) + Math.pow((double)(v.getY() - s.getY()), 2.);
+            force += 1/distanceCarre;
+        }
+        return force;
+    }
+
+    /**
+     * Liste des sommets voisins d'un sommet
+     * @param origine
+     * @return
+     */
+    private ArrayList<Sommet> sommmetsVoisins(Sommet origine){
+        ArrayList<Sommet> voisinage = null;
+        for(Arete e : m_incidentes.get(origine)){
+            voisinage.add(source(e).getM_tag() == origine.getM_tag() ? destination(e) : source(e));
+        }
+        return voisinage;
+    }
+
+    /**
+     * Sommet source d'une arête
+     * @param e
+     * @return
+     */
+    private Sommet source(Arete e){
+        return m_extremites.get(e).getKey();
+    }
+
+    /**
+     * Sommet destination d'une arête
+     * @param e
+     * @return
+     */
+    private Sommet destination(Arete e){
+        return m_extremites.get(e).getValue();
+    }
+
+    /**
+     * Liste des sommets non voisins
+     * @param voisins
+     * @return
+     */
+    private ArrayList<Sommet> sommetsNonVoisins(ArrayList<Sommet> voisins){
+        ArrayList<Sommet> nonVoisins = null;
+        for (Sommet s: m_sommets) {
+            if (!voisins.contains(s))
+                nonVoisins.add(s);
+        }
+        return nonVoisins;
     }
 
     /**

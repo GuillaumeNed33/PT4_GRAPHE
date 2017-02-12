@@ -1,5 +1,7 @@
 package sample.Model;
 
+import javafx.scene.paint.Color;
+
 /**
  * Created by audreylentilhac on 03/02/2017.
  */
@@ -9,12 +11,12 @@ public class Arete {
      * Représente le prochain id à utiliser.
      * il est static donc commun à l'ensemble des objets de la classe.
      */
-    private static int m_idActuel = 0;
+    private static int idActuel = 0;
 
     /**
      * Représente l'id de l'arete.
      */
-    private int m_id;
+    private int id;
 
     /**
      * Représente le premier sommet auquel l'arete est liée.
@@ -27,15 +29,21 @@ public class Arete {
     private Sommet sortie;
 
     /**
+     * Représente la couleur de l'arete.
+     */
+    private Color couleurArete;
+
+    /**
      * Une arete ne peut se construire que grâce à 2 sommets.
      * Elle sera toujours valide (pas besoins de vérification car elle est créée via un bouton).
-     * @param sommet_1 Ce Sommet représente le premier sommet au quel l'arete est liée.
-     * @param sommet_2 Ce sommet représente le second sommet au quel l'arrete est liée.
+     * @param entree Ce Sommet représente le premier sommet au quel l'arete est liée.
+     * @param sortie Ce sommet représente le second sommet au quel l'arrete est liée.
      */
-    public Arete(Sommet sommet_1, Sommet sommet_2){
-        entree = sommet_1;
-        sortie = sommet_2;
-        m_id = m_idActuel++;
+    public Arete(Sommet entree, Sommet sortie){
+        this.entree = entree;
+        this.sortie = sortie;
+        id = idActuel++;
+        couleurArete = Color.web("000000");
     }
 
 
@@ -43,10 +51,14 @@ public class Arete {
 
     public int id(){
 
-        return m_id;
+        return id;
     }
 
-    public void supprimer() {
-        m_id=-1;
+    public Color getCouleurArete() {
+        return couleurArete;
+    }
+
+    public void setCouleurArete(Color couleurArete) {
+        this.couleurArete = couleurArete;
     }
 }

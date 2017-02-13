@@ -1,6 +1,7 @@
 package sample.Model;
 
 import com.sun.glass.ui.Size;
+import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 import javafx.util.Pair;
 
 import java.io.BufferedReader;
@@ -73,7 +74,14 @@ public class Graphe {
     /**
      * Constructeur par defaut de la classe Graphe.
      */
-    public Graphe(){}
+    public Graphe(){
+        m_name = "Mon Joli Graphe";
+        m_size = new Size(10,10);
+        m_sommets = new ArrayList<Sommet>();
+        m_aretes = new ArrayList<Arete>();
+        m_incidentes = new HashMap<Sommet, ArrayList<Arete>>();
+        m_extremites = new HashMap<Arete, Pair<Sommet, Sommet>>();
+    }
 
     /**
      * fonction
@@ -109,30 +117,89 @@ public class Graphe {
                 throw new Exception("Error syntax in the .dot file : '"+fichier+"'.");
             }
             while ((ligne=br.readLine())!=null){
-/*
                 if(ligne.contains("size=")) {
                     decoup = ligne.split("\"");
                     String [] decoup2 = decoup[1].split(",");
-                    m_size = new Size(Integer.parseInt(decoup2[0]), Integer.parseInt(decoup2[1]));
-                    System.out.println(m_size);
+                    //m_size = new Size(Integer.parseInt(decoup2[0]), Integer.parseInt(decoup2[1]));
+                    //  System.out.println(m_size);
                 }
-                */
 
-                //GESTION DES ARRETES
-                if(ligne.contains("->")) {
-                    decoup = ligne.split("\"");
-                    Sommet s1 = new Sommet(decoup[1]);
-                    Sommet s2 = new Sommet(decoup[3]);
-                    ajouterArete(s1,s2);
-                    if(ligne.contains("[")) {
-                        //decoup1 = ligne.split("\[");
-                        String [] decoup2 = decoup[1].split("]");
-                        //PROPRIETE CSS DE L'ARETE
-                        String properties = decoup2[0];
+                //GESTION DES NOEUDS
+                if(!ligne.contains("->") &&
+                        !ligne.contains("--") &&
+                        !ligne.contains("size")) {
+
+                }
+
+                if(m_name == "graph") {
+                    //GESTION DES ARETES
+                    if(ligne.contains("--") && !ligne.contains("label=\"--")) {
+                        decoup = ligne.split("->");
+                        String [] name2 = decoup[1].split("\\[");
+                        Sommet s1 = new Sommet(decoup[0].trim().replaceAll("\"", ""));
+                        Sommet s2 = new Sommet(name2[0].trim().replaceAll("\"", ""));
+                        ajouterArete(s1,s2);
+
+                        //PROPRIETE
+                        if(ligne.contains("[")) {
+                            if(ligne.contains("type")) {
+                                String [] type = ligne.split("type=");
+                                String [] typeFinal = type[1].split(" ");
+                            }
+                            if(ligne.contains("style")) {
+                                String [] style = ligne.split("style=");
+                                String [] styleFinal = style[1].split(" ");
+                            }
+                            if(ligne.contains("color")) {
+                                String [] color = ligne.split("color=");
+                                String [] colorFinal = color[1].split(" ");
+                            }
+                            if(ligne.contains("fontcolor")) {
+                                String [] fontcolor = ligne.split("fontcolor=");
+                                String [] fontcolorFinal = fontcolor[1].split(" ");
+                            }
+                            if(ligne.contains("label")) {
+                                String [] label = ligne.split("label=\"");
+                                String [] labelFinal = label[1].split("\"");
+                            }
+                        }
                     }
                 }
+                else {
+                    //GESTION DES ARETES DIRIGEES
+                    if(ligne.contains("->") && !ligne.contains("label=\"->")) {
+                        decoup = ligne.split("->");
+                        String [] name2 = decoup[1].split("\\[");
+                        Sommet s1 = new Sommet(decoup[0].trim().replaceAll("\"", ""));
+                        Sommet s2 = new Sommet(name2[0].trim().replaceAll("\"", ""));
+                        ajouterArete(s1,s2);
 
-                System.out.println(ligne);
+                        //PROPRIETE
+                        if(ligne.contains("[")) {
+                            if(ligne.contains("type")) {
+                                String [] type = ligne.split("type=");
+                                String [] typeFinal = type[1].split(" ");
+                            }
+                            if(ligne.contains("style")) {
+                                String [] style = ligne.split("style=");
+                                String [] styleFinal = style[1].split(" ");
+                            }
+                            if(ligne.contains("color")) {
+                                String [] color = ligne.split("color=");
+                                String [] colorFinal = color[1].split(" ");
+                            }
+                            if(ligne.contains("fontcolor")) {
+                                String [] fontcolor = ligne.split("fontcolor=");
+                                String [] fontcolorFinal = fontcolor[1].split(" ");
+                            }
+                            if(ligne.contains("label")) {
+                                String [] label = ligne.split("label=\"");
+                                String [] labelFinal = label[1].split("\"");
+                            }
+                        }
+                    }
+                }
+                // System.out.println(ligne);
                 chaine+=ligne+"\n";
             }
             br.close();
@@ -153,10 +220,10 @@ public class Graphe {
     /**
      *  Permet une distribution uniforme rectangulaire des sommets.
      */
-    public void distributionAleatoire(){
+    public void distributionAleatoire(int largeurEcran){
         for (Sommet sommet : m_sommets) {
-            sommet.setX((rand.nextFloat()*m_size.width)+MARGE);
-            sommet.setY((rand.nextFloat()*m_size.width)+MARGE);
+            sommet.setX((rand.nextFloat()*largeurEcran)+MARGE);
+            sommet.setY((rand.nextFloat()*largeurEcran)+MARGE);
         }
 
     }
@@ -164,25 +231,28 @@ public class Graphe {
     /**
      * Permet une distribution circulaire des sommets.
      */
-    public void distributionCirculaire(){
+    public void distributionCirculaire(int largeurEcran){
         for (Sommet sommet : m_sommets) {
             float rayon = rand.nextFloat() * m_size.width;
             double angle = rand.nextDouble() * 2 * Math.PI;
-            sommet.setX((float)(((m_size.width + rayon * Math.cos(angle))/2)+(2*Math.PI/m_sommets.size())));
-            sommet.setY((float)(((m_size.width + rayon * Math.sin(angle))/2)+(2*Math.PI/m_sommets.size())));
+            sommet.setX((float)(((largeurEcran + rayon * Math.cos(angle))/2)+(2*Math.PI/m_sommets.size())));
+            sommet.setY((float)(((largeurEcran + rayon * Math.sin(angle))/2)+(2*Math.PI/m_sommets.size())));
         }
     }
 
     /**
      * Permet une distribution par modele de Forces.
      */
-    public void distributionModeleForces(){
-        distributionAleatoire();
+    public void distributionModeleForces(int largeurEcran){
+        distributionAleatoire(largeurEcran);
         for (Sommet sommet : m_sommets) {
             float forceTotale = forceAttraction(sommet) + forceRepulsion(sommet);
             sommet.setX(sommet.getX() + forceTotale);
             sommet.setY(sommet.getY() + forceTotale);
         }
+    }
+
+    private void distributionAleatoire() {
     }
 
     /**
@@ -236,6 +306,7 @@ public class Graphe {
      * @return Retourne le sommet source.
      */
     private Sommet source(Arete arete){
+
         return m_extremites.get(arete).getKey();
     }
 
@@ -245,6 +316,7 @@ public class Graphe {
      * @return Retourne le sommet de destination.
      */
     private Sommet destination(Arete arete){
+
         return m_extremites.get(arete).getValue();
     }
 
@@ -270,9 +342,9 @@ public class Graphe {
      * @param coord_y_sommet Représente la coordonnée en y du sommet à ajouter dans le graphe.
      * @return Retourne vrai si l'ajout du sommet c'est fait ou faux dans le cas contraire.
      */
-    public boolean ajouterSommet(String tag, float coord_x_sommet, float coord_y_sommet){
+    public boolean ajouterSommet(String tag, float coord_x_sommet, float coord_y_sommet, Size tailleFenetre){
 
-        if (verificationPossibiliteAjoutSommet(coord_x_sommet, coord_y_sommet)) {
+        if (verificationPossibiliteAjoutSommet(coord_x_sommet, coord_y_sommet, tailleFenetre)) {
             m_sommets.add(new Sommet(tag, coord_x_sommet, coord_y_sommet));
         }
         else {
@@ -288,9 +360,9 @@ public class Graphe {
      * @param coord_x_sommet Représente la coordonnée en x, à vérifier, du sommet.
      * @return Retourne vrai on peut ajouter un nouveau sommet ou faux dans le cas contraire.
      */
-    private boolean verificationPossibiliteAjoutSommet(float coord_x_sommet, float coord_y_sommet) {
+    private boolean verificationPossibiliteAjoutSommet(float coord_x_sommet, float coord_y_sommet, Size tailleFentre) {
 
-        if (verificationCoordonneesValide(coord_x_sommet, coord_y_sommet)) {
+        if (verificationCoordonneesValide(coord_x_sommet, coord_y_sommet, tailleFentre)) {
             Iterator<Sommet> iterateur_sommet = m_sommets.iterator();
             boolean trouver = false;
 
@@ -321,8 +393,8 @@ public class Graphe {
      * @param nouvelle_coord_y Représente la nouvelle coordonnée en y du sommet.
      * @return Retourne vrai si le déplacement c'est bien effectué ou faux dans le cas contraire.
      */
-    public boolean deplacerSommet(Sommet sommet, float nouvelle_coord_x, float nouvelle_coord_y) {
-        if (!sommet.equals(null) && verificationCoordonneesValide(nouvelle_coord_x, nouvelle_coord_y)) {
+    public boolean deplacerSommet(Sommet sommet, float nouvelle_coord_x, float nouvelle_coord_y, Size tailleFenetre) {
+        if (!sommet.equals(null) && verificationCoordonneesValide(nouvelle_coord_x, nouvelle_coord_y, tailleFenetre)) {
             sommet.setX(nouvelle_coord_x);
             sommet.setY(nouvelle_coord_y);
         }
@@ -452,8 +524,8 @@ public class Graphe {
      * @param coord_y Représente la coordonnée y à vérifier.
      * @return Retourne vrai si les coordonnées sont valide ou faux le cas contraire.
      */
-    public boolean verificationCoordonneesValide(float coord_x, float coord_y) {
-        if(coord_x >= 0 && coord_y >= 0 && coord_x <= m_size.width && coord_y <= m_size.height) {
+    public boolean verificationCoordonneesValide(float coord_x, float coord_y, Size tailleFenetre) {
+        if(coord_x >= 0 && coord_y >= 0 && coord_x <= tailleFenetre.width && coord_y <= tailleFenetre.height) {
             return true;
         }
 

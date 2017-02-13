@@ -160,8 +160,6 @@ public class Graphe {
 
                         //PROPRIETE
                         if(ligne.contains("[")) {
-
-                            /*** http://graphviz.org/Documentation/dotguide.pdf ***/
                             if(ligne.contains("type")) {
                                 String [] type = ligne.split("type=");
                                 String [] typeFinal = type[1].split(" ");
@@ -195,6 +193,7 @@ public class Graphe {
                         ajouterArete(s1,s2);
 
                         //PROPRIETE
+                        /*** http://graphviz.org/Documentation/dotguide.pdf ***/
                         if(ligne.contains("[")) {
                             if(ligne.contains("type")) {
                                 String [] type = ligne.split("type=");
@@ -354,15 +353,15 @@ public class Graphe {
     /**
      * Permet d'ajouter un sommet dans le graphe.
      * Le boolean de retour permet de gérer les erreurs d'ajouts (aspect graphique).
-     * @param tag Représente le tag du sommet à ajouter dans le graphe.
-     * @param coord_x_sommet Représente la coordonnée en x du sommet à ajouter dans le graphe.
-     * @param coord_y_sommet Représente la coordonnée en y du sommet à ajouter dans le graphe.
+     * @param sommet Représente le sommet à ajouter.
+     * @param tailleFenetre Représente la taille de la fenêtre d'affichage.
      * @return Retourne vrai si l'ajout du sommet c'est fait ou faux dans le cas contraire.
      */
     public boolean ajouterSommet(Sommet sommet, Size tailleFenetre){
 
         if (verificationPossibiliteAjoutSommet(sommet.getX(), sommet.getY(), tailleFenetre)) {
             m_sommets.add(sommet);
+            m_incidentes.put(sommet, new ArrayList<>());
         }
         else {
             return false;
@@ -435,6 +434,7 @@ public class Graphe {
             if (m_incidentes.containsKey(sommet)) {
                 for (Arete arete : m_incidentes.get(sommet)) {
                     m_extremites.remove(arete);
+                    m_aretes.remove(arete);
                 }
 
                 m_incidentes.remove(sommet);
@@ -457,9 +457,7 @@ public class Graphe {
             Arete arete = new Arete(sommet_1, sommet_2);
             m_aretes.add(arete);
 
-            Pair<Sommet, Sommet> sommets = new Pair<>(sommet_1, sommet_2);
-
-            m_extremites.put(arete, sommets);
+            m_extremites.put(arete, new Pair<>(sommet_1, sommet_2));
             lierAreteAuSommet(arete, sommet_1);
             lierAreteAuSommet(arete, sommet_2);
         }
@@ -479,11 +477,28 @@ public class Graphe {
      */
     private boolean verificationPossibiliteAjoutArete(Sommet sommet_1, Sommet sommet_2) {
 
-        if (sommet_1.equals(sommet_2) && (sommet_1.equals(null) || sommet_2.equals(null))) {
-            return false;
+        if (sommet_1.equals(sommet_2) || (sommet_1.equals(null) || sommet_2.equals(null)) || verificationDoublonArete(sommet_1, sommet_2)) {
+                return false;
         }
 
         return true;
+    }
+
+    /**
+     * Permet de vérifier s'il existe une arete entre 2 sommets.
+     * @param sommet_1 Représente le premier sommet pour la vérification.
+     * @param sommet_2 Représente le second sommet pour la vérification.
+     * @return Retourne vrai si il existe une arete entre les 2 sommets et faux dans le cas contraire.
+     */
+    private boolean verificationDoublonArete(Sommet sommet_1, Sommet sommet_2) {
+
+        for(Arete arete : m_incidentes.get(sommet_1)) {
+            if (m_incidentes.get(sommet_2).contains(arete)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -493,17 +508,13 @@ public class Graphe {
      */
     private void lierAreteAuSommet (Arete arete, Sommet sommet) {
 
-        ArrayList<Arete> aretesLocalesSommet = m_incidentes.get(sommet);
-
-        if (aretesLocalesSommet.size() == 0) {
+        if (!m_incidentes.containsKey(sommet)) {
 
             ArrayList<Arete> setArete = new ArrayList<>();
             setArete.add(arete);
             m_incidentes.put(sommet, setArete);
         } else {
-
-            aretesLocalesSommet.add(arete);
-            m_incidentes.put(sommet, aretesLocalesSommet);
+            m_incidentes.get(sommet).add(arete);
         }
     }
 

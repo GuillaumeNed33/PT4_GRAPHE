@@ -13,20 +13,14 @@ public class AreteTest {
     @Test
     public void testAjoutArete() throws Exception {
         Sommet depart = new Sommet("s1",1,1);
+        Sommet departB = new Sommet("s3",1,3);
         Sommet arrivee = new Sommet("s2",2,2);
+        Sommet arriveeB = new Sommet("s4",2,4);
+
 
         Arete arete = new Arete(depart,arrivee);
         assertEquals(arete.id(),0);
-    }
-
-    @Test
-    public void testSuppressionArete() throws Exception {
-        Sommet depart = new Sommet("s1",4,4);
-        Sommet arrivee = new Sommet("s2",4,4);
-
-        Arete arete = new Arete(depart,arrivee);
-        arete.supprimer();
-
-        assertEquals(arete.id(),-1);
+        Arete areteB = new Arete(departB,arriveeB);
+        assertEquals(areteB.id(),1);
     }
 }

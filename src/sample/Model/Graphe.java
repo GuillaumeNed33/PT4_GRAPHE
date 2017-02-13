@@ -110,10 +110,43 @@ public class Graphe {
                 }
 
                 //GESTION DES NOEUDS
-                if(!ligne.contains("->") &&
-                        !ligne.contains("--") &&
+                if(!ligne.contains(" -> ") &&
+                        !ligne.contains(" -- ") &&
                         !ligne.contains("size")) {
+                    if(ligne.contains("[")) {
+                        String[] node = ligne.split("\\[");
+                        Sommet s = new Sommet(node[0].trim().replaceAll("\"",""));
+                    }
+                    else {
+                        String node = ligne.trim().replaceAll("\"", "");
+                        Sommet s = new Sommet(node);
+                    }
 
+                    //PROPRIETE
+                    if(ligne.contains("[")) {
+
+                        /*** http://graphviz.org/Documentation/dotguide.pdf ***/
+                        if(ligne.contains("type")) {
+                            String [] type = ligne.split("type=");
+                            String [] typeFinal = type[1].split(" ");
+                        }
+                        if(ligne.contains("style")) {
+                            String [] style = ligne.split("style=");
+                            String [] styleFinal = style[1].split(" ");
+                        }
+                        if(ligne.contains("color")) {
+                            String [] color = ligne.split("color=");
+                            String [] colorFinal = color[1].split(" ");
+                        }
+                        if(ligne.contains("fontcolor")) {
+                            String [] fontcolor = ligne.split("fontcolor=");
+                            String [] fontcolorFinal = fontcolor[1].split(" ");
+                        }
+                        if(ligne.contains("label")) {
+                            String [] label = ligne.split("label=\"");
+                            String [] labelFinal = label[1].split("\"");
+                        }
+                    }
                 }
 
                 if(m_name == "graph") {
@@ -127,6 +160,8 @@ public class Graphe {
 
                         //PROPRIETE
                         if(ligne.contains("[")) {
+
+                            /*** http://graphviz.org/Documentation/dotguide.pdf ***/
                             if(ligne.contains("type")) {
                                 String [] type = ligne.split("type=");
                                 String [] typeFinal = type[1].split(" ");

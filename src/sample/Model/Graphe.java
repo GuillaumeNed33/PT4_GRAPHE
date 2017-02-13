@@ -153,10 +153,10 @@ public class Graphe {
     /**
      *  Permet une distribution uniforme rectangulaire des sommets.
      */
-    public void distributionAleatoire(){
+    public void distributionAleatoire(int largeurEcran){
         for (Sommet sommet : m_sommets) {
-            sommet.setX((rand.nextFloat()*m_size.width)+MARGE);
-            sommet.setY((rand.nextFloat()*m_size.width)+MARGE);
+            sommet.setX((rand.nextFloat()*largeurEcran)+MARGE);
+            sommet.setY((rand.nextFloat()*largeurEcran)+MARGE);
         }
 
     }
@@ -164,12 +164,12 @@ public class Graphe {
     /**
      * Permet une distribution circulaire des sommets.
      */
-    public void distributionCirculaire(){
+    public void distributionCirculaire(int largeurEcran){
         for (Sommet sommet : m_sommets) {
             float rayon = rand.nextFloat() * m_size.width;
             double angle = rand.nextDouble() * 2 * Math.PI;
-            sommet.setX((float)(((m_size.width + rayon * Math.cos(angle))/2)+(2*Math.PI/m_sommets.size())));
-            sommet.setY((float)(((m_size.width + rayon * Math.sin(angle))/2)+(2*Math.PI/m_sommets.size())));
+            sommet.setX((float)(((largeurEcran + rayon * Math.cos(angle))/2)+(2*Math.PI/m_sommets.size())));
+            sommet.setY((float)(((largeurEcran + rayon * Math.sin(angle))/2)+(2*Math.PI/m_sommets.size())));
         }
     }
 

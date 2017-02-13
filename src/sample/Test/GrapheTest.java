@@ -1,5 +1,6 @@
 package sample.Test;
 
+import com.sun.glass.ui.Size;
 import org.junit.Assert;
 import org.junit.Test;
 import sample.Model.Graphe;
@@ -14,32 +15,33 @@ public class GrapheTest {
     public void testAjoutSommet() throws Exception{
         Graphe g = new Graphe();
 
-        //Test ajout sommet valide
-        g.ajouterSommet("s1",1,1);
+        //Test ajout sommet
+        Size m = new Size(10,10);
+        g.ajouterSommet("s1",1,1,m);
         Assert.assertEquals(1,g.getM_sommets().size());
     }
 
 
     @Test
     public void testSuppressionSommet() throws Exception{
+        Size m = new Size(10,10);
         Graphe g = new Graphe();
         Sommet s = new Sommet("s1",1,1);
         Sommet s2 = new Sommet("s2",2,2);
 
-        g.ajouterSommet("s1",1,1);
-        g.ajouterSommet("s2",2,2);
+        g.ajouterSommet("s1",1,1,m);
+        g.ajouterSommet("s2",2,2,m);
 
-        //Test Suppression Sommet invalide
+        //Test Suppression sommets
         g.supprimerSommet(s2);
         Assert.assertEquals(1,g.getM_sommets().size());
-
-        //Test suppression sommet valide
         g.supprimerSommet(s);
         Assert.assertEquals(0,g.getM_sommets().size());
     }
 
     @Test
     public void testAjoutArete() throws Exception{
+        Size m = new Size(10,10);
         Graphe g = new Graphe();
 
         Sommet s = new Sommet("s1",1,1);
@@ -47,10 +49,10 @@ public class GrapheTest {
         Sommet s3 = new Sommet("s3",3,3);
         Sommet s4 = new Sommet("s4",4,4);
 
-        g.ajouterSommet("s1",1,1);
-        g.ajouterSommet("s2",2,2);
-        g.ajouterSommet("s3",3,3);
-        g.ajouterSommet("s4",4,4);
+        g.ajouterSommet("s1",1,1,m);
+        g.ajouterSommet("s2",2,2,m);
+        g.ajouterSommet("s3",3,3,m);
+        g.ajouterSommet("s4",4,4,m);
 
         //Test ajout arete
         g.ajouterArete(s,s2);
@@ -67,6 +69,7 @@ public class GrapheTest {
 
     @Test
     public void testSuppressionArete() throws Exception {
+        Size m = new Size(10,10);
         Graphe g = new Graphe();
 
         Sommet s = new Sommet("s1",1,1);
@@ -74,10 +77,10 @@ public class GrapheTest {
         Sommet s3 = new Sommet("s3",3,3);
         Sommet s4 = new Sommet("s4",4,4);
 
-        g.ajouterSommet("s1",1,1);
-        g.ajouterSommet("s2",2,2);
-        g.ajouterSommet("s3",3,3);
-        g.ajouterSommet("s4",4,4);
+        g.ajouterSommet("s1",1,1,m);
+        g.ajouterSommet("s2",2,2,m);
+        g.ajouterSommet("s3",3,3,m);
+        g.ajouterSommet("s4",4,4,m);
 
         g.ajouterArete(s,s2);
 

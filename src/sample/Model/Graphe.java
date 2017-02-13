@@ -74,7 +74,14 @@ public class Graphe {
     /**
      * Constructeur par defaut de la classe Graphe.
      */
-    public Graphe(){}
+    public Graphe(){
+        m_name = "Mon Joli Graphe";
+        m_size = new Size(10,10);
+        m_sommets = new ArrayList<Sommet>();
+        m_aretes = new ArrayList<Arete>();
+        m_incidentes = new HashMap<Sommet, ArrayList<Arete>>();
+        m_extremites = new HashMap<Arete, Pair<Sommet, Sommet>>();
+    }
 
     /**
      * fonction
@@ -236,8 +243,8 @@ public class Graphe {
     /**
      * Permet une distribution par modele de Forces.
      */
-    public void distributionModeleForces(){
-        distributionAleatoire();
+    public void distributionModeleForces(int largeurEcran){
+        distributionAleatoire(largeurEcran);
         for (Sommet sommet : m_sommets) {
             float forceTotale = forceAttraction(sommet) + forceRepulsion(sommet);
             sommet.setX(sommet.getX() + forceTotale);
@@ -299,6 +306,7 @@ public class Graphe {
      * @return Retourne le sommet source.
      */
     private Sommet source(Arete arete){
+
         return m_extremites.get(arete).getKey();
     }
 
@@ -308,6 +316,7 @@ public class Graphe {
      * @return Retourne le sommet de destination.
      */
     private Sommet destination(Arete arete){
+
         return m_extremites.get(arete).getValue();
     }
 
@@ -333,9 +342,9 @@ public class Graphe {
      * @param coord_y_sommet Représente la coordonnée en y du sommet à ajouter dans le graphe.
      * @return Retourne vrai si l'ajout du sommet c'est fait ou faux dans le cas contraire.
      */
-    public boolean ajouterSommet(String tag, float coord_x_sommet, float coord_y_sommet){
+    public boolean ajouterSommet(String tag, float coord_x_sommet, float coord_y_sommet, Size tailleFenetre){
 
-        if (verificationPossibiliteAjoutSommet(coord_x_sommet, coord_y_sommet)) {
+        if (verificationPossibiliteAjoutSommet(coord_x_sommet, coord_y_sommet, tailleFenetre)) {
             m_sommets.add(new Sommet(tag, coord_x_sommet, coord_y_sommet));
         }
         else {
@@ -351,9 +360,9 @@ public class Graphe {
      * @param coord_x_sommet Représente la coordonnée en x, à vérifier, du sommet.
      * @return Retourne vrai on peut ajouter un nouveau sommet ou faux dans le cas contraire.
      */
-    private boolean verificationPossibiliteAjoutSommet(float coord_x_sommet, float coord_y_sommet) {
+    private boolean verificationPossibiliteAjoutSommet(float coord_x_sommet, float coord_y_sommet, Size tailleFentre) {
 
-        if (verificationCoordonneesValide(coord_x_sommet, coord_y_sommet)) {
+        if (verificationCoordonneesValide(coord_x_sommet, coord_y_sommet, tailleFentre)) {
             Iterator<Sommet> iterateur_sommet = m_sommets.iterator();
             boolean trouver = false;
 
@@ -384,8 +393,8 @@ public class Graphe {
      * @param nouvelle_coord_y Représente la nouvelle coordonnée en y du sommet.
      * @return Retourne vrai si le déplacement c'est bien effectué ou faux dans le cas contraire.
      */
-    public boolean deplacerSommet(Sommet sommet, float nouvelle_coord_x, float nouvelle_coord_y) {
-        if (!sommet.equals(null) && verificationCoordonneesValide(nouvelle_coord_x, nouvelle_coord_y)) {
+    public boolean deplacerSommet(Sommet sommet, float nouvelle_coord_x, float nouvelle_coord_y, Size tailleFenetre) {
+        if (!sommet.equals(null) && verificationCoordonneesValide(nouvelle_coord_x, nouvelle_coord_y, tailleFenetre)) {
             sommet.setX(nouvelle_coord_x);
             sommet.setY(nouvelle_coord_y);
         }
@@ -515,8 +524,8 @@ public class Graphe {
      * @param coord_y Représente la coordonnée y à vérifier.
      * @return Retourne vrai si les coordonnées sont valide ou faux le cas contraire.
      */
-    public boolean verificationCoordonneesValide(float coord_x, float coord_y) {
-        if(coord_x >= 0 && coord_y >= 0 && coord_x <= m_size.width && coord_y <= m_size.height) {
+    public boolean verificationCoordonneesValide(float coord_x, float coord_y, Size tailleFenetre) {
+        if(coord_x >= 0 && coord_y >= 0 && coord_x <= tailleFenetre.width && coord_y <= tailleFenetre.height) {
             return true;
         }
 

@@ -63,10 +63,10 @@ public class Graphe {
      */
     public Graphe (String fichier) {
         if (fichier.contains(".dot")) {
-            lectureGraphe(fichier, (byte)1);
+            chargerGrapheDOT(fichier);
         }
         else {
-            lectureGraphe(fichier, (byte)2);
+            chargerGrapheGRAPHML(fichier);
         }
     }
 
@@ -80,20 +80,6 @@ public class Graphe {
         m_aretes = new ArrayList<Arete>();
         m_incidentes = new HashMap<Sommet, ArrayList<Arete>>();
         m_extremites = new HashMap<Arete, Pair<Sommet, Sommet>>();
-    }
-
-    /**
-     * fonction
-     * @param fichier Représente le path du fichier à charger.
-     * @param type Représente le type de fichier à charger.
-     */
-    private void lectureGraphe(String fichier, byte type){
-        if (type == 1){
-            chargerGrapheDOT(fichier);
-        }
-        else {
-            chargerGrapheGRAPHML(fichier);
-        }
     }
 
     /**
@@ -279,10 +265,10 @@ public class Graphe {
      * @param coord_y_sommet Représente la coordonnée en y du sommet à ajouter dans le graphe.
      * @return Retourne vrai si l'ajout du sommet c'est fait ou faux dans le cas contraire.
      */
-    public boolean ajouterSommet(String tag, float coord_x_sommet, float coord_y_sommet, Size tailleFenetre){
+    public boolean ajouterSommet(Sommet sommet, Size tailleFenetre){
 
-        if (verificationPossibiliteAjoutSommet(coord_x_sommet, coord_y_sommet, tailleFenetre)) {
-            m_sommets.add(new Sommet(tag, coord_x_sommet, coord_y_sommet));
+        if (verificationPossibiliteAjoutSommet(sommet.getX(), sommet.getY(), tailleFenetre)) {
+            m_sommets.add(sommet);
         }
         else {
             return false;
@@ -350,13 +336,18 @@ public class Graphe {
      */
     public void supprimerSommet(Sommet sommet){
 
-        m_sommets.remove(sommet);
+        if(!sommet.equals(null)) {
 
-        for (Arete a: m_incidentes.get(sommet)) {
-            m_extremites.remove(a);
+            if (m_incidentes.containsKey(sommet)) {
+                for (Arete arete : m_incidentes.get(sommet)) {
+                    m_extremites.remove(arete);
+                }
+
+                m_incidentes.remove(sommet);
+            }
+
+            m_sommets.remove(sommet);
         }
-
-        m_incidentes.remove(sommet);
     }
 
     /**
@@ -428,30 +419,13 @@ public class Graphe {
      */
     public void supprimerArete(Arete arete) {
 
-        Sommet sommet_1 = m_extremites.get(arete).getKey(); // Représente le premier sommet de la Pair dans la HashMap m_extremites
-        Sommet sommet_2 = m_extremites.get(arete).getValue(); // Représente le second sommet de la Pair dans la HashMap m_extremites
+        if(!arete.equals(null)) {
 
-        supprimerAretePourUnSommetSpecifique(arete, sommet_1);
-        supprimerAretePourUnSommetSpecifique(arete, sommet_2);
+            m_incidentes.get(m_extremites.get(arete).getKey()).remove(arete); // Représente le premier sommet de la Pair dans la HashMap m_extremites
+            m_incidentes.get(m_extremites.get(arete).getValue()).remove(arete); // Représente le second sommet de la Pair dans la HashMap m_extremites
 
-        m_extremites.remove(arete);
-    }
-
-    /**
-     * Supprime une arete mais pour un sommet spécifique du graphe.
-     * @param arete Représente l'arete à supprimer du graphe.
-     * @param sommet Représente le sommet qui est lié à l'arete à supprimer du graphe.
-     */
-    private void supprimerAretePourUnSommetSpecifique(Arete arete, Sommet sommet) {
-
-        boolean trouve = false;
-        Iterator<Arete> it = m_incidentes.get(sommet).iterator();
-
-        while (!trouve && it.hasNext()) {
-            Arete temp_arete = it.next();
-            if (temp_arete.equals(arete)) {
-                it.remove();
-            }
+            m_extremites.remove(arete);
+            m_aretes.remove(arete);
         }
     }
 

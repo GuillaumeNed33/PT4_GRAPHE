@@ -17,7 +17,7 @@ public class GrapheTest {
 
         //Test ajout sommet
         Size m = new Size(10,10);
-        g.ajouterSommet("s1",1,1,m);
+        g.ajouterSommet(new Sommet("s1",1,1),m);
         Assert.assertEquals(1,g.getM_sommets().size());
     }
 
@@ -29,8 +29,8 @@ public class GrapheTest {
         Sommet s = new Sommet("s1",1,1);
         Sommet s2 = new Sommet("s2",2,2);
 
-        g.ajouterSommet("s1",1,1,m);
-        g.ajouterSommet("s2",2,2,m);
+        g.ajouterSommet(s, m);
+        g.ajouterSommet(s2, m);
 
         //Test Suppression sommets
         g.supprimerSommet(s2);
@@ -49,10 +49,10 @@ public class GrapheTest {
         Sommet s3 = new Sommet("s3",3,3);
         Sommet s4 = new Sommet("s4",4,4);
 
-        g.ajouterSommet("s1",1,1,m);
-        g.ajouterSommet("s2",2,2,m);
-        g.ajouterSommet("s3",3,3,m);
-        g.ajouterSommet("s4",4,4,m);
+        g.ajouterSommet(s, m);
+        g.ajouterSommet(s2, m);
+        g.ajouterSommet(s3, m);
+        g.ajouterSommet(s4, m);
 
         //Test ajout arete
         g.ajouterArete(s,s2);
@@ -77,10 +77,10 @@ public class GrapheTest {
         Sommet s3 = new Sommet("s3",3,3);
         Sommet s4 = new Sommet("s4",4,4);
 
-        g.ajouterSommet("s1",1,1,m);
-        g.ajouterSommet("s2",2,2,m);
-        g.ajouterSommet("s3",3,3,m);
-        g.ajouterSommet("s4",4,4,m);
+        g.ajouterSommet(s, m);
+        g.ajouterSommet(s2, m);
+        g.ajouterSommet(s3, m);
+        g.ajouterSommet(s4, m);
 
         g.ajouterArete(s,s2);
 

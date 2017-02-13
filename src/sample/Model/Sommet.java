@@ -1,5 +1,6 @@
 package sample.Model;
 
+import com.sun.glass.ui.Size;
 import javafx.scene.paint.Color;
 
 enum Forme_Sommet {
@@ -34,7 +35,7 @@ public class Sommet {
     /**
      * Représente la taille d'un sommet.
      */
-    private float tailleForme;
+    private Size tailleForme;
 
     /**
      * Représente la couleur d'un sommet.
@@ -50,7 +51,7 @@ public class Sommet {
         this.x = 0;
         this.y = 0;
         this.forme = Forme_Sommet.Cercle;
-        this.tailleForme = 10;
+        this.tailleForme = new Size(10,10);
         this.couleurSommet = Color.web("000000");
     }
 
@@ -66,7 +67,7 @@ public class Sommet {
         this.x = x;
         this.y = y;
         forme = Forme_Sommet.Cercle;
-        tailleForme = 10;
+        tailleForme = new Size(10 ,10);
         couleurSommet = Color.web("000000");
     }
 
@@ -111,11 +112,11 @@ public class Sommet {
         this.forme = forme;
     }
 
-    public float getTailleForme() {
+    public Size getTailleForme() {
         return tailleForme;
     }
 
-    public void setTailleForme(float tailleForme) {
+    public void setTailleForme(Size tailleForme) {
         this.tailleForme = tailleForme;
     }
 

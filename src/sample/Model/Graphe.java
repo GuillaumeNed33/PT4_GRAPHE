@@ -74,7 +74,7 @@ public class Graphe {
      * Constructeur par defaut de la classe Graphe.
      */
     public Graphe(){
-        m_name = "Mon Jolie Graphe";
+        m_name = "Mon Joli Graphe";
         m_size = new Size(10,10);
         m_sommets = new ArrayList<Sommet>();
         m_aretes = new ArrayList<Arete>();

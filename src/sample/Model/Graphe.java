@@ -1,6 +1,7 @@
 package sample.Model;
 
 import com.sun.glass.ui.Size;
+import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 import javafx.util.Pair;
 
 import java.io.BufferedReader;
@@ -102,30 +103,89 @@ public class Graphe {
                 throw new Exception("Error syntax in the .dot file : '"+fichier+"'.");
             }
             while ((ligne=br.readLine())!=null){
-/*
                 if(ligne.contains("size=")) {
                     decoup = ligne.split("\"");
                     String [] decoup2 = decoup[1].split(",");
-                    m_size = new Size(Integer.parseInt(decoup2[0]), Integer.parseInt(decoup2[1]));
-                    System.out.println(m_size);
+                    //m_size = new Size(Integer.parseInt(decoup2[0]), Integer.parseInt(decoup2[1]));
+                    //  System.out.println(m_size);
                 }
-                */
 
-                //GESTION DES ARRETES
-                if(ligne.contains("->")) {
-                    decoup = ligne.split("\"");
-                    Sommet s1 = new Sommet(decoup[1]);
-                    Sommet s2 = new Sommet(decoup[3]);
-                    ajouterArete(s1,s2);
-                    if(ligne.contains("[")) {
-                        //decoup1 = ligne.split("\[");
-                        String [] decoup2 = decoup[1].split("]");
-                        //PROPRIETE CSS DE L'ARETE
-                        String properties = decoup2[0];
+                //GESTION DES NOEUDS
+                if(!ligne.contains("->") &&
+                        !ligne.contains("--") &&
+                        !ligne.contains("size")) {
+
+                }
+
+                if(m_name == "graph") {
+                    //GESTION DES ARETES
+                    if(ligne.contains("--") && !ligne.contains("label=\"--")) {
+                        decoup = ligne.split("->");
+                        String [] name2 = decoup[1].split("\\[");
+                        Sommet s1 = new Sommet(decoup[0].trim().replaceAll("\"", ""));
+                        Sommet s2 = new Sommet(name2[0].trim().replaceAll("\"", ""));
+                        ajouterArete(s1,s2);
+
+                        //PROPRIETE
+                        if(ligne.contains("[")) {
+                            if(ligne.contains("type")) {
+                                String [] type = ligne.split("type=");
+                                String [] typeFinal = type[1].split(" ");
+                            }
+                            if(ligne.contains("style")) {
+                                String [] style = ligne.split("style=");
+                                String [] styleFinal = style[1].split(" ");
+                            }
+                            if(ligne.contains("color")) {
+                                String [] color = ligne.split("color=");
+                                String [] colorFinal = color[1].split(" ");
+                            }
+                            if(ligne.contains("fontcolor")) {
+                                String [] fontcolor = ligne.split("fontcolor=");
+                                String [] fontcolorFinal = fontcolor[1].split(" ");
+                            }
+                            if(ligne.contains("label")) {
+                                String [] label = ligne.split("label=\"");
+                                String [] labelFinal = label[1].split("\"");
+                            }
+                        }
                     }
                 }
+                else {
+                    //GESTION DES ARETES DIRIGEES
+                    if(ligne.contains("->") && !ligne.contains("label=\"->")) {
+                        decoup = ligne.split("->");
+                        String [] name2 = decoup[1].split("\\[");
+                        Sommet s1 = new Sommet(decoup[0].trim().replaceAll("\"", ""));
+                        Sommet s2 = new Sommet(name2[0].trim().replaceAll("\"", ""));
+                        ajouterArete(s1,s2);
 
-                System.out.println(ligne);
+                        //PROPRIETE
+                        if(ligne.contains("[")) {
+                            if(ligne.contains("type")) {
+                                String [] type = ligne.split("type=");
+                                String [] typeFinal = type[1].split(" ");
+                            }
+                            if(ligne.contains("style")) {
+                                String [] style = ligne.split("style=");
+                                String [] styleFinal = style[1].split(" ");
+                            }
+                            if(ligne.contains("color")) {
+                                String [] color = ligne.split("color=");
+                                String [] colorFinal = color[1].split(" ");
+                            }
+                            if(ligne.contains("fontcolor")) {
+                                String [] fontcolor = ligne.split("fontcolor=");
+                                String [] fontcolorFinal = fontcolor[1].split(" ");
+                            }
+                            if(ligne.contains("label")) {
+                                String [] label = ligne.split("label=\"");
+                                String [] labelFinal = label[1].split("\"");
+                            }
+                        }
+                    }
+                }
+                // System.out.println(ligne);
                 chaine+=ligne+"\n";
             }
             br.close();
@@ -176,6 +236,9 @@ public class Graphe {
             sommet.setX(sommet.getX() + forceTotale);
             sommet.setY(sommet.getY() + forceTotale);
         }
+    }
+
+    private void distributionAleatoire() {
     }
 
     /**

@@ -7,29 +7,16 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import sample.Model.Sommet;
 
-import sample.Model.Arete;
-import sample.Model.Sommet;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("View.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("FXML/MainApplication.fxml"));
         primaryStage.setTitle("Gestionnaire de graphe");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
-
-
     public static void main(String[] args) {
         launch(args);
-    }
-
-    public static void addSommet(float x, float y) {
-        Sommet s = new Sommet("", x,y);
-
     }
 }

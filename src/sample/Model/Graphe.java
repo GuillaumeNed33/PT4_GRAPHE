@@ -1,7 +1,6 @@
 package sample.Model;
 
 import com.sun.glass.ui.Size;
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 import javafx.util.Pair;
 
 import java.io.BufferedReader;
@@ -236,9 +235,6 @@ public class Graphe {
             sommet.setX(sommet.getX() + forceTotale);
             sommet.setY(sommet.getY() + forceTotale);
         }
-    }
-
-    private void distributionAleatoire() {
     }
 
     /**

@@ -43,6 +43,11 @@ public class Sommet {
     private Color couleurSommet;
 
     /**
+     * Reprséente l'indice du sommet
+     */
+    private int indice;
+
+    /**
      * Constructeur paramétré de la classe Sommet.
      * @param nom Représente le nom du sommet.
      */
@@ -127,4 +132,8 @@ public class Sommet {
     public void setCouleurSommet(Color couleurSommet) {
         this.couleurSommet = couleurSommet;
     }
+
+    public int getIndice() { return indice; }
+
+    public void setIndice(int indice) { this.indice = indice; }
 }

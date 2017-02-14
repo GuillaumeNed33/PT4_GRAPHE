@@ -1,6 +1,7 @@
 package sample.Model;
 
 import com.sun.glass.ui.Size;
+import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
 import java.io.BufferedReader;
@@ -547,6 +548,110 @@ public class Graphe {
 
         return false;
     }
+
+    /**
+     * Affecte le degré du sommet (son nombre d'arêtes) à l'indice du sommet
+     * @param s
+     */
+    public static void setIndiceDegre(Sommet s){
+        s.setIndice(m_incidentes.get(s).size());
+    }
+
+    /**
+     * Affecte une valeur aléatoire à l'indice du sommet
+     * @param s
+     */
+    public static void setIndiceAleatoire (Sommet s){
+        s.setIndice(rand.nextInt());
+    }
+
+    /**
+     * Affecte pour chaque sommet du graphe son degré à son indice
+     */
+    public static void setIndiceDegre(){
+        for (Sommet s: m_sommets) {
+            setIndiceDegre(s);
+        }
+    }
+
+    /**
+     *
+     * Affecte pour chaque sommet du graphe une valeur aléatoire à son indice
+     */
+    public static void setIndiceAleatoire(){
+        for (Sommet s: m_sommets) {
+            setIndiceAleatoire(s);
+        }
+    }
+
+    /**
+     * Fonction récupérant l'indice maximal de tous les sommets du graphe
+     * @return
+     */
+    private int indiceMax(){
+        int i = m_sommets.size()-1;
+        int max = m_sommets.get(0).getIndice();
+        while(--i >= 0) {
+            max = (m_sommets.get(i).getIndice() > max) ? m_sommets.get(i).getIndice() : max;
+        }
+
+        return max;
+    }
+
+    /**
+     * Fonction récupérant l'indice minimal de tous les sommets du graphe
+     * @return
+     */
+    private int indiceMin(){
+        int i = m_sommets.size()-1;
+        int min = m_sommets.get(0).getIndice();
+        while(--i >= 0) {
+            min = (m_sommets.get(i).getIndice() < min) ? m_sommets.get(i).getIndice() : min;
+        }
+
+        return min;
+    }
+
+    /**
+     * Fonction permettant de changer la couleur de tous les sommet du graphe
+     * en fonction d'une couleur minimale et d'une couleur maximale
+     * et de la valeur de l'indice de chaque sommet
+     * @param cmin
+     * @param cmax
+     */
+    public void changerCouleurSommet(Color cmin, Color cmax){
+        for (Sommet s : m_sommets) {
+            changerCouleurSommet(s, cmin, cmax);
+        }
+    }
+
+    /**
+     * Fonction permettant de changer la couleur d'un sommet en fonction d'une couleur
+     * minimale et d'une couleur maximale et de la valeur de l'indice du sommet
+     * @param s
+     * @param cmin
+     * @param cmax
+     */
+    public void changerCouleurSommet (Sommet s, Color cmin, Color cmax){
+        int valeur = s.getIndice();
+        double rouge = intensiteCouleur(valeur, cmax.getRed(), cmin.getRed());
+        double vert =  intensiteCouleur(valeur, cmax.getGreen(), cmin.getGreen());
+        double bleu = intensiteCouleur(valeur, cmax.getBlue(), cmin.getBlue());
+        s.setCouleurSommet(new Color(rouge, vert, bleu, 1.));
+    }
+
+    /**
+     * fonction mathematique permettant de generer une couleur pour un sommet
+     * en fonction de la valeur de son indice suivant un intervalle
+     * @param valeur
+     * @param cmax
+     * @param cmin
+     * @return
+     */
+    private double intensiteCouleur(int valeur, double cmax, double cmin){
+        return ((valeur - indiceMin())/(indiceMax() - indiceMin())) * (cmax - cmin) + cmin;
+    }
+
 
     // Accesseur et Mutateurs
 

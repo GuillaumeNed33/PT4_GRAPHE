@@ -1,5 +1,3 @@
-package main.java.Test;
-
 import Model.Arete;
 import org.junit.Test;
 import Model.Sommet;

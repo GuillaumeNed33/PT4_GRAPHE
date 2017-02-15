@@ -1,10 +1,8 @@
-package main.java.Test;
-
 import com.sun.glass.ui.Size;
 import org.junit.Assert;
 import org.junit.Test;
-import main.java.Model.Graphe;
 import Model.Sommet;
+import Model.Graphe;
 
 /**
  * Created by Mathieu on 06/02/2017.

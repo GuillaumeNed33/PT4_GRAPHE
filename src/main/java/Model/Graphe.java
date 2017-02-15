@@ -49,6 +49,11 @@ public class Graphe {
     private static HashMap<Arete, Pair<Sommet,Sommet>> m_extremites;    // conteneur liant pour chaque arete sa paire de sommets
 
     /**
+     * Représente l'ensemble des clefs de style (definies dans les fichier .graphml).
+     */
+    private static ArrayList<KeyStyleGRAPHML> m_keyGML;
+
+    /**
      * Représente la marge entre chaque sommet du graphe.
      */
     private static final int MARGE = 10;
@@ -234,7 +239,97 @@ public class Graphe {
      * @param fichier
      */
     private void chargerGrapheGRAPHML(String fichier) {
+        String chaine = "";
+        try {
+            InputStream ips = new FileInputStream(fichier);
+            InputStreamReader ipsr = new InputStreamReader(ips);
+            BufferedReader br = new BufferedReader(ipsr);
+            String ligne;
+            boolean directedGraph = false;
 
+            while ((ligne = br.readLine()) != null) {
+                if (ligne.contains("<key")) {
+                    String [] recupId = ligne.split("id=\"");
+                    String id = recupId[1].split("\"")[0];
+
+                    String [] recupType = ligne.split("for=\"");
+                    String type = recupType[1].split("\"")[0]; //node or edge
+
+                    String [] recupAttributeName = ligne.split("attr.name=\"");
+                    String keyName = recupAttributeName[1].split("\"")[0];
+
+                    String typeAttribute="";
+                    if(keyName == "color") {
+                        ligne = br.readLine();
+                        String[] recupAttributeType = ligne.split("<default>");
+                        typeAttribute = recupAttributeType[1].split("<")[0];
+                    }
+                    else {
+                        String[] recupAttributeType = ligne.split("attr.type=\"");
+                        typeAttribute = recupAttributeType[1].split("\"")[0];
+                    }
+                    KeyStyleGRAPHML key = new KeyStyleGRAPHML(id,type, keyName, typeAttribute);
+                    m_keyGML.add(key);
+                }
+
+                else if (ligne.contains("<graph")) {
+                    String [] recupId = ligne.split("id=\"");
+                    m_name = recupId[1].split("\"")[0];
+                    String [] recupType = ligne.split("edgedefault=\"");
+                    String typeArete = recupType[1].split("\"")[0];
+                    if(typeArete=="undirected")
+                        directedGraph = false;
+                    else
+                        directedGraph = true;
+                }
+
+                else if (ligne.contains("<node")) {
+
+                    String [] recupId = ligne.split("id=\"");
+                    String id = recupId[1].split("\"")[0];
+                    Size tailleFenetre = new Size();
+                    ajouterSommet(new Sommet(id), tailleFenetre);
+                }
+
+                else if (ligne.contains("<edge")) {
+                    boolean directedArete;
+                    if(ligne.contains("directed=\"true\""))
+                        directedArete = true;
+                    else if(ligne.contains("directed=\"false\""))
+                        directedArete = false;
+                    else
+                        directedArete = directedGraph;
+
+                    String [] recupSource = ligne.split("source=\"");
+                    String source = recupSource[1].split("\"")[0];
+
+                    String [] recupTarget = ligne.split("target=\"");
+                    String dest = recupTarget[1].split("\"")[0];
+
+                    if(findSommet(source) != null && findSommet(dest) != null)
+                        ajouterArete(findSommet(source), findSommet(dest));
+                }
+            }
+            br.close();
+        }
+        catch (Exception e){
+            System.out.println(e.toString());
+        }
+    }
+
+    private Sommet findSommet(String source) {
+        boolean trouve = false;
+        int i = 0;
+        Sommet res = null;
+        while(!trouve && i < m_sommets.size()) {
+            if(m_sommets.get(i).getTag() == source) {
+                trouve = true;
+                res = m_sommets.get(i);
+            }
+            else
+                i++;
+        }
+        return res;
     }
 
     /**

@@ -1,8 +1,8 @@
 package main.java.Test;
 
-import main.java.Model.Arete;
+import Model.Arete;
 import org.junit.Test;
-import main.java.Model.Sommet;
+import Model.Sommet;
 
 import static org.junit.Assert.assertEquals;
 

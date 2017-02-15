@@ -1,5 +1,6 @@
-package main.java.Model;
+package Model;
 
+import Model.Sommet;
 import javafx.scene.paint.Color;
 
 /**

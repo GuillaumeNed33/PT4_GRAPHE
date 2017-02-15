@@ -1,7 +1,7 @@
 package main.java.Test;
 
 import org.junit.Test;
-import main.java.Model.Sommet;
+import Model.Sommet;
 
 import static org.junit.Assert.assertEquals;
 

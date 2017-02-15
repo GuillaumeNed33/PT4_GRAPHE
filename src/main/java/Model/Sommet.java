@@ -1,4 +1,4 @@
-package main.java.Model;
+package Model;
 
 import com.sun.glass.ui.Size;
 import javafx.scene.paint.Color;

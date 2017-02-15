@@ -1,4 +1,4 @@
-package main.java.Model;
+package Model;
 
 import com.sun.glass.ui.Size;
 import javafx.scene.paint.Color;
@@ -362,7 +362,7 @@ public class Graphe {
 
         if (verificationPossibiliteAjoutSommet(sommet.getX(), sommet.getY(), tailleFenetre)) {
             m_sommets.add(sommet);
-            m_incidentes.put(sommet, new ArrayList<>());
+            m_incidentes.put(sommet, new ArrayList<Arete>());
         }
         else {
             return false;
@@ -458,7 +458,7 @@ public class Graphe {
             Arete arete = new Arete(sommet_1, sommet_2);
             m_aretes.add(arete);
 
-            m_extremites.put(arete, new Pair<>(sommet_1, sommet_2));
+            m_extremites.put(arete, new Pair<Sommet,Sommet>(sommet_1, sommet_2));
             lierAreteAuSommet(arete, sommet_1);
             lierAreteAuSommet(arete, sommet_2);
         }
@@ -511,7 +511,7 @@ public class Graphe {
 
         if (!m_incidentes.containsKey(sommet)) {
 
-            ArrayList<Arete> setArete = new ArrayList<>();
+            ArrayList<Arete> setArete = new ArrayList<Arete>();
             setArete.add(arete);
             m_incidentes.put(sommet, setArete);
         } else {

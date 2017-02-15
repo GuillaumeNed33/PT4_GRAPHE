@@ -4,7 +4,7 @@ import com.sun.glass.ui.Size;
 import org.junit.Assert;
 import org.junit.Test;
 import main.java.Model.Graphe;
-import main.java.Model.Sommet;
+import Model.Sommet;
 
 /**
  * Created by Mathieu on 06/02/2017.

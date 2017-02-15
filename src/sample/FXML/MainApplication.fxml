@@ -17,7 +17,7 @@
                            <children>
                               <Button mnemonicParsing="false" onMouseClicked="#clickFichierImporter" text="Importer" />
                               <Button mnemonicParsing="false" onMouseClicked="#clickFichierExporter" text="Exporter" />
-                              <Button mnemonicParsing="false" text="Enregistrer" />
+                              <Button mnemonicParsing="false" onMouseClicked="#clickFichierEnregistrer" text="Enregistrer" />
                            </children>
                         </HBox>
                      </children>

@@ -50,7 +50,7 @@ public class Arete {
     public Arete(Sommet entree, Sommet sortie){
         this.entree = entree;
         this.sortie = sortie;
-        id = idActuel++;
+        id = ++idActuel;
         couleurArete = Color.web("000000");
         this.poids = 0;
     }

@@ -1,7 +1,7 @@
 package sample.Model;
 
 import com.sun.glass.ui.Size;
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
+import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
 import java.io.BufferedReader;
@@ -64,10 +64,10 @@ public class Graphe {
      */
     public Graphe (String fichier) {
         if (fichier.contains(".dot")) {
-            lectureGraphe(fichier, (byte)1);
+            chargerGrapheDOT(fichier);
         }
         else {
-            lectureGraphe(fichier, (byte)2);
+            chargerGrapheGRAPHML(fichier);
         }
     }
 
@@ -81,20 +81,6 @@ public class Graphe {
         m_aretes = new ArrayList<Arete>();
         m_incidentes = new HashMap<Sommet, ArrayList<Arete>>();
         m_extremites = new HashMap<Arete, Pair<Sommet, Sommet>>();
-    }
-
-    /**
-     * fonction
-     * @param fichier Représente le path du fichier à charger.
-     * @param type Représente le type de fichier à charger.
-     */
-    private void lectureGraphe(String fichier, byte type){
-        if (type == 1){
-            chargerGrapheDOT(fichier);
-        }
-        else {
-            chargerGrapheGRAPHML(fichier);
-        }
     }
 
     /**
@@ -125,10 +111,43 @@ public class Graphe {
                 }
 
                 //GESTION DES NOEUDS
-                if(!ligne.contains("->") &&
-                        !ligne.contains("--") &&
+                if(!ligne.contains(" -> ") &&
+                        !ligne.contains(" -- ") &&
                         !ligne.contains("size")) {
+                    if(ligne.contains("[")) {
+                        String[] node = ligne.split("\\[");
+                        Sommet s = new Sommet(node[0].trim().replaceAll("\"",""));
+                    }
+                    else {
+                        String node = ligne.trim().replaceAll("\"", "");
+                        Sommet s = new Sommet(node);
+                    }
 
+                    //PROPRIETE
+                    if(ligne.contains("[")) {
+
+                        /*** http://graphviz.org/Documentation/dotguide.pdf ***/
+                        if(ligne.contains("type")) {
+                            String [] type = ligne.split("type=");
+                            String [] typeFinal = type[1].split(" ");
+                        }
+                        if(ligne.contains("style")) {
+                            String [] style = ligne.split("style=");
+                            String [] styleFinal = style[1].split(" ");
+                        }
+                        if(ligne.contains("color")) {
+                            String [] color = ligne.split("color=");
+                            String [] colorFinal = color[1].split(" ");
+                        }
+                        if(ligne.contains("fontcolor")) {
+                            String [] fontcolor = ligne.split("fontcolor=");
+                            String [] fontcolorFinal = fontcolor[1].split(" ");
+                        }
+                        if(ligne.contains("label")) {
+                            String [] label = ligne.split("label=\"");
+                            String [] labelFinal = label[1].split("\"");
+                        }
+                    }
                 }
 
                 if(m_name == "graph") {
@@ -175,6 +194,7 @@ public class Graphe {
                         ajouterArete(s1,s2);
 
                         //PROPRIETE
+                        /*** http://graphviz.org/Documentation/dotguide.pdf ***/
                         if(ligne.contains("[")) {
                             if(ligne.contains("type")) {
                                 String [] type = ligne.split("type=");
@@ -250,9 +270,6 @@ public class Graphe {
             sommet.setX(sommet.getX() + forceTotale);
             sommet.setY(sommet.getY() + forceTotale);
         }
-    }
-
-    private void distributionAleatoire() {
     }
 
     /**
@@ -337,15 +354,15 @@ public class Graphe {
     /**
      * Permet d'ajouter un sommet dans le graphe.
      * Le boolean de retour permet de gérer les erreurs d'ajouts (aspect graphique).
-     * @param tag Représente le tag du sommet à ajouter dans le graphe.
-     * @param coord_x_sommet Représente la coordonnée en x du sommet à ajouter dans le graphe.
-     * @param coord_y_sommet Représente la coordonnée en y du sommet à ajouter dans le graphe.
+     * @param sommet Représente le sommet à ajouter.
+     * @param tailleFenetre Représente la taille de la fenêtre d'affichage.
      * @return Retourne vrai si l'ajout du sommet c'est fait ou faux dans le cas contraire.
      */
-    public boolean ajouterSommet(String tag, float coord_x_sommet, float coord_y_sommet, Size tailleFenetre){
+    public boolean ajouterSommet(Sommet sommet, Size tailleFenetre){
 
-        if (verificationPossibiliteAjoutSommet(coord_x_sommet, coord_y_sommet, tailleFenetre)) {
-            m_sommets.add(new Sommet(tag, coord_x_sommet, coord_y_sommet));
+        if (verificationPossibiliteAjoutSommet(sommet.getX(), sommet.getY(), tailleFenetre)) {
+            m_sommets.add(sommet);
+            m_incidentes.put(sommet, new ArrayList<>());
         }
         else {
             return false;
@@ -413,13 +430,19 @@ public class Graphe {
      */
     public void supprimerSommet(Sommet sommet){
 
-        m_sommets.remove(sommet);
+        if(!sommet.equals(null)) {
 
-        for (Arete a: m_incidentes.get(sommet)) {
-            m_extremites.remove(a);
+            if (m_incidentes.containsKey(sommet)) {
+                for (Arete arete : m_incidentes.get(sommet)) {
+                    m_extremites.remove(arete);
+                    m_aretes.remove(arete);
+                }
+
+                m_incidentes.remove(sommet);
+            }
+
+            m_sommets.remove(sommet);
         }
-
-        m_incidentes.remove(sommet);
     }
 
     /**
@@ -435,9 +458,7 @@ public class Graphe {
             Arete arete = new Arete(sommet_1, sommet_2);
             m_aretes.add(arete);
 
-            Pair<Sommet, Sommet> sommets = new Pair<>(sommet_1, sommet_2);
-
-            m_extremites.put(arete, sommets);
+            m_extremites.put(arete, new Pair<>(sommet_1, sommet_2));
             lierAreteAuSommet(arete, sommet_1);
             lierAreteAuSommet(arete, sommet_2);
         }
@@ -457,11 +478,28 @@ public class Graphe {
      */
     private boolean verificationPossibiliteAjoutArete(Sommet sommet_1, Sommet sommet_2) {
 
-        if (sommet_1.equals(sommet_2) && (sommet_1.equals(null) || sommet_2.equals(null))) {
-            return false;
+        if (sommet_1.equals(sommet_2) || (sommet_1.equals(null) || sommet_2.equals(null)) || verificationDoublonArete(sommet_1, sommet_2)) {
+                return false;
         }
 
         return true;
+    }
+
+    /**
+     * Permet de vérifier s'il existe une arete entre 2 sommets.
+     * @param sommet_1 Représente le premier sommet pour la vérification.
+     * @param sommet_2 Représente le second sommet pour la vérification.
+     * @return Retourne vrai si il existe une arete entre les 2 sommets et faux dans le cas contraire.
+     */
+    private boolean verificationDoublonArete(Sommet sommet_1, Sommet sommet_2) {
+
+        for(Arete arete : m_incidentes.get(sommet_1)) {
+            if (m_incidentes.get(sommet_2).contains(arete)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -471,17 +509,13 @@ public class Graphe {
      */
     private void lierAreteAuSommet (Arete arete, Sommet sommet) {
 
-        ArrayList<Arete> aretesLocalesSommet = m_incidentes.get(sommet);
-
-        if (aretesLocalesSommet.size() == 0) {
+        if (!m_incidentes.containsKey(sommet)) {
 
             ArrayList<Arete> setArete = new ArrayList<>();
             setArete.add(arete);
             m_incidentes.put(sommet, setArete);
         } else {
-
-            aretesLocalesSommet.add(arete);
-            m_incidentes.put(sommet, aretesLocalesSommet);
+            m_incidentes.get(sommet).add(arete);
         }
     }
 
@@ -491,30 +525,13 @@ public class Graphe {
      */
     public void supprimerArete(Arete arete) {
 
-        Sommet sommet_1 = m_extremites.get(arete).getKey(); // Représente le premier sommet de la Pair dans la HashMap m_extremites
-        Sommet sommet_2 = m_extremites.get(arete).getValue(); // Représente le second sommet de la Pair dans la HashMap m_extremites
+        if(!arete.equals(null)) {
 
-        supprimerAretePourUnSommetSpecifique(arete, sommet_1);
-        supprimerAretePourUnSommetSpecifique(arete, sommet_2);
+            m_incidentes.get(m_extremites.get(arete).getKey()).remove(arete); // Représente le premier sommet de la Pair dans la HashMap m_extremites
+            m_incidentes.get(m_extremites.get(arete).getValue()).remove(arete); // Représente le second sommet de la Pair dans la HashMap m_extremites
 
-        m_extremites.remove(arete);
-    }
-
-    /**
-     * Supprime une arete mais pour un sommet spécifique du graphe.
-     * @param arete Représente l'arete à supprimer du graphe.
-     * @param sommet Représente le sommet qui est lié à l'arete à supprimer du graphe.
-     */
-    private void supprimerAretePourUnSommetSpecifique(Arete arete, Sommet sommet) {
-
-        boolean trouve = false;
-        Iterator<Arete> it = m_incidentes.get(sommet).iterator();
-
-        while (!trouve && it.hasNext()) {
-            Arete temp_arete = it.next();
-            if (temp_arete.equals(arete)) {
-                it.remove();
-            }
+            m_extremites.remove(arete);
+            m_aretes.remove(arete);
         }
     }
 
@@ -531,6 +548,164 @@ public class Graphe {
 
         return false;
     }
+
+    /**
+     * Affecte le degré du sommet (son nombre d'arêtes) à l'indice du sommet
+     * @param s
+     */
+    public static void setIndiceDegre(Sommet s){
+        s.setIndice(m_incidentes.get(s).size());
+    }
+
+    /**
+     * Affecte une valeur aléatoire à l'indice du sommet
+     * @param s
+     */
+    public static void setIndiceAleatoire (Sommet s){
+        s.setIndice(rand.nextInt());
+    }
+
+    /**
+     * Affecte pour chaque sommet du graphe son degré à son indice
+     */
+    public static void setIndiceDegre(){
+        for (Sommet s: m_sommets) {
+            setIndiceDegre(s);
+        }
+    }
+
+    /**
+     *
+     * Affecte pour chaque sommet du graphe une valeur aléatoire à son indice
+     */
+    public static void setIndiceAleatoire(){
+        for (Sommet s: m_sommets) {
+            setIndiceAleatoire(s);
+        }
+    }
+
+    /**
+     * Fonction récupérant l'indice maximal de tous les sommets du graphe
+     * @return
+     */
+    private int indiceMaxSommet(){
+        int i = m_sommets.size()-1;
+        int max = m_sommets.get(0).getIndice();
+        while(--i >= 0) {
+            max = (m_sommets.get(i).getIndice() > max) ? m_sommets.get(i).getIndice() : max;
+        }
+
+        return max;
+    }
+
+    /**
+     * Fonction récupérant l'indice minimal de tous les sommets du graphe
+     * @return
+     */
+    private int indiceMinSommet(){
+        int i = m_sommets.size() - 1;
+        int min = m_sommets.get(0).getIndice();
+        while(--i >= 0) {
+            min = (m_sommets.get(i).getIndice() < min) ? m_sommets.get(i).getIndice() : min;
+        }
+        return min;
+    }
+
+    /**
+     * Fonction récupérant l'indice maximal de toutes les arêtes du graphe
+     * @return
+     */
+    private int indiceMaxArete(){
+        int i = m_aretes.size()-1;
+        int max = m_aretes.get(0).getPoids();
+        while(--i >= 0) {
+            max = (m_aretes.get(i).getPoids() > max) ? m_aretes.get(i).getPoids() : max;
+        }
+        return max;
+    }
+
+    /**
+     * Fonction récupérant l'indice minimal de toutes les aretes du graphe
+     * @return
+     */
+    private int indiceMinArete(){
+        int i = m_aretes.size() - 1;
+        int min = m_aretes.get(0).getPoids();
+        while(--i >= 0) {
+            min = (m_aretes.get(i).getPoids() < min) ? m_aretes.get(i).getPoids() : min;
+        }
+        return min;
+    }
+
+    /**
+     * Fonction permettant de changer la couleur de tous les sommet du graphe
+     * en fonction d'une couleur minimale et d'une couleur maximale
+     * et de la valeur de l'indice de chaque sommet
+     * @param cmin
+     * @param cmax
+     */
+    public void changerCouleurSommets(Color cmin, Color cmax){
+        for (Sommet s : m_sommets) {
+            changerCouleurSommet(s, cmin, cmax);
+        }
+    }
+
+    /**
+     * Fonction permettant de changer la couleur d'un sommet en fonction d'une couleur
+     * minimale et d'une couleur maximale et de la valeur de l'indice du sommet
+     * @param s
+     * @param cmin
+     * @param cmax
+     */
+    public void changerCouleurSommet (Sommet s, Color cmin, Color cmax){
+        int valeur = s.getIndice();
+        double rouge = intensiteCouleur(valeur, cmax.getRed(), cmin.getRed(), indiceMaxSommet(), indiceMinSommet());
+        double vert =  intensiteCouleur(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxSommet(), indiceMinSommet());
+        double bleu = intensiteCouleur(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxSommet(), indiceMinSommet());
+        s.setCouleurSommet(new Color(rouge, vert, bleu, 1.));
+    }
+
+    /**
+     * Fonction permettant de changer la couleur de toutes les aretes du graphe
+     * en fonction d'une couleur minimale et d'une couleur maximale
+     * et de la valeur du poids de chaque arete
+     * @param cmin
+     * @param cmax
+     */
+    public void changerCouleurAretes(Color cmin, Color cmax){
+        for (Arete a : m_aretes) {
+            changerCouleurArete(a, cmin, cmax);
+        }
+    }
+
+    /**
+     * Fonction permettant de changer la couleur d'une arete en fonction d'une couleur
+     * minimale et d'une couleur maximale et de la valeur du poids de l'arête
+     * @param s
+     * @param cmin
+     * @param cmax
+     */
+    public void changerCouleurArete (Arete s, Color cmin, Color cmax){
+        int valeur = s.getPoids();
+        double rouge = intensiteCouleur(valeur, cmax.getRed(), cmin.getRed(), indiceMaxArete(), indiceMinArete());
+        double vert =  intensiteCouleur(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxArete(), indiceMinArete());
+        double bleu = intensiteCouleur(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxArete(), indiceMinArete());
+        s.setCouleurArete(new Color(rouge, vert, bleu, 1.));
+    }
+
+
+    /**
+     * fonction mathematique permettant de generer une couleur pour une arete ou un sommet
+     * en fonction de la valeur de son indice suivant un intervalle
+     * @param valeur
+     * @param cmax
+     * @param cmin
+     * @return
+     */
+    private double intensiteCouleur(int valeur, double cmax, double cmin, int indiceMax, int indiceMin){
+        return (((valeur - indiceMin)/(indiceMax - indiceMin)) * (cmax - cmin) + cmin);
+    }
+
 
     // Accesseur et Mutateurs
 

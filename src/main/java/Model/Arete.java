@@ -12,7 +12,7 @@ public class Arete {
      * Représente le prochain id à utiliser.
      * il est static donc commun à l'ensemble des objets de la classe.
      */
-    private static int idActuel = 0;
+    private static int idActuel = 1;
 
     /**
      * Représente l'id de l'arete.

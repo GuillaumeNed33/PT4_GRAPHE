@@ -588,7 +588,7 @@ public class Graphe {
      * Fonction récupérant l'indice maximal de tous les sommets du graphe
      * @return
      */
-    private int indiceMax(){
+    private int indiceMaxSommet(){
         int i = m_sommets.size()-1;
         int max = m_sommets.get(0).getIndice();
         while(--i >= 0) {
@@ -602,13 +602,38 @@ public class Graphe {
      * Fonction récupérant l'indice minimal de tous les sommets du graphe
      * @return
      */
-    private int indiceMin(){
-        int i = m_sommets.size()-1;
+    private int indiceMinSommet(){
+        int i = m_sommets.size() - 1;
         int min = m_sommets.get(0).getIndice();
         while(--i >= 0) {
             min = (m_sommets.get(i).getIndice() < min) ? m_sommets.get(i).getIndice() : min;
         }
+        return min;
+    }
 
+    /**
+     * Fonction récupérant l'indice maximal de toutes les arêtes du graphe
+     * @return
+     */
+    private int indiceMaxArete(){
+        int i = m_aretes.size()-1;
+        int max = m_aretes.get(0).getPoids();
+        while(--i >= 0) {
+            max = (m_aretes.get(i).getPoids() > max) ? m_aretes.get(i).getPoids() : max;
+        }
+        return max;
+    }
+
+    /**
+     * Fonction récupérant l'indice minimal de toutes les aretes du graphe
+     * @return
+     */
+    private int indiceMinArete(){
+        int i = m_aretes.size() - 1;
+        int min = m_aretes.get(0).getPoids();
+        while(--i >= 0) {
+            min = (m_aretes.get(i).getPoids() < min) ? m_aretes.get(i).getPoids() : min;
+        }
         return min;
     }
 
@@ -619,7 +644,7 @@ public class Graphe {
      * @param cmin
      * @param cmax
      */
-    public void changerCouleurSommet(Color cmin, Color cmax){
+    public void changerCouleurSommets(Color cmin, Color cmax){
         for (Sommet s : m_sommets) {
             changerCouleurSommet(s, cmin, cmax);
         }
@@ -634,22 +659,51 @@ public class Graphe {
      */
     public void changerCouleurSommet (Sommet s, Color cmin, Color cmax){
         int valeur = s.getIndice();
-        double rouge = intensiteCouleur(valeur, cmax.getRed(), cmin.getRed());
-        double vert =  intensiteCouleur(valeur, cmax.getGreen(), cmin.getGreen());
-        double bleu = intensiteCouleur(valeur, cmax.getBlue(), cmin.getBlue());
+        double rouge = intensiteCouleur(valeur, cmax.getRed(), cmin.getRed(), indiceMaxSommet(), indiceMinSommet());
+        double vert =  intensiteCouleur(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxSommet(), indiceMinSommet());
+        double bleu = intensiteCouleur(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxSommet(), indiceMinSommet());
         s.setCouleurSommet(new Color(rouge, vert, bleu, 1.));
     }
 
     /**
-     * fonction mathematique permettant de generer une couleur pour un sommet
+     * Fonction permettant de changer la couleur de toutes les aretes du graphe
+     * en fonction d'une couleur minimale et d'une couleur maximale
+     * et de la valeur du poids de chaque arete
+     * @param cmin
+     * @param cmax
+     */
+    public void changerCouleurAretes(Color cmin, Color cmax){
+        for (Arete a : m_aretes) {
+            changerCouleurArete(a, cmin, cmax);
+        }
+    }
+
+    /**
+     * Fonction permettant de changer la couleur d'une arete en fonction d'une couleur
+     * minimale et d'une couleur maximale et de la valeur du poids de l'arête
+     * @param s
+     * @param cmin
+     * @param cmax
+     */
+    public void changerCouleurArete (Arete s, Color cmin, Color cmax){
+        int valeur = s.getPoids();
+        double rouge = intensiteCouleur(valeur, cmax.getRed(), cmin.getRed(), indiceMaxArete(), indiceMinArete());
+        double vert =  intensiteCouleur(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxArete(), indiceMinArete());
+        double bleu = intensiteCouleur(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxArete(), indiceMinArete());
+        s.setCouleurArete(new Color(rouge, vert, bleu, 1.));
+    }
+
+
+    /**
+     * fonction mathematique permettant de generer une couleur pour une arete ou un sommet
      * en fonction de la valeur de son indice suivant un intervalle
      * @param valeur
      * @param cmax
      * @param cmin
      * @return
      */
-    private double intensiteCouleur(int valeur, double cmax, double cmin){
-        return ((valeur - indiceMin())/(indiceMax() - indiceMin())) * (cmax - cmin) + cmin;
+    private double intensiteCouleur(int valeur, double cmax, double cmin, int indiceMax, int indiceMin){
+        return (((valeur - indiceMin)/(indiceMax - indiceMin)) * (cmax - cmin) + cmin);
     }
 
 

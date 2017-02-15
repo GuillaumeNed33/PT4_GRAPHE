@@ -24,6 +24,7 @@ public class Arete {
      */
     private Sommet entree;
 
+
     /**
      * Représente le second sommet auquel l'arete est liée.
      */
@@ -50,7 +51,7 @@ public class Arete {
     public Arete(Sommet entree, Sommet sortie){
         this.entree = entree;
         this.sortie = sortie;
-        id = idActuel++;
+        id = ++idActuel;
         couleurArete = Color.web("000000");
         this.poids = 0;
     }
@@ -92,5 +93,21 @@ public class Arete {
 
     public void setEpaisseur(Size epaisseur) {
         this.epaisseur = epaisseur;
+    }
+    
+    public Sommet getEntree() {
+        return entree;
+    }
+
+    public void setEntree(Sommet entree) {
+        this.entree = entree;
+    }
+
+    public Sommet getSortie() {
+        return sortie;
+    }
+
+    public void setSortie(Sommet sortie) {
+        this.sortie = sortie;
     }
 }

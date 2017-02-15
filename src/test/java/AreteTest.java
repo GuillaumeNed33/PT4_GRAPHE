@@ -18,9 +18,9 @@ public class AreteTest {
 
 
         Arete arete = new Arete(depart,arrivee);
-        assertEquals(arete.id(),1);
+        assertEquals(arete.getEntree(),depart);
         Arete areteB = new Arete(departB,arriveeB);
-        assertEquals(areteB.id(),2);
+        assertEquals(areteB.getSortie(), arriveeB);
     }
 
     @Test

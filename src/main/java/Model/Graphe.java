@@ -659,9 +659,9 @@ public class Graphe {
      */
     public void changerCouleurSommet (Sommet s, Color cmin, Color cmax){
         int valeur = s.getIndice();
-        double rouge = intensiteCouleur(valeur, cmax.getRed(), cmin.getRed(), indiceMaxSommet(), indiceMinSommet());
-        double vert =  intensiteCouleur(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxSommet(), indiceMinSommet());
-        double bleu = intensiteCouleur(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxSommet(), indiceMinSommet());
+        double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMaxSommet(), indiceMinSommet());
+        double vert =  intensite(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxSommet(), indiceMinSommet());
+        double bleu = intensite(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxSommet(), indiceMinSommet());
         s.setCouleurSommet(new Color(rouge, vert, bleu, 1.));
     }
 
@@ -687,9 +687,9 @@ public class Graphe {
      */
     public void changerCouleurArete (Arete s, Color cmin, Color cmax){
         int valeur = s.getPoids();
-        double rouge = intensiteCouleur(valeur, cmax.getRed(), cmin.getRed(), indiceMaxArete(), indiceMinArete());
-        double vert =  intensiteCouleur(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxArete(), indiceMinArete());
-        double bleu = intensiteCouleur(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxArete(), indiceMinArete());
+        double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMaxArete(), indiceMinArete());
+        double vert =  intensite(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxArete(), indiceMinArete());
+        double bleu = intensite(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxArete(), indiceMinArete());
         s.setCouleurArete(new Color(rouge, vert, bleu, 1.));
     }
 
@@ -702,8 +702,31 @@ public class Graphe {
      * @param cmin
      * @return
      */
-    private double intensiteCouleur(int valeur, double cmax, double cmin, int indiceMax, int indiceMin){
+    private double intensite(int valeur, double cmax, double cmin, int indiceMax, int indiceMin){
         return (((valeur - indiceMin)/(indiceMax - indiceMin)) * (cmax - cmin) + cmin);
+    }
+
+    public void changerTailleSommet(Sommet s, float maxSommet, float minSommet){
+        int valeur = s.getIndice();
+        int largeur = (int)intensite(valeur, maxSommet, minSommet, indiceMaxSommet(), indiceMinSommet());
+        Size taille  = new Size(largeur, s.getTailleForme().height);
+        s.setTailleForme(taille);
+    }
+
+    public void changerTailleArete(Arete a, float maxArete, float minArete){
+        int valeur = a.getPoids();
+        int largeur = (int)intensite(valeur, maxArete, minArete, indiceMaxArete(), indiceMinArete());
+        Size taille  = new Size(largeur, a.getEpaisseur().height);
+        a.setEpaisseur(taille);
+    }
+
+    public void changerTailleGraphe(float maxSommet, float minSommet, float maxArete, float minArete){
+        for (Sommet s : m_sommets){
+            changerTailleSommet(s, maxSommet, minSommet);
+        }
+        for (Arete a : m_aretes){
+            changerTailleArete(a, maxArete, minArete);
+        }
     }
 
 

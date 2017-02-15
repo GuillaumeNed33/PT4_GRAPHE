@@ -1,6 +1,6 @@
 package Model;
 
-import Model.Sommet;
+import com.sun.glass.ui.Size;
 import javafx.scene.paint.Color;
 
 /**
@@ -38,6 +38,8 @@ public class Arete {
      * Représente le poids d'un arête
      */
     private int poids;
+
+    private Size epaisseur;
 
     /**
      * Une arete ne peut se construire que grâce à 2 sommets.
@@ -83,4 +85,12 @@ public class Arete {
     public int getPoids() { return poids; }
 
     public void setPoids(int poids) { this.poids = poids; }
+
+    public Size getEpaisseur() {
+        return epaisseur;
+    }
+
+    public void setEpaisseur(Size epaisseur) {
+        this.epaisseur = epaisseur;
+    }
 }

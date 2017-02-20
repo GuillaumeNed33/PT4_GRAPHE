@@ -54,20 +54,21 @@ public class Graphe {
     private static ArrayList<KeyStyleGRAPHML> m_keyGML;
 
     /**
-     * Représente la marge entre chaque sommet du graphe.
-     */
-    private static final int MARGE = 10;
-
-    /**
      *  Représente une valeur aléatoire.
      */
     private static Random rand = new Random();
+
+    /**
+     * Représente l'algorithme de représentation du graphe
+     */
+    private static AlgorithmeRepresentation algoRep;
 
     /**
      * Constructeur de la classe Graphe lisant un fichier .DOT ou .GRAPHML.
      * @param fichier
      */
     public Graphe (String fichier) {
+        algoRep = new AlgorithmeRepresentation(this);
         if (fichier.contains(".dot")) {
             chargerGrapheDOT(fichier);
         }
@@ -86,6 +87,7 @@ public class Graphe {
         m_aretes = new ArrayList<Arete>();
         m_incidentes = new HashMap<Sommet, ArrayList<Arete>>();
         m_extremites = new HashMap<Arete, Pair<Sommet, Sommet>>();
+        algoRep = new AlgorithmeRepresentation(this);
     }
 
     /**
@@ -332,79 +334,13 @@ public class Graphe {
         return res;
     }
 
-    /**
-     *  Permet une distribution uniforme rectangulaire des sommets.
-     */
-    public void distributionAleatoire(int largeurEcran){
-        for (Sommet sommet : m_sommets) {
-            sommet.setX((rand.nextFloat()*largeurEcran)+MARGE);
-            sommet.setY((rand.nextFloat()*largeurEcran)+MARGE);
-        }
-
-    }
-
-    /**
-     * Permet une distribution circulaire des sommets.
-     */
-    public void distributionCirculaire(int largeurEcran){
-        for (Sommet sommet : m_sommets) {
-            float rayon = rand.nextFloat() * m_size.width;
-            double angle = rand.nextDouble() * 2 * Math.PI;
-            sommet.setX((float)(((largeurEcran + rayon * Math.cos(angle))/2)+(2*Math.PI/m_sommets.size())));
-            sommet.setY((float)(((largeurEcran + rayon * Math.sin(angle))/2)+(2*Math.PI/m_sommets.size())));
-        }
-    }
-
-    /**
-     * Permet une distribution par modele de Forces.
-     */
-    public void distributionModeleForces(int largeurEcran){
-        distributionAleatoire(largeurEcran);
-        for (Sommet sommet : m_sommets) {
-            float forceTotale = forceAttraction(sommet) + forceRepulsion(sommet);
-            sommet.setX(sommet.getX() + forceTotale);
-            sommet.setY(sommet.getY() + forceTotale);
-        }
-    }
-
-    /**
-     * Fonction calculant la force d'attraction qu'exerce chacun des voisins u sur un sommet s.
-     * f(s) = Somme (log distance(u,s)).
-     * @param sommet
-     * @return La force d'attraction
-     */
-    private float forceAttraction(Sommet sommet){
-        ArrayList<Sommet> voisins = this.sommmetsVoisins(sommet);
-        float force = 0;
-        for (Sommet voisin : voisins) {
-            double distance = Math.sqrt(Math.pow((double)(voisin.getX() - sommet.getX()), 2.) + Math.pow((double)(voisin.getY() - sommet.getY()), 2.));
-            force += Math.log(distance);
-        }
-        return force;
-    }
-
-    /**
-     * Fonction calculant la force de repulsion qu'exerce chacun des non voisins v sur un sommet s.
-     * f(s) = Somme (1 / distance(u,s)^2).
-     * @param sommet Représente le sommet sur lequel on doit appliquer une force de répulsion pour ses sommets non voisins.
-     * @return Retourne la force de répulsion.
-     */
-    private float forceRepulsion(Sommet sommet){
-        ArrayList<Sommet> voisins = this.sommetsNonVoisins(this.sommmetsVoisins(sommet));
-        float force = 0;
-        for (Sommet voisin : voisins) {
-            double distanceCarre = Math.pow((double)(voisin.getX() - sommet.getX()), 2.) + Math.pow((double)(voisin.getY() - sommet.getY()), 2.);
-            force += 1/distanceCarre;
-        }
-        return force;
-    }
 
     /**
      * Permet d'obtenir les sommets voisins d'un sommet.
      * @param sommet_origine Représente le sommet de référence pour déterminer si les autres sommets sont voisins.
      * @return Retourne la liste des sommets voisins.
      */
-    private ArrayList<Sommet> sommmetsVoisins(Sommet sommet_origine){
+    public ArrayList<Sommet> sommmetsVoisins(Sommet sommet_origine){
         ArrayList<Sommet> voisinage = null;
         for(Arete arete : m_incidentes.get(sommet_origine)){
             voisinage.add(source(arete).getTag() == sommet_origine.getTag() ? destination(arete) : source(arete));
@@ -417,7 +353,7 @@ public class Graphe {
      * @param arete Représente l'arete sur laquelle on cherche le sommet source.
      * @return Retourne le sommet source.
      */
-    private Sommet source(Arete arete){
+    public Sommet source(Arete arete){
 
         return m_extremites.get(arete).getKey();
     }
@@ -427,7 +363,7 @@ public class Graphe {
      * @param arete Représente l'arete sur laquelle on cherche le sommet destination.
      * @return Retourne le sommet de destination.
      */
-    private Sommet destination(Arete arete){
+    public Sommet destination(Arete arete){
 
         return m_extremites.get(arete).getValue();
     }
@@ -437,7 +373,7 @@ public class Graphe {
      * @param voisins Représente la liste de sommets de référence pour déterminer les sommets n'étant pas voisins.
      * @return Retourne la liste des sommets non voisins.
      */
-    private ArrayList<Sommet> sommetsNonVoisins(ArrayList<Sommet> voisins){
+    public ArrayList<Sommet> sommetsNonVoisins(ArrayList<Sommet> voisins){
         ArrayList<Sommet> nonVoisins = null;
         for (Sommet s: m_sommets) {
             if (!voisins.contains(s))
@@ -683,7 +619,7 @@ public class Graphe {
      * Fonction récupérant l'indice maximal de tous les sommets du graphe
      * @return
      */
-    private int indiceMaxSommet(){
+    public int indiceMaxSommet(){
         int i = m_sommets.size()-1;
         int max = m_sommets.get(0).getIndice();
         while(--i >= 0) {
@@ -697,7 +633,7 @@ public class Graphe {
      * Fonction récupérant l'indice minimal de tous les sommets du graphe
      * @return
      */
-    private int indiceMinSommet(){
+    public int indiceMinSommet(){
         int i = m_sommets.size() - 1;
         int min = m_sommets.get(0).getIndice();
         while(--i >= 0) {
@@ -710,7 +646,7 @@ public class Graphe {
      * Fonction récupérant l'indice maximal de toutes les arêtes du graphe
      * @return
      */
-    private int indiceMaxArete(){
+    public int indiceMaxArete(){
         int i = m_aretes.size()-1;
         int max = m_aretes.get(0).getPoids();
         while(--i >= 0) {
@@ -723,7 +659,7 @@ public class Graphe {
      * Fonction récupérant l'indice minimal de toutes les aretes du graphe
      * @return
      */
-    private int indiceMinArete(){
+    public int indiceMinArete(){
         int i = m_aretes.size() - 1;
         int min = m_aretes.get(0).getPoids();
         while(--i >= 0) {
@@ -753,11 +689,13 @@ public class Graphe {
      * @param cmax
      */
     public void changerCouleurSommet (Sommet s, Color cmin, Color cmax){
-        int valeur = s.getIndice();
-        double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMaxSommet(), indiceMinSommet());
-        double vert =  intensite(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxSommet(), indiceMinSommet());
-        double bleu = intensite(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxSommet(), indiceMinSommet());
-        s.setCouleurSommet(new Color(rouge, vert, bleu, 1.));
+        if (indiceFixe(s.getIndice())) {
+            int valeur = s.getIndice();
+            double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMaxSommet(), indiceMinSommet());
+            double vert = intensite(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxSommet(), indiceMinSommet());
+            double bleu = intensite(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxSommet(), indiceMinSommet());
+            s.setCouleurSommet(new Color(rouge, vert, bleu, 1.));
+        }
     }
 
     /**
@@ -781,11 +719,13 @@ public class Graphe {
      * @param cmax
      */
     public void changerCouleurArete (Arete s, Color cmin, Color cmax){
-        int valeur = s.getPoids();
-        double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMaxArete(), indiceMinArete());
-        double vert =  intensite(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxArete(), indiceMinArete());
-        double bleu = intensite(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxArete(), indiceMinArete());
-        s.setCouleurArete(new Color(rouge, vert, bleu, 1.));
+        if (indiceFixe(s.getPoids())) {
+            int valeur = s.getPoids();
+            double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMaxArete(), indiceMinArete());
+            double vert = intensite(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxArete(), indiceMinArete());
+            double bleu = intensite(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxArete(), indiceMinArete());
+            s.setCouleurArete(new Color(rouge, vert, bleu, 1.));
+        }
     }
 
 
@@ -802,17 +742,21 @@ public class Graphe {
     }
 
     public void changerTailleSommet(Sommet s, float maxSommet, float minSommet){
-        int valeur = s.getIndice();
-        int largeur = (int)intensite(valeur, maxSommet, minSommet, indiceMaxSommet(), indiceMinSommet());
-        Size taille  = new Size(largeur, s.getTailleForme().height);
-        s.setTailleForme(taille);
+        if (indiceFixe(s.getIndice())) {
+            int valeur = s.getIndice();
+            int largeur = (int) intensite(valeur, maxSommet, minSommet, indiceMaxSommet(), indiceMinSommet());
+            Size taille = new Size(largeur, s.getTailleForme().height);
+            s.setTailleForme(taille);
+        }
     }
 
     public void changerTailleArete(Arete a, float maxArete, float minArete){
-        int valeur = a.getPoids();
-        int largeur = (int)intensite(valeur, maxArete, minArete, indiceMaxArete(), indiceMinArete());
-        Size taille  = new Size(largeur, a.getEpaisseur().height);
-        a.setEpaisseur(taille);
+        if (indiceFixe(a.getPoids())) {
+            int valeur = a.getPoids();
+            int largeur = (int) intensite(valeur, maxArete, minArete, indiceMaxArete(), indiceMinArete());
+            Size taille = new Size(largeur, a.getEpaisseur().height);
+            a.setEpaisseur(taille);
+        }
     }
 
     public void changerTailleGraphe(float maxSommet, float minSommet, float maxArete, float minArete){
@@ -822,6 +766,15 @@ public class Graphe {
         for (Arete a : m_aretes){
             changerTailleArete(a, maxArete, minArete);
         }
+    }
+
+    /**
+     * Vérifie si l'indice du sommet ou de l'arete a été initialisé
+     * @param indice
+     * @return
+     */
+    private boolean indiceFixe (int indice){
+        return (indice == 0 ? false : true);
     }
 
 
@@ -865,6 +818,13 @@ public class Graphe {
     public static void setM_extremites(HashMap<Arete, Pair<Sommet, Sommet>> m_extremites) {
 
         Graphe.m_extremites = m_extremites;
+    }
+    public static Size getM_size() {
+        return m_size;
+    }
+
+    public static void setM_size(Size m_size) {
+        Graphe.m_size = m_size;
     }
 
 }

@@ -13,6 +13,17 @@ enum Forme_Sommet {
 public class Sommet {
 
     /**
+     * Représente le prochain id à utiliser.
+     * il est static donc commun à l'ensemble des objets de la classe.
+     */
+    private static int idActuel = 0;
+
+    /**
+     * Représente l'id du sommet.
+     */
+    private int id;
+
+    /**
      * Représente le tag du sommet.
      */
     private String tag;
@@ -52,6 +63,7 @@ public class Sommet {
      * @param nom Représente le nom du sommet.
      */
     public Sommet(String nom) {
+        this.id = ++idActuel;
         this.tag = nom;
         this.x = 0;
         this.y = 0;
@@ -78,6 +90,11 @@ public class Sommet {
 
 
     // Accesseur et Mutateurs
+
+    public int getId() {
+
+        return id;
+    }
 
     public String getTag() {
 

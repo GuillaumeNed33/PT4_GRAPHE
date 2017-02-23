@@ -20,6 +20,11 @@ public class Arete {
     private int id;
 
     /**
+     * Représente le tag de l'arete.
+     */
+    private String tag;
+
+    /**
      * Représente le premier sommet auquel l'arete est liée.
      */
     private Sommet entree;
@@ -52,6 +57,7 @@ public class Arete {
         this.entree = entree;
         this.sortie = sortie;
         id = ++idActuel;
+        this.tag = "";
         couleurArete = Color.web("000000");
         this.poids = 0;
     }
@@ -65,7 +71,8 @@ public class Arete {
     public Arete(Sommet entree, Sommet sortie, int poids){
         this.entree = entree;
         this.sortie = sortie;
-        id = idActuel++;
+        id = ++idActuel;
+        this.tag = "";
         couleurArete = Color.web("000000");
         this.poids = poids;
     }
@@ -73,7 +80,11 @@ public class Arete {
 
     // Accesseur et Mutateurs
 
-    public int id() { return id; }
+    public int getId() { return id; }
+
+    public String getTag() {return tag;}
+
+    public void setTag(String tag) {this.tag = tag;}
 
     public Color getCouleurArete() {
         return couleurArete;

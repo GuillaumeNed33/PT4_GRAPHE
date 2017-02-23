@@ -4,10 +4,7 @@ import com.sun.glass.ui.Size;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -72,7 +69,7 @@ public class Graphe {
         if (fichier.contains(".dot")) {
             chargerGrapheDOT(fichier);
         }
-        else {
+        else if (fichier.contains(".graphml")) {
             chargerGrapheGRAPHML(fichier);
         }
     }
@@ -319,12 +316,134 @@ public class Graphe {
         }
     }
 
+    /**
+     * Permet de sauvegarde le graphe en cours.
+     * Le choix de l'algotithme se fait en fonction du format choisi.
+     * @param chemin_sauvegarde Représente le chemin où sera sauvegardé le fichier au format .dot ou .graphml.
+     * @return Retourne vrai si la sauvegarde c'est bien passé ou faux dans le cas contraire.
+     */
+    public boolean sauvegarderGraphe (String chemin_sauvegarde) {
+        if (chemin_sauvegarde.contains(".dot")) {
+            return sauvegarderGrapheDot(chemin_sauvegarde);
+        }
+        else if (chemin_sauvegarde.contains(".graphml")) {
+            return sauvegarderGrapheGraphml(chemin_sauvegarde);
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Permet de sauvegarder un graphe au format .dot.
+     * @param chemin_sauvegarde Représente le chemin où sera sauvegardé le fichier au format .dot.
+     * @return Retourne vrai si la sauvegarde c'est bien passé ou faux dans le cas contraire.
+     */
+    private boolean sauvegarderGrapheDot (String chemin_sauvegarde) {
+
+        try {
+            FileWriter fileWriter = new FileWriter (chemin_sauvegarde);
+            BufferedWriter bufferedWriter = new BufferedWriter (fileWriter);
+            PrintWriter fichierSortie = new PrintWriter (bufferedWriter);
+
+            //Les specs détaillés indique que se sont des graphs non orientés
+            fichierSortie.println ("graph \"" + m_name + "\" {");
+
+
+            fichierSortie.println("\tsize=\"" + m_size.width + "," + m_size.height + "\"");
+
+            if (!m_sommets.isEmpty()) {
+
+                for (Sommet sommet : m_sommets) {
+                    fichierSortie.println("\t\"node" + sommet.getId() + "\" [ label=\"" + sommet.getTag() + "\" shape=\"" + sommet.getForme() + "\" ];");
+                }
+            }
+
+            if (!m_extremites.isEmpty() && !m_aretes.isEmpty()) {
+                for(Arete arete : m_aretes) {
+                    fichierSortie.println("\t\"node" + m_extremites.get(arete).getKey().getId() + "\" ->  \"node" + m_extremites.get(arete).getKey().getId() + "\" " +
+                            "[ color=" + arete.getCouleurArete().toString());
+
+                    if (!arete.getTag().equals("")) {
+                        fichierSortie.print(" label=\"" + arete.getTag() + "\" ];");
+                    }
+                    else {
+                        fichierSortie.print(" ];");
+                    }
+
+                }
+            }
+
+            fichierSortie.println("}");
+
+            fichierSortie.close();
+            bufferedWriter.close();
+            fileWriter.close();
+
+            return true;
+        }
+        catch (Exception e){
+            System.out.println(e.toString());
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Permet de sauvegarder un graphe au format .graphml.
+     * @param chemin_sauvegarde Représente le chemin où sera sauvegardé le fichier au format .graphml.
+     * @return Retour vrai si la sauvegarde c'est bien passé ou faux dans le cas contraire.
+     */
+    private boolean sauvegarderGrapheGraphml (String chemin_sauvegarde) {
+        // TODO Essayer de se mettre d'accord pour les node-syle et key
+        try {
+            FileWriter fileWriter = new FileWriter (chemin_sauvegarde);
+            BufferedWriter bufferedWriter = new BufferedWriter (fileWriter);
+            PrintWriter fichierSortie = new PrintWriter (bufferedWriter);
+
+            fichierSortie.println ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                    "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">");
+
+
+            fichierSortie.println("\t<graph id="+ m_name +" edgedefault=\"undirected\">");
+
+            if (!m_sommets.isEmpty()) {
+                for (Sommet sommet : m_sommets) {
+                    fichierSortie.println("\t\t< node id=\"" + sommet.getTag() + "\" style=\"\" />");
+                }
+            }
+
+            if (!m_extremites.isEmpty() && !m_aretes.isEmpty()) {
+                for(Arete arete : m_aretes) {
+                    fichierSortie.println("\t\t< edge id=\"" + arete.getTag() + "\" source=\""+ m_extremites.get(arete).getKey().getTag() +"\" target=\"" + m_extremites.get(arete).getValue().getTag() + "\" />");
+
+                }
+            }
+
+            fichierSortie.println("\t</graph>");
+            fichierSortie.println("</graphml>");
+
+
+            fichierSortie.close();
+            bufferedWriter.close();
+            fileWriter.close();
+
+            return true;
+        }
+        catch (Exception e){
+            System.out.println(e.toString());
+        }
+
+        return false;
+    }
+
     private Sommet findSommet(String source) {
         boolean trouve = false;
         int i = 0;
         Sommet res = null;
         while(!trouve && i < m_sommets.size()) {
-            if(m_sommets.get(i).getTag() == source) {
+            if(m_sommets.get(i).getTag().equals(source)) {
                 trouve = true;
                 res = m_sommets.get(i);
             }

@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Graphe;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
@@ -8,6 +9,7 @@ import javafx.stage.FileChooser;
 public class FXMLController {
     @FXML
     private Button btnOpenFile;
+    private Graphe g;
 
     public FXMLController(){
     }
@@ -20,6 +22,7 @@ public class FXMLController {
                 new FileChooser.ExtensionFilter("GRAPHML", "*.graphml")
         );
         fileChooser.showOpenDialog(null);
+        g= new Graphe("ressources/sample.graphml");
     }
     @FXML
     private void clickFichierExporter() {

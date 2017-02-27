@@ -1,11 +1,15 @@
 package Model;
 
 import com.sun.glass.ui.Size;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Random;
 
 /**
  * Created by audreylentilhac on 06/02/2017.
@@ -598,15 +602,21 @@ public class Graphe {
         if(!sommet.equals(null)) {
 
             if (m_incidentes.containsKey(sommet)) {
-                for (Arete arete : m_incidentes.get(sommet)) {
-                    m_extremites.remove(arete);
-                    m_aretes.remove(arete);
+
+                // Obligé de passer par une méthode car problème d'accès concurrents sur m_incidentes.
+                int cpt = 0;
+                int size = m_incidentes.get(sommet).size();
+
+                while (cpt < size) {
+                    supprimerArete(m_incidentes.get(sommet).get(0));
+                    ++cpt;
                 }
 
                 m_incidentes.remove(sommet);
             }
 
             m_sommets.remove(sommet);
+            boolean tempAretesASupprimer = m_incidentes.isEmpty();;
         }
     }
 
@@ -802,6 +812,7 @@ public class Graphe {
         return min;
     }
 
+
     /**
      * Fonction permettant de changer la couleur de tous les sommet du graphe
      * en fonction d'une couleur minimale et d'une couleur maximale
@@ -823,7 +834,7 @@ public class Graphe {
      * @param cmax
      */
     public void changerCouleurSommet (Sommet s, Color cmin, Color cmax){
-        if (indiceFixe(s.getIndice())) {
+        if (indiceFixe()) {
             int valeur = s.getIndice();
             double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMaxSommet(), indiceMinSommet());
             double vert = intensite(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxSommet(), indiceMinSommet());
@@ -853,7 +864,7 @@ public class Graphe {
      * @param cmax
      */
     public void changerCouleurArete (Arete s, Color cmin, Color cmax){
-        if (indiceFixe(s.getPoids())) {
+        if (indiceFixe()) {
             int valeur = s.getPoids();
             double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMaxArete(), indiceMinArete());
             double vert = intensite(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxArete(), indiceMinArete());
@@ -875,8 +886,9 @@ public class Graphe {
         return (((valeur - indiceMin)/(indiceMax - indiceMin)) * (cmax - cmin) + cmin);
     }
 
+
     public void changerTailleSommet(Sommet s, float maxSommet, float minSommet){
-        if (indiceFixe(s.getIndice())) {
+        if (indiceFixe()) {
             int valeur = s.getIndice();
             int largeur = (int) intensite(valeur, maxSommet, minSommet, indiceMaxSommet(), indiceMinSommet());
             Size taille = new Size(largeur, s.getTailleForme().height);
@@ -885,7 +897,7 @@ public class Graphe {
     }
 
     public void changerTailleArete(Arete a, float maxArete, float minArete){
-        if (indiceFixe(a.getPoids())) {
+        if (indiceFixe()) {
             int valeur = a.getPoids();
             int largeur = (int) intensite(valeur, maxArete, minArete, indiceMaxArete(), indiceMinArete());
             Size taille = new Size(largeur, a.getEpaisseur().height);
@@ -904,13 +916,39 @@ public class Graphe {
 
     /**
      * Vérifie si l'indice du sommet ou de l'arete a été initialisé
-     * @param indice
      * @return
      */
-    private boolean indiceFixe (int indice){
-        return (indice == 0 ? false : true);
+    private boolean indiceFixe (){
+        int i = 0;
+        for (Sommet s : m_sommets){
+            i += s.getIndice();
+        }
+        return (i == 0 ? false : true);
     }
 
+    /**
+     * Modifie la représentation du graphe suivant l'algorithme choisi
+     * @param algorithme
+     * @param largeurEcran
+     */
+    public void setAlgorithmeRepresentation(char algorithme, int largeurEcran){
+        switch (algorithme){
+            case 'a' :{
+                algoRep.distributionAleatoire(largeurEcran);
+                break;
+            }
+            case 'c': {
+                algoRep.distributionCirculaire(largeurEcran);
+                break;
+            }
+            case 'f': {
+                algoRep.distributionModeleForces(largeurEcran);
+                break;
+            }
+            default:
+                break;
+        }
+    }
 
     // Accesseur et Mutateurs
 

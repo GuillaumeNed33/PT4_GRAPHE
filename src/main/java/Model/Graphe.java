@@ -380,16 +380,17 @@ public class Graphe {
 
             if (!m_extremites.isEmpty() && !m_aretes.isEmpty()) {
                 for(Arete arete : m_aretes) {
-                    fichierSortie.println("\t\"node" + m_extremites.get(arete).getKey().getId() + "\" ->  \"node" + m_extremites.get(arete).getKey().getId() + "\" " +
-                            "[ color=" + arete.getCouleurArete().toString());
+                    String temp = "\t\"node" + m_extremites.get(arete).getKey().getId() + "\" ->  \"node" + m_extremites.get(arete).getKey().getId() + "\" " +
+                            "[ color=" + arete.getCouleurArete().toString();
+
 
                     if (!arete.getTag().equals("")) {
-                        fichierSortie.print(" label=\"" + arete.getTag() + "\" ];");
+                        temp += " label=\"" + arete.getTag() + "\" ];";
                     }
                     else {
-                        fichierSortie.print(" ];");
+                        temp += " ];";
                     }
-
+                    fichierSortie.println(temp);
                 }
             }
 
@@ -425,7 +426,7 @@ public class Graphe {
                     "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">");
 
 
-            fichierSortie.println("\t<graph id="+ m_name +" edgedefault=\"undirected\">");
+            fichierSortie.println("\t<graph id=\""+ m_name +"\" edgedefault=\"undirected\">");
 
             if (!m_sommets.isEmpty()) {
                 for (Sommet sommet : m_sommets) {

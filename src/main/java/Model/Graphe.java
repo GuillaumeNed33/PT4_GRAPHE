@@ -18,53 +18,59 @@ public class Graphe {
     /**
      * Représente le nom du graphe.
      */
-    private static String m_name;
+    public static String m_name;
 
     /**
      * Représente la taille du graphe.
      */
-    private static Size m_size;
+    public static Size m_size;
 
     /**
      * Représente l'ensemble des sommets dans le graphe.
      */
-    private static ArrayList<Sommet> m_sommets;
+    public static ArrayList<Sommet> m_sommets;
 
     /**
      * Représente l'ensemble des arete dans le graphe.
      */
-    private static ArrayList<Arete> m_aretes;
+    public static ArrayList<Arete> m_aretes;
 
     /**
      * Représente une map liant pour chaque sommet sa liste d'aretes.
      */
-    private static HashMap<Sommet, ArrayList<Arete> > m_incidentes;
+    public static HashMap<Sommet, ArrayList<Arete> > m_incidentes;
 
     /**
      * Représente une map liant pour chaque arete sa paire de sommets.
      */
-    private static HashMap<Arete, Pair<Sommet,Sommet>> m_extremites;    // conteneur liant pour chaque arete sa paire de sommets
+    public static HashMap<Arete, Pair<Sommet,Sommet>> m_extremites;    // conteneur liant pour chaque arete sa paire de sommets
 
     /**
      * Représente l'ensemble des clefs de style (definies dans les fichier .graphml).
      */
-    private static ArrayList<KeyStyleGRAPHML> m_keyGML;
+    public static ArrayList<KeyStyleGRAPHML> m_keyGML;
 
     /**
      *  Représente une valeur aléatoire.
      */
-    private static Random rand = new Random();
+    public static Random rand = new Random();
 
     /**
      * Représente l'algorithme de représentation du graphe
      */
-    private static AlgorithmeRepresentation algoRep;
+    public static AlgorithmeRepresentation algoRep;
 
     /**
      * Constructeur de la classe Graphe lisant un fichier .DOT ou .GRAPHML.
      * @param fichier
      */
     public Graphe (String fichier) {
+        m_name = "Mon Joli Graphe";
+        m_size = new Size(10,10);
+        m_sommets = new ArrayList<Sommet>();
+        m_aretes = new ArrayList<Arete>();
+        m_incidentes = new HashMap<Sommet, ArrayList<Arete>>();
+        m_extremites = new HashMap<Arete, Pair<Sommet, Sommet>>();
         algoRep = new AlgorithmeRepresentation(this);
         if (fichier.contains(".dot")) {
             chargerGrapheDOT(fichier);
@@ -239,6 +245,7 @@ public class Graphe {
      */
     private void chargerGrapheGRAPHML(String fichier) {
         String chaine = "";
+        m_keyGML = new ArrayList<KeyStyleGRAPHML>();
         try {
             InputStream ips = new FileInputStream(fichier);
             InputStreamReader ipsr = new InputStreamReader(ips);
@@ -267,30 +274,38 @@ public class Graphe {
                         String[] recupAttributeType = ligne.split("attr.type=\"");
                         typeAttribute = recupAttributeType[1].split("\"")[0];
                     }
-                    KeyStyleGRAPHML key = new KeyStyleGRAPHML(id,type, keyName, typeAttribute);
-                    m_keyGML.add(key);
+                    m_keyGML.add(new KeyStyleGRAPHML(id,type, keyName, typeAttribute));
                 }
 
-                else if (ligne.contains("<graph")) {
+                else if (ligne.contains("<graph ")) {
                     String [] recupId = ligne.split("id=\"");
                     m_name = recupId[1].split("\"")[0];
                     String [] recupType = ligne.split("edgedefault=\"");
                     String typeArete = recupType[1].split("\"")[0];
-                    if(typeArete=="undirected")
+                    if(typeArete.equals("undirected"))
                         directedGraph = false;
                     else
                         directedGraph = true;
                 }
 
-                else if (ligne.contains("<node")) {
+                else if (ligne.contains("<node-style ")) {
+                    String [] recupId = ligne.split("id=\"");
+                    String id = recupId[1].split("\"")[0];
+
+                    if(br.readLine().contains("<data")) {
+
+                    }
+                }
+
+                else if (ligne.contains("<node ")) {
 
                     String [] recupId = ligne.split("id=\"");
                     String id = recupId[1].split("\"")[0];
-                    Size tailleFenetre = new Size();
+                    Size tailleFenetre = new Size(10,10);
                     ajouterSommet(new Sommet(id), tailleFenetre);
                 }
 
-                else if (ligne.contains("<edge")) {
+                else if (ligne.contains("<edge ")) {
                     boolean directedArete;
                     if(ligne.contains("directed=\"true\""))
                         directedArete = true;

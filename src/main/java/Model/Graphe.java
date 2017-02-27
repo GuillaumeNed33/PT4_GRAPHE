@@ -526,6 +526,17 @@ public class Graphe {
     }
 
     /**
+     * Permet d'ajouter des sommets qui viennent de fichiers (.dot ou .graphml).
+     * Nous n'avons pas besoins de vérifier les coordonnées car un algorithme de représentation placera les sommets.
+     * @param sommet Représente le sommet à ajouter.
+     */
+    public void ajouterSommetViaFichier(Sommet sommet){
+
+        m_sommets.add(sommet);
+        m_incidentes.put(sommet, new ArrayList<Arete>());
+    }
+
+    /**
      * Permet de vérifier que les coordonnées du sommet sont correctes et qu'il n'existe pas un sommet à ces coordonnées.
      * @param coord_y_sommet Représente la coordonnée en y, à vérifier, du sommet.
      * @param coord_x_sommet Représente la coordonnée en x, à vérifier, du sommet.

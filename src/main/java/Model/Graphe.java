@@ -4,10 +4,7 @@ import com.sun.glass.ui.Size;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -49,9 +46,9 @@ public class Graphe {
     private static HashMap<Arete, Pair<Sommet,Sommet>> m_extremites;    // conteneur liant pour chaque arete sa paire de sommets
 
     /**
-     * Représente la marge entre chaque sommet du graphe.
+     * Représente l'ensemble des clefs de style (definies dans les fichier .graphml).
      */
-    private static final int MARGE = 10;
+    private static ArrayList<KeyStyleGRAPHML> m_keyGML;
 
     /**
      *  Représente une valeur aléatoire.
@@ -59,14 +56,20 @@ public class Graphe {
     private static Random rand = new Random();
 
     /**
+     * Représente l'algorithme de représentation du graphe
+     */
+    private static AlgorithmeRepresentation algoRep;
+
+    /**
      * Constructeur de la classe Graphe lisant un fichier .DOT ou .GRAPHML.
      * @param fichier
      */
     public Graphe (String fichier) {
+        algoRep = new AlgorithmeRepresentation(this);
         if (fichier.contains(".dot")) {
             chargerGrapheDOT(fichier);
         }
-        else {
+        else if (fichier.contains(".graphml")) {
             chargerGrapheGRAPHML(fichier);
         }
     }
@@ -81,6 +84,7 @@ public class Graphe {
         m_aretes = new ArrayList<Arete>();
         m_incidentes = new HashMap<Sommet, ArrayList<Arete>>();
         m_extremites = new HashMap<Arete, Pair<Sommet, Sommet>>();
+        algoRep = new AlgorithmeRepresentation(this);
     }
 
     /**
@@ -234,82 +238,228 @@ public class Graphe {
      * @param fichier
      */
     private void chargerGrapheGRAPHML(String fichier) {
+        String chaine = "";
+        try {
+            InputStream ips = new FileInputStream(fichier);
+            InputStreamReader ipsr = new InputStreamReader(ips);
+            BufferedReader br = new BufferedReader(ipsr);
+            String ligne;
+            boolean directedGraph = false;
 
+            while ((ligne = br.readLine()) != null) {
+                if (ligne.contains("<key")) {
+                    String [] recupId = ligne.split("id=\"");
+                    String id = recupId[1].split("\"")[0];
+
+                    String [] recupType = ligne.split("for=\"");
+                    String type = recupType[1].split("\"")[0]; //node or edge
+
+                    String [] recupAttributeName = ligne.split("attr.name=\"");
+                    String keyName = recupAttributeName[1].split("\"")[0];
+
+                    String typeAttribute="";
+                    if(keyName == "color") {
+                        ligne = br.readLine();
+                        String[] recupAttributeType = ligne.split("<default>");
+                        typeAttribute = recupAttributeType[1].split("<")[0];
+                    }
+                    else {
+                        String[] recupAttributeType = ligne.split("attr.type=\"");
+                        typeAttribute = recupAttributeType[1].split("\"")[0];
+                    }
+                    KeyStyleGRAPHML key = new KeyStyleGRAPHML(id,type, keyName, typeAttribute);
+                    m_keyGML.add(key);
+                }
+
+                else if (ligne.contains("<graph")) {
+                    String [] recupId = ligne.split("id=\"");
+                    m_name = recupId[1].split("\"")[0];
+                    String [] recupType = ligne.split("edgedefault=\"");
+                    String typeArete = recupType[1].split("\"")[0];
+                    if(typeArete=="undirected")
+                        directedGraph = false;
+                    else
+                        directedGraph = true;
+                }
+
+                else if (ligne.contains("<node")) {
+
+                    String [] recupId = ligne.split("id=\"");
+                    String id = recupId[1].split("\"")[0];
+                    Size tailleFenetre = new Size();
+                    ajouterSommet(new Sommet(id), tailleFenetre);
+                }
+
+                else if (ligne.contains("<edge")) {
+                    boolean directedArete;
+                    if(ligne.contains("directed=\"true\""))
+                        directedArete = true;
+                    else if(ligne.contains("directed=\"false\""))
+                        directedArete = false;
+                    else
+                        directedArete = directedGraph;
+
+                    String [] recupSource = ligne.split("source=\"");
+                    String source = recupSource[1].split("\"")[0];
+
+                    String [] recupTarget = ligne.split("target=\"");
+                    String dest = recupTarget[1].split("\"")[0];
+
+                    if(findSommet(source) != null && findSommet(dest) != null)
+                        ajouterArete(findSommet(source), findSommet(dest));
+                }
+            }
+            br.close();
+        }
+        catch (Exception e){
+            System.out.println(e.toString());
+        }
     }
 
     /**
-     *  Permet une distribution uniforme rectangulaire des sommets.
+     * Permet de sauvegarde le graphe en cours.
+     * Le choix de l'algotithme se fait en fonction du format choisi.
+     * @param chemin_sauvegarde Représente le chemin où sera sauvegardé le fichier au format .dot ou .graphml.
+     * @return Retourne vrai si la sauvegarde c'est bien passé ou faux dans le cas contraire.
      */
-    public void distributionAleatoire(int largeurEcran){
-        for (Sommet sommet : m_sommets) {
-            sommet.setX((rand.nextFloat()*largeurEcran)+MARGE);
-            sommet.setY((rand.nextFloat()*largeurEcran)+MARGE);
+    public boolean sauvegarderGraphe (String chemin_sauvegarde) {
+        if (chemin_sauvegarde.contains(".dot")) {
+            return sauvegarderGrapheDot(chemin_sauvegarde);
+        }
+        else if (chemin_sauvegarde.contains(".graphml")) {
+            return sauvegarderGrapheGraphml(chemin_sauvegarde);
         }
 
+        return false;
     }
 
-    /**
-     * Permet une distribution circulaire des sommets.
-     */
-    public void distributionCirculaire(int largeurEcran){
-        for (Sommet sommet : m_sommets) {
-            float rayon = rand.nextFloat() * m_size.width;
-            double angle = rand.nextDouble() * 2 * Math.PI;
-            sommet.setX((float)(((largeurEcran + rayon * Math.cos(angle))/2)+(2*Math.PI/m_sommets.size())));
-            sommet.setY((float)(((largeurEcran + rayon * Math.sin(angle))/2)+(2*Math.PI/m_sommets.size())));
-        }
-    }
 
     /**
-     * Permet une distribution par modele de Forces.
+     * Permet de sauvegarder un graphe au format .dot.
+     * @param chemin_sauvegarde Représente le chemin où sera sauvegardé le fichier au format .dot.
+     * @return Retourne vrai si la sauvegarde c'est bien passé ou faux dans le cas contraire.
      */
-    public void distributionModeleForces(int largeurEcran){
-        distributionAleatoire(largeurEcran);
-        for (Sommet sommet : m_sommets) {
-            float forceTotale = forceAttraction(sommet) + forceRepulsion(sommet);
-            sommet.setX(sommet.getX() + forceTotale);
-            sommet.setY(sommet.getY() + forceTotale);
+    private boolean sauvegarderGrapheDot (String chemin_sauvegarde) {
+
+        try {
+            FileWriter fileWriter = new FileWriter (chemin_sauvegarde);
+            BufferedWriter bufferedWriter = new BufferedWriter (fileWriter);
+            PrintWriter fichierSortie = new PrintWriter (bufferedWriter);
+
+            //Les specs détaillés indique que se sont des graphs non orientés
+            fichierSortie.println ("graph \"" + m_name + "\" {");
+
+
+            fichierSortie.println("\tsize=\"" + m_size.width + "," + m_size.height + "\"");
+
+            if (!m_sommets.isEmpty()) {
+
+                for (Sommet sommet : m_sommets) {
+                    fichierSortie.println("\t\"node" + sommet.getId() + "\" [ label=\"" + sommet.getTag() + "\" shape=\"" + sommet.getForme() + "\" ];");
+                }
+            }
+
+            if (!m_extremites.isEmpty() && !m_aretes.isEmpty()) {
+                for(Arete arete : m_aretes) {
+                    fichierSortie.println("\t\"node" + m_extremites.get(arete).getKey().getId() + "\" ->  \"node" + m_extremites.get(arete).getKey().getId() + "\" " +
+                            "[ color=" + arete.getCouleurArete().toString());
+
+                    if (!arete.getTag().equals("")) {
+                        fichierSortie.print(" label=\"" + arete.getTag() + "\" ];");
+                    }
+                    else {
+                        fichierSortie.print(" ];");
+                    }
+
+                }
+            }
+
+            fichierSortie.println("}");
+
+            fichierSortie.close();
+            bufferedWriter.close();
+            fileWriter.close();
+
+            return true;
         }
+        catch (Exception e){
+            System.out.println(e.toString());
+        }
+
+        return false;
     }
 
-    /**
-     * Fonction calculant la force d'attraction qu'exerce chacun des voisins u sur un sommet s.
-     * f(s) = Somme (log distance(u,s)).
-     * @param sommet
-     * @return La force d'attraction
-     */
-    private float forceAttraction(Sommet sommet){
-        ArrayList<Sommet> voisins = this.sommmetsVoisins(sommet);
-        float force = 0;
-        for (Sommet voisin : voisins) {
-            double distance = Math.sqrt(Math.pow((double)(voisin.getX() - sommet.getX()), 2.) + Math.pow((double)(voisin.getY() - sommet.getY()), 2.));
-            force += Math.log(distance);
-        }
-        return force;
-    }
 
     /**
-     * Fonction calculant la force de repulsion qu'exerce chacun des non voisins v sur un sommet s.
-     * f(s) = Somme (1 / distance(u,s)^2).
-     * @param sommet Représente le sommet sur lequel on doit appliquer une force de répulsion pour ses sommets non voisins.
-     * @return Retourne la force de répulsion.
+     * Permet de sauvegarder un graphe au format .graphml.
+     * @param chemin_sauvegarde Représente le chemin où sera sauvegardé le fichier au format .graphml.
+     * @return Retour vrai si la sauvegarde c'est bien passé ou faux dans le cas contraire.
      */
-    private float forceRepulsion(Sommet sommet){
-        ArrayList<Sommet> voisins = this.sommetsNonVoisins(this.sommmetsVoisins(sommet));
-        float force = 0;
-        for (Sommet voisin : voisins) {
-            double distanceCarre = Math.pow((double)(voisin.getX() - sommet.getX()), 2.) + Math.pow((double)(voisin.getY() - sommet.getY()), 2.);
-            force += 1/distanceCarre;
+    private boolean sauvegarderGrapheGraphml (String chemin_sauvegarde) {
+        // TODO Essayer de se mettre d'accord pour les node-syle et key
+        try {
+            FileWriter fileWriter = new FileWriter (chemin_sauvegarde);
+            BufferedWriter bufferedWriter = new BufferedWriter (fileWriter);
+            PrintWriter fichierSortie = new PrintWriter (bufferedWriter);
+
+            fichierSortie.println ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                    "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">");
+
+
+            fichierSortie.println("\t<graph id="+ m_name +" edgedefault=\"undirected\">");
+
+            if (!m_sommets.isEmpty()) {
+                for (Sommet sommet : m_sommets) {
+                    fichierSortie.println("\t\t< node id=\"" + sommet.getTag() + "\" style=\"\" />");
+                }
+            }
+
+            if (!m_extremites.isEmpty() && !m_aretes.isEmpty()) {
+                for(Arete arete : m_aretes) {
+                    fichierSortie.println("\t\t< edge id=\"" + arete.getTag() + "\" source=\""+ m_extremites.get(arete).getKey().getTag() +"\" target=\"" + m_extremites.get(arete).getValue().getTag() + "\" />");
+
+                }
+            }
+
+            fichierSortie.println("\t</graph>");
+            fichierSortie.println("</graphml>");
+
+
+            fichierSortie.close();
+            bufferedWriter.close();
+            fileWriter.close();
+
+            return true;
         }
-        return force;
+        catch (Exception e){
+            System.out.println(e.toString());
+        }
+
+        return false;
     }
+
+    private Sommet findSommet(String source) {
+        boolean trouve = false;
+        int i = 0;
+        Sommet res = null;
+        while(!trouve && i < m_sommets.size()) {
+            if(m_sommets.get(i).getTag().equals(source)) {
+                trouve = true;
+                res = m_sommets.get(i);
+            }
+            else
+                i++;
+        }
+        return res;
+    }
+
 
     /**
      * Permet d'obtenir les sommets voisins d'un sommet.
      * @param sommet_origine Représente le sommet de référence pour déterminer si les autres sommets sont voisins.
      * @return Retourne la liste des sommets voisins.
      */
-    private ArrayList<Sommet> sommmetsVoisins(Sommet sommet_origine){
+    public ArrayList<Sommet> sommmetsVoisins(Sommet sommet_origine){
         ArrayList<Sommet> voisinage = null;
         for(Arete arete : m_incidentes.get(sommet_origine)){
             voisinage.add(source(arete).getTag() == sommet_origine.getTag() ? destination(arete) : source(arete));
@@ -322,7 +472,7 @@ public class Graphe {
      * @param arete Représente l'arete sur laquelle on cherche le sommet source.
      * @return Retourne le sommet source.
      */
-    private Sommet source(Arete arete){
+    public Sommet source(Arete arete){
 
         return m_extremites.get(arete).getKey();
     }
@@ -332,7 +482,7 @@ public class Graphe {
      * @param arete Représente l'arete sur laquelle on cherche le sommet destination.
      * @return Retourne le sommet de destination.
      */
-    private Sommet destination(Arete arete){
+    public Sommet destination(Arete arete){
 
         return m_extremites.get(arete).getValue();
     }
@@ -342,7 +492,7 @@ public class Graphe {
      * @param voisins Représente la liste de sommets de référence pour déterminer les sommets n'étant pas voisins.
      * @return Retourne la liste des sommets non voisins.
      */
-    private ArrayList<Sommet> sommetsNonVoisins(ArrayList<Sommet> voisins){
+    public ArrayList<Sommet> sommetsNonVoisins(ArrayList<Sommet> voisins){
         ArrayList<Sommet> nonVoisins = null;
         for (Sommet s: m_sommets) {
             if (!voisins.contains(s))
@@ -588,7 +738,7 @@ public class Graphe {
      * Fonction récupérant l'indice maximal de tous les sommets du graphe
      * @return
      */
-    private int indiceMaxSommet(){
+    public int indiceMaxSommet(){
         int i = m_sommets.size()-1;
         int max = m_sommets.get(0).getIndice();
         while(--i >= 0) {
@@ -602,7 +752,7 @@ public class Graphe {
      * Fonction récupérant l'indice minimal de tous les sommets du graphe
      * @return
      */
-    private int indiceMinSommet(){
+    public int indiceMinSommet(){
         int i = m_sommets.size() - 1;
         int min = m_sommets.get(0).getIndice();
         while(--i >= 0) {
@@ -615,7 +765,7 @@ public class Graphe {
      * Fonction récupérant l'indice maximal de toutes les arêtes du graphe
      * @return
      */
-    private int indiceMaxArete(){
+    public int indiceMaxArete(){
         int i = m_aretes.size()-1;
         int max = m_aretes.get(0).getPoids();
         while(--i >= 0) {
@@ -628,7 +778,7 @@ public class Graphe {
      * Fonction récupérant l'indice minimal de toutes les aretes du graphe
      * @return
      */
-    private int indiceMinArete(){
+    public int indiceMinArete(){
         int i = m_aretes.size() - 1;
         int min = m_aretes.get(0).getPoids();
         while(--i >= 0) {
@@ -658,11 +808,13 @@ public class Graphe {
      * @param cmax
      */
     public void changerCouleurSommet (Sommet s, Color cmin, Color cmax){
-        int valeur = s.getIndice();
-        double rouge = intensiteCouleur(valeur, cmax.getRed(), cmin.getRed(), indiceMaxSommet(), indiceMinSommet());
-        double vert =  intensiteCouleur(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxSommet(), indiceMinSommet());
-        double bleu = intensiteCouleur(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxSommet(), indiceMinSommet());
-        s.setCouleurSommet(new Color(rouge, vert, bleu, 1.));
+        if (indiceFixe(s.getIndice())) {
+            int valeur = s.getIndice();
+            double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMaxSommet(), indiceMinSommet());
+            double vert = intensite(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxSommet(), indiceMinSommet());
+            double bleu = intensite(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxSommet(), indiceMinSommet());
+            s.setCouleurSommet(new Color(rouge, vert, bleu, 1.));
+        }
     }
 
     /**
@@ -686,11 +838,13 @@ public class Graphe {
      * @param cmax
      */
     public void changerCouleurArete (Arete s, Color cmin, Color cmax){
-        int valeur = s.getPoids();
-        double rouge = intensiteCouleur(valeur, cmax.getRed(), cmin.getRed(), indiceMaxArete(), indiceMinArete());
-        double vert =  intensiteCouleur(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxArete(), indiceMinArete());
-        double bleu = intensiteCouleur(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxArete(), indiceMinArete());
-        s.setCouleurArete(new Color(rouge, vert, bleu, 1.));
+        if (indiceFixe(s.getPoids())) {
+            int valeur = s.getPoids();
+            double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMaxArete(), indiceMinArete());
+            double vert = intensite(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxArete(), indiceMinArete());
+            double bleu = intensite(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxArete(), indiceMinArete());
+            s.setCouleurArete(new Color(rouge, vert, bleu, 1.));
+        }
     }
 
 
@@ -702,8 +856,44 @@ public class Graphe {
      * @param cmin
      * @return
      */
-    private double intensiteCouleur(int valeur, double cmax, double cmin, int indiceMax, int indiceMin){
+    private double intensite(int valeur, double cmax, double cmin, int indiceMax, int indiceMin){
         return (((valeur - indiceMin)/(indiceMax - indiceMin)) * (cmax - cmin) + cmin);
+    }
+
+    public void changerTailleSommet(Sommet s, float maxSommet, float minSommet){
+        if (indiceFixe(s.getIndice())) {
+            int valeur = s.getIndice();
+            int largeur = (int) intensite(valeur, maxSommet, minSommet, indiceMaxSommet(), indiceMinSommet());
+            Size taille = new Size(largeur, s.getTailleForme().height);
+            s.setTailleForme(taille);
+        }
+    }
+
+    public void changerTailleArete(Arete a, float maxArete, float minArete){
+        if (indiceFixe(a.getPoids())) {
+            int valeur = a.getPoids();
+            int largeur = (int) intensite(valeur, maxArete, minArete, indiceMaxArete(), indiceMinArete());
+            Size taille = new Size(largeur, a.getEpaisseur().height);
+            a.setEpaisseur(taille);
+        }
+    }
+
+    public void changerTailleGraphe(float maxSommet, float minSommet, float maxArete, float minArete){
+        for (Sommet s : m_sommets){
+            changerTailleSommet(s, maxSommet, minSommet);
+        }
+        for (Arete a : m_aretes){
+            changerTailleArete(a, maxArete, minArete);
+        }
+    }
+
+    /**
+     * Vérifie si l'indice du sommet ou de l'arete a été initialisé
+     * @param indice
+     * @return
+     */
+    private boolean indiceFixe (int indice){
+        return (indice == 0 ? false : true);
     }
 
 
@@ -747,6 +937,13 @@ public class Graphe {
     public static void setM_extremites(HashMap<Arete, Pair<Sommet, Sommet>> m_extremites) {
 
         Graphe.m_extremites = m_extremites;
+    }
+    public static Size getM_size() {
+        return m_size;
+    }
+
+    public static void setM_size(Size m_size) {
+        Graphe.m_size = m_size;
     }
 
 }

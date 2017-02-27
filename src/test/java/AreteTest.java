@@ -1,5 +1,3 @@
-package sample.Test;
-
 import javafx.scene.paint.Color;
 import org.junit.Test;
 import Model.Arete;
@@ -20,9 +18,9 @@ public class AreteTest {
 
 
         Arete arete = new Arete(depart,arrivee);
-        assertEquals(arete.id(),0);
+        assertEquals(arete.getEntree(),depart);
         Arete areteB = new Arete(departB,arriveeB);
-        assertEquals(areteB.id(),1);
+        assertEquals(areteB.getSortie(), arriveeB);
     }
 
     @Test

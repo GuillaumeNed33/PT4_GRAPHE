@@ -1,7 +1,6 @@
 package Model;
 
 import com.sun.glass.ui.Size;
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 

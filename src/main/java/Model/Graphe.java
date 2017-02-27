@@ -1,6 +1,7 @@
 package Model;
 
 import com.sun.glass.ui.Size;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
@@ -583,15 +584,21 @@ public class Graphe {
         if(!sommet.equals(null)) {
 
             if (m_incidentes.containsKey(sommet)) {
-                for (Arete arete : m_incidentes.get(sommet)) {
-                    m_extremites.remove(arete);
-                    m_aretes.remove(arete);
+
+                // Obligé de passer par une méthode car problème d'accès concurrents sur m_incidentes.
+                int cpt = 0;
+                int size = m_incidentes.get(sommet).size();
+
+                while (cpt < size) {
+                    supprimerArete(m_incidentes.get(sommet).get(0));
+                    ++cpt;
                 }
 
                 m_incidentes.remove(sommet);
             }
 
             m_sommets.remove(sommet);
+            boolean tempAretesASupprimer = m_incidentes.isEmpty();;
         }
     }
 

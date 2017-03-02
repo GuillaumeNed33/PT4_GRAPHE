@@ -1,6 +1,7 @@
 import Model.Graphe;
 import Model.Sommet;
 import com.sun.glass.ui.Size;
+import javafx.scene.paint.Color;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -99,7 +100,7 @@ public class GrapheTest {
     }
 
     @Test
-    public void testIndiceDegré() throws Exception{
+    public void testIndiceDegre() throws Exception{
 
         Size m = new Size(10,10);
         Graphe g = new Graphe();
@@ -203,5 +204,97 @@ public class GrapheTest {
         Assert.assertFalse(s2.getIndice()==tmpS2);
         Assert.assertFalse(s3.getIndice()==tmpS3);
         Assert.assertFalse(s4.getIndice()==tmpS4);
+    }
+
+    @Test
+    public void testSourceDestinationArete() {
+
+        Size m = new Size(10,10);
+        Graphe g = new Graphe();
+
+        Sommet s = new Sommet("s1",1,1);
+        Sommet s2 = new Sommet("s2",2,2);
+
+        g.ajouterSommet(s, m);
+        g.ajouterSommet(s2, m);
+
+        g.ajouterArete(s,s2);
+
+        Assert.assertEquals(g.source(g.getAretes().get(0)),s);
+        Assert.assertEquals(g.destination(g.getAretes().get(0)),s2);
+    }
+
+    @Test
+    public void testSize() {
+
+        Size m = new Size(10,10);
+        Graphe g = new Graphe();
+
+        g.setTaille(m);
+        Assert.assertEquals(m,g.getTaille());
+    }
+
+    @Test
+    public void testChangerCouleurArete() {
+        Size m = new Size(10,10);
+        Graphe g = new Graphe();
+
+        Sommet s = new Sommet("s1",1,1);
+        Sommet s2 = new Sommet("s2",2,2);
+
+        g.ajouterSommet(s, m);
+        g.ajouterSommet(s2, m);
+
+        g.ajouterArete(s,s2);
+
+        g.changerCouleurArete(g.getAretes().get(0), Color.BLACK,Color.BLACK);
+
+        Assert.assertEquals(g.getAretes().get(0).getCouleurArete(),Color.BLACK);
+    }
+
+    @Test
+    public void testDeplaceSommet() {
+
+        Size m = new Size(10,10);
+        Graphe g = new Graphe();
+
+        Sommet s = new Sommet("s1",1,1);
+
+        g.ajouterSommet(s,m);
+
+        g.deplacerSommet(s,3,3,m);
+
+        Assert.assertEquals(s.getX(),3,0);
+        Assert.assertEquals(s.getY(),3,0);
+    }
+
+    @Test
+    public void testIndiceMinMaxArete() {
+
+        Size m = new Size(10,10);
+        Graphe g = new Graphe();
+
+        Sommet s = new Sommet("s1",1,1);
+        Sommet s2 = new Sommet("s2",2,2);
+        Sommet s3 = new Sommet("s3",3,3);
+        Sommet s4 = new Sommet("s4",4,4);
+
+        g.ajouterSommet(s, m);
+        g.ajouterSommet(s2, m);
+        g.ajouterSommet(s3, m);
+        g.ajouterSommet(s4, m);
+
+        g.ajouterArete(s,s2);
+        g.ajouterArete(s,s3);
+        g.ajouterArete(s,s4);
+        g.ajouterArete(s2,s3);
+
+        g.getAretes().get(0).setPoids(1);
+        g.getAretes().get(1).setPoids(4);
+        g.getAretes().get(2).setPoids(7);
+        g.getAretes().get(3).setPoids(12);
+
+        Assert.assertEquals(g.indiceMaxArete(),12,0);
+        Assert.assertEquals(g.indiceMinArete(),1,0);
     }
 }

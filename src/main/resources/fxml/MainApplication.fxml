@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.FXMLController">
@@ -19,6 +34,9 @@
                               <Button mnemonicParsing="false" onMouseClicked="#clickFichierExporter" text="Exporter" />
                               <Button mnemonicParsing="false" onMouseClicked="#clickFichierEnregistrer" text="Enregistrer" />
                            </children>
+                           <padding>
+                              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                           </padding>
                         </HBox>
                      </children>
                   </AnchorPane>
@@ -30,10 +48,12 @@
                      <children>
                         <HBox>
                            <children>
-                              <Button mnemonicParsing="false" text="Zoom" />
-                              <ToggleButton mnemonicParsing="false" text="Sommets" />
-                              <ToggleButton mnemonicParsing="false" text="Arêtes" />
-                              <ToggleButton mnemonicParsing="false" text="Étiquettes" />
+                              <Button mnemonicParsing="false" onMouseClicked="#clickZoomMinus" text="-" />
+                              <Button mnemonicParsing="false" onMouseClicked="#clickZoomPlus" text="+" />
+                              <Separator orientation="VERTICAL" />
+                              <ToggleButton mnemonicParsing="false" onAction="#clickToggleSommet" text="Sommets" />
+                              <ToggleButton mnemonicParsing="false" onMouseClicked="#clickToggleArete" text="Arêtes" />
+                              <ToggleButton mnemonicParsing="false" onMouseClicked="#clickToggleEtiquette" text="Étiquettes" />
                               <MenuButton mnemonicParsing="false" text="Couleur">
                                 <items>
                                   <MenuItem mnemonicParsing="false" text="Fond">
@@ -71,7 +91,7 @@
                                   <MenuItem mnemonicParsing="false" text="Action 2" />
                                 </items>
                               </MenuButton>
-                              <Button mnemonicParsing="false" text="Supprimer" />
+                              <Button mnemonicParsing="false" onAction="#clickSupprimer" text="Supprimer" />
                               <Button mnemonicParsing="false" text="Représentation">
                                  <padding>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -87,7 +107,7 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
                               </Label>
-                              <Button mnemonicParsing="false" text="Propriétés" />
+                              <Button mnemonicParsing="false" text="Arête" />
                            </children>
                         </HBox>
                      </children>
@@ -100,17 +120,13 @@
                      <children>
                         <HBox>
                            <children>
-                              <Slider prefWidth="100.0">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </Slider>
-                              <Label text="Taille du graphe">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </Label>
                               <Button mnemonicParsing="false" text="Button" />
+                              <MenuButton mnemonicParsing="false" text="Ajout">
+                                <items>
+                                  <MenuItem mnemonicParsing="false" onAction="#clickAjouterArete" text="Arête" />
+                                  <MenuItem mnemonicParsing="false" onAction="#clickAjouterSommet" text="Sommet" />
+                                </items>
+                              </MenuButton>
                               <MenuButton mnemonicParsing="false" text="Indice">
                                  <items>
                                     <RadioMenuItem mnemonicParsing="false" text="Aléatoire" />
@@ -125,5 +141,6 @@
             </Tab>
         </tabs>
       </TabPane>
+       <Pane fx:id="pane" onMouseClicked="#clicPane" prefHeight="325.0" prefWidth="600.0" />
    </children>
 </VBox>

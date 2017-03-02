@@ -1,16 +1,9 @@
 
-import Model.*;
-import com.sun.glass.ui.Size;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.util.Pair;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
 
 public class Main extends Application {
 
@@ -24,7 +17,7 @@ public class Main extends Application {
     }
     public static void main(String[] args) {
         /*** TEST GRAPHE ***/
-        Graphe g = new Graphe("ressources/sample.graphml");
+/*        Graphe g = new Graphe("ressources/sample.graphml");
         String m_name = g.m_name;
         Size m_size=g.m_size;
         ArrayList<Sommet> m_sommets=g.m_sommets;
@@ -34,7 +27,8 @@ public class Main extends Application {
         ArrayList<KeyStyleGRAPHML> m_keyGML=g.m_keyGML;
         AlgorithmeRepresentation algoRep = g.algoRep;
         String test = new String("rtest");
-        //launch(args);
+        */
+        launch(args);
 
     }
 }

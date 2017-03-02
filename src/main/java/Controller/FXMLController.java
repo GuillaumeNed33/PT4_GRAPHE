@@ -6,16 +6,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 public class FXMLController {
     private Graphe g;
@@ -41,40 +42,39 @@ public class FXMLController {
      * Fonction ouvrant une fenetre (FileChooser) permettant l'importation d'un fichier dans le logiciel.
      */
     @FXML public void clickFichierImporter() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Importer");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("DOT", "*.dot"),
-                new FileChooser.ExtensionFilter("GRAPHML", "*.graphml")
-        );
-        fileChooser.showOpenDialog(null);
-        g= new Graphe("ressources/sample.graphml");
+        FileChooser fileChooser = createFileChooser("Importer");
+        File file = fileChooser.showOpenDialog(null);
+        if (file != null){
+            this.g.sauvegarderGraphe(file.getAbsolutePath());
+        }
     }
 
     /**
      * Fonction ouvrant une fenetre (FileChooser) permettant l'exportation d'un fichier dans le logiciel.
      */
     @FXML public void clickFichierExporter() {
+        FileChooser fileChooser = createFileChooser("Exporter");
+        File file = fileChooser.showOpenDialog(null);
+        if (file != null){
+            this.g.sauvegarderGraphe(file.getAbsolutePath());
+        }
+    }
+
+    private FileChooser createFileChooser(String exporter) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Exporter");
+        fileChooser.setTitle(exporter);
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("DOT", "*.dot"),
                 new FileChooser.ExtensionFilter("GRAPHML", "*.graphml")
         );
-        fileChooser.showSaveDialog(null);
+        return fileChooser;
     }
 
     /**
      * Fonction ouvrant une fenetre (FileChooser) permettant l'enregistrement d'un fichier dans le logiciel.
      */
     @FXML public void clickFichierEnregistrer() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Enregistrer");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("DOT", "*.dot"),
-                new FileChooser.ExtensionFilter("GRAPHML", "*.graphml")
-        );
-        fileChooser.showSaveDialog(null);
+        this.g.sauvegarderGraphe(null);
     }
 
     @FXML

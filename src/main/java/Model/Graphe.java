@@ -268,6 +268,7 @@ public class Graphe {
 
                         KeyStyleGRAPHML key = null;
                         int i =1; boolean find = false;
+
                         while(i > m_keyGML.size() && !find) {
                             if(m_keyGML.get(i).getId().equals(keyId)) {
                                 find = true;
@@ -320,6 +321,7 @@ public class Graphe {
                     String value = recup[1].split("</")[0];
 
                     int i =1; boolean find = false;
+
                     while(i > m_keyGML.size() && !find) {
                         if(m_keyGML.get(i).getId().equals(tmpkeyID)) {
                             find = true;
@@ -876,9 +878,9 @@ public class Graphe {
     /**
      * Fonction permettant de changer la couleur de tous les sommet du graphe
      * en fonction d'une couleur minimale et d'une couleur maximale
-     * et de la valeur de l'indice de chaque sommet
-     * @param cmin
-     * @param cmax
+     * et de la valeur de l'indice de chaque sommet.
+     * @param cmin Représente le min intervalle de couleur.
+     * @param cmax Représente la max intervalle de couleur.
      */
     public void changerCouleurSommets(Color cmin, Color cmax){
         for (Sommet s : m_sommets) {
@@ -887,28 +889,36 @@ public class Graphe {
     }
 
     /**
+     <<<<<<< HEAD
+     * Permet de changer la couleur d'un sommet en fonction d'une couleur
+     * minimale et d'une couleur maximale et de la valeur de l'indice du sommet.
+     * @param sommet Représente le sommet sur lequel on doit modifier la couleur.
+     * @param cmin Représente le min intervalle de couleur.
+     * @param cmax Représente la max intervalle de couleur.
+    =======
      * Fonction permettant de changer la couleur d'un sommet en fonction d'une couleur
      * minimale et d'une couleur maximale et de la valeur de l'indice du sommet
-     * @param s
+     * @param sommet
      * @param cmin
      * @param cmax
+    >>>>>>> acfb859f85741245b4d4bbed9c13b287efbde186
      */
-    public void changerCouleurSommet (Sommet s, Color cmin, Color cmax){
+    public void changerCouleurSommet (Sommet sommet, Color cmin, Color cmax){
         if (indiceFixe()) {
-            int valeur = s.getIndice();
+            int valeur = sommet.getIndice();
             double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMaxSommet(), indiceMinSommet());
             double vert = intensite(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxSommet(), indiceMinSommet());
             double bleu = intensite(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxSommet(), indiceMinSommet());
-            s.setCouleurSommet(new Color(rouge, vert, bleu, 1.));
+            sommet.setCouleurSommet(new Color(rouge, vert, bleu, 1.));
         }
     }
 
     /**
      * Fonction permettant de changer la couleur de toutes les aretes du graphe
      * en fonction d'une couleur minimale et d'une couleur maximale
-     * et de la valeur du poids de chaque arete
-     * @param cmin
-     * @param cmax
+     * et de la valeur du poids de chaque arete.
+     * @param cmin Représente le min intervalle de couleur.
+     * @param cmax Représente la max intervalle de couleur.
      */
     public void changerCouleurAretes(Color cmin, Color cmax){
         for (Arete a : m_aretes) {
@@ -917,29 +927,29 @@ public class Graphe {
     }
 
     /**
-     * Fonction permettant de changer la couleur d'une arete en fonction d'une couleur
+     * Permet de changer la couleur d'une arete en fonction d'une couleur.
      * minimale et d'une couleur maximale et de la valeur du poids de l'arête
-     * @param s
-     * @param cmin
-     * @param cmax
+     * @param arete Représente l'arete
+     * @param cmin Représente le min intervalle de couleur.
+     * @param cmax Représente la max intervalle de couleur.
      */
-    public void changerCouleurArete (Arete s, Color cmin, Color cmax){
+    public void changerCouleurArete (Arete arete, Color cmin, Color cmax){
         if (indiceFixe()) {
-            int valeur = s.getPoids();
+            int valeur = arete.getPoids();
             double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMaxArete(), indiceMinArete());
             double vert = intensite(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxArete(), indiceMinArete());
             double bleu = intensite(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxArete(), indiceMinArete());
-            s.setCouleurArete(new Color(rouge, vert, bleu, 1.));
+            arete.setCouleurArete(new Color(rouge, vert, bleu, 1.));
         }
     }
 
 
     /**
-     * fonction mathematique permettant de generer une couleur pour une arete ou un sommet
+     * Permet grâce à une fonction mathematique de generer une couleur pour une arete ou un sommet.
      * en fonction de la valeur de son indice suivant un intervalle
      * @param valeur
-     * @param cmax
-     * @param cmin
+     * @param cmin Représente le min intervalle de couleur.
+     * @param cmax Représente la max intervalle de couleur.
      * @return
      */
     private double intensite(int valeur, double cmax, double cmin, int indiceMax, int indiceMin){

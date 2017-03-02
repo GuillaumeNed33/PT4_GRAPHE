@@ -29,7 +29,6 @@ public class Arete {
      */
     private Sommet entree;
 
-
     /**
      * Représente le second sommet auquel l'arete est liée.
      */
@@ -45,6 +44,9 @@ public class Arete {
      */
     private int poids;
 
+    /**
+     * Représente l'épaisseur de l'arete.
+     */
     private Size epaisseur;
 
     /**

@@ -825,7 +825,7 @@ public class Graphe {
      * @return
      */
     public int indiceMaxSommet(){
-        int i = sommets.size()-1;
+        int i = sommets.size();
         int max = sommets.get(0).getIndice();
         while(--i >= 0) {
             max = (sommets.get(i).getIndice() > max) ? sommets.get(i).getIndice() : max;
@@ -839,7 +839,7 @@ public class Graphe {
      * @return
      */
     public int indiceMinSommet(){
-        int i = sommets.size() - 1;
+        int i = sommets.size();
         int min = sommets.get(0).getIndice();
         while(--i >= 0) {
             min = (sommets.get(i).getIndice() < min) ? sommets.get(i).getIndice() : min;
@@ -852,7 +852,7 @@ public class Graphe {
      * @return
      */
     public int indiceMaxArete(){
-        int i = aretes.size()-1;
+        int i = aretes.size();
         int max = aretes.get(0).getPoids();
         while(--i >= 0) {
             max = (aretes.get(i).getPoids() > max) ? aretes.get(i).getPoids() : max;
@@ -865,7 +865,7 @@ public class Graphe {
      * @return
      */
     public int indiceMinArete(){
-        int i = aretes.size() - 1;
+        int i = aretes.size();
         int min = aretes.get(0).getPoids();
         while(--i >= 0) {
             min = (aretes.get(i).getPoids() < min) ? aretes.get(i).getPoids() : min;

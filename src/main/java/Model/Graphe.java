@@ -70,7 +70,7 @@ public class Graphe {
 
     /**
      * Constructeur de la classe Graphe lisant un fichier .DOT ou .GRAPHML.
-     * @param fichier
+     * @param fichier Représente
      */
     public Graphe (String fichier) {
         nom = "Mon Joli Graphe";
@@ -746,43 +746,42 @@ public class Graphe {
     }
 
     /**
-     * Affecte le degré du sommet (son nombre d'arêtes) à l'indice du sommet
-     * @param s
+     * Permet d'affecter le degré du sommet (son nombre d'arêtes) à l'indice du sommet.
+     * @param sommet Représente le sommet sur lequel il faut appliquer un indice en fonction du degré du sommet.
      */
-    public static void setIndiceDegre(Sommet s){
-        s.setIndice(incidentes.get(s).size());
+    public static void setIndiceDegre(Sommet sommet){
+        sommet.setIndice(incidentes.get(sommet).size());
     }
 
     /**
-     * Affecte une valeur aléatoire à l'indice du sommet
-     * @param s
+     * Permet d'affecter une valeur aléatoire à l'indice du sommet
+     * @param sommet Représente le sommet sur lequel il faut appliquer un indice aléatoire.
      */
-    public static void setIndiceAleatoire (Sommet s){
-        s.setIndice(rand.nextInt());
+    public static void setIndiceAleatoire (Sommet sommet){
+        sommet.setIndice(rand.nextInt());
     }
 
     /**
-     * Affecte pour chaque sommet du graphe son degré à son indice
+     * Permet d'affecter pour chaque sommet du graphe son degré à son indice.
      */
     public static void setIndiceDegre(){
-        for (Sommet s: sommets) {
-            setIndiceDegre(s);
+        for (Sommet sommet : sommets) {
+            setIndiceDegre(sommet);
         }
     }
 
     /**
-     *
-     * Affecte pour chaque sommet du graphe une valeur aléatoire à son indice
+     * Permet d'affecter pour chaque sommet du graphe une valeur aléatoire à son indice.
      */
     public static void setIndiceAleatoire(){
-        for (Sommet s: sommets) {
-            setIndiceAleatoire(s);
+        for (Sommet sommet : sommets) {
+            setIndiceAleatoire(sommet);
         }
     }
 
     /**
-     * Fonction récupérant l'indice maximal de tous les sommets du graphe
-     * @return
+     * Permet de récupérer l'indice maximal de tous les sommets du graphe.
+     * @return Retourne l'indice max de tous les sommets.
      */
     public int indiceMaxSommet(){
         int i = sommets.size()-1;
@@ -795,8 +794,8 @@ public class Graphe {
     }
 
     /**
-     * Fonction récupérant l'indice minimal de tous les sommets du graphe
-     * @return
+     * Permet de récupérer l'indice minimal de tous les sommets du graphe.
+     * @return Retourne l'indice min de tous les sommets.
      */
     public int indiceMinSommet(){
         int i = sommets.size() - 1;
@@ -808,8 +807,8 @@ public class Graphe {
     }
 
     /**
-     * Fonction récupérant l'indice maximal de toutes les arêtes du graphe
-     * @return
+     * Permet de récupérer l'indice maximal de toutes les arêtes du graphe.
+     * @return Retourne l'indice max de toutes les arete.
      */
     public int indiceMaxArete(){
         int i = aretes.size()-1;
@@ -821,8 +820,8 @@ public class Graphe {
     }
 
     /**
-     * Fonction récupérant l'indice minimal de toutes les aretes du graphe
-     * @return
+     * Permet de récupérer l'indice minimal de toutes les aretes du graphe.
+     * @return Retourne l'indice min de toutes les aretes.
      */
     public int indiceMinArete(){
         int i = aretes.size() - 1;
@@ -835,7 +834,7 @@ public class Graphe {
 
 
     /**
-     * Fonction permettant de changer la couleur de tous les sommet du graphe
+     * Permet de changer la couleur de tous les sommet du graphe
      * en fonction d'une couleur minimale et d'une couleur maximale
      * et de la valeur de l'indice de chaque sommet
      * @param cmin
@@ -848,7 +847,7 @@ public class Graphe {
     }
 
     /**
-     * Fonction permettant de changer la couleur d'un sommet en fonction d'une couleur
+     * Permet de changer la couleur d'un sommet en fonction d'une couleur
      * minimale et d'une couleur maximale et de la valeur de l'indice du sommet
      * @param s
      * @param cmin
@@ -865,7 +864,7 @@ public class Graphe {
     }
 
     /**
-     * Fonction permettant de changer la couleur de toutes les aretes du graphe
+     * Permet de changer la couleur de toutes les aretes du graphe
      * en fonction d'une couleur minimale et d'une couleur maximale
      * et de la valeur du poids de chaque arete
      * @param cmin

@@ -652,6 +652,7 @@
 
 .tab-pane .tab:selected
 {
+    -fx-focus-color: transparent;
     -fx-background-color: #cccccc;
 }
 
@@ -665,6 +666,7 @@
 .tab:selected .tab-label {
     -fx-alignment: CENTER;
     -fx-text-fill: black;
+
 }
 
 .label {

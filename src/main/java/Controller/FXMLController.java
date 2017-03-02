@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Graphe;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -32,6 +33,58 @@ public class FXMLController {
     public void clicPane(MouseEvent mouseEvent) {
         if(mouseEvent.getButton() == MouseButton.SECONDARY){
             contextMenu.getItems().addAll(proprieteSommet,etiquetteSommet,supprimerSommet,copierEtiquetteSommet,collerEtquetteSommet);
+
+            proprieteSommet.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/ProprietesSommetTab.fxml"));
+                        Parent root1 = fxmlLoader.load();
+                        Stage stage = new Stage();
+                        stage.setScene(new Scene(root1));
+                        stage.show();
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            supprimerSommet.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    clickSupprimer();
+                }
+            });
+
+            etiquetteSommet.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/EtiquetteSommet.fxml"));
+                        Parent root1 = (Parent) fxmlLoader.load();
+                        Stage stage = new Stage();
+                        stage.setScene(new Scene(root1));
+                        stage.show();
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            copierEtiquetteSommet.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    //TODO On peut pasle faire maintenant lol
+                }
+            });
+
+            collerEtquetteSommet.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    //TODO On peut pasle faire maintenant lol
+                }
+            });
+
             contextMenu.show(pane, mouseEvent.getScreenX(), mouseEvent.getScreenY());
         }
     }

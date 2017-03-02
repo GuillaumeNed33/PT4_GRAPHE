@@ -98,7 +98,7 @@ public class FXMLController {
         FileChooser fileChooser = createFileChooser("Importer");
         File file = fileChooser.showOpenDialog(null);
         if (file != null){
-            this.g.sauvegarderGraphe(file.getAbsolutePath());
+            this.g = new Graphe(file.getAbsolutePath());
         }
     }
 
@@ -107,7 +107,7 @@ public class FXMLController {
      */
     @FXML public void clickFichierExporter() {
         FileChooser fileChooser = createFileChooser("Exporter");
-        File file = fileChooser.showOpenDialog(null);
+        File file = fileChooser.showSaveDialog(null);
         if (file != null){
             this.g.sauvegarderGraphe(file.getAbsolutePath());
         }
@@ -130,6 +130,43 @@ public class FXMLController {
         this.g.sauvegarderGraphe(null);
     }
 
+    /**
+     * Fonction permettant d'appliquer une distribution aléatoire des positions des sommets du graphe
+     */
+    @FXML public void clickRepresentationAleatoire() {
+        this.g.setAlgorithmeRepresentation('a',600);
+    }
+
+    /**
+     * Fonction permettant d'appliquer une distribution circulaire des positions des sommets du graphe
+     */
+    @FXML public void clickRepresentationCirculaire() {
+        this.g.setAlgorithmeRepresentation('c',600);
+    }
+
+    /**
+     * Fonction permettant d'appliquer une distribution aléatoire des positions des sommets du graphe
+     */
+    @FXML
+    public void clickRepresentationForces() {
+        this.g.setAlgorithmeRepresentation('f',600);
+    }
+
+    @FXML
+    public void clickToggleRepresentation(){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/ModeleRepresentation.fxml"));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Choix du modèle de la représentation");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.setScene(new Scene(root1));
+            stage.show();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
     @FXML
     public void clickAjouterSommet() {
         try {
@@ -238,7 +275,4 @@ public class FXMLController {
     @FXML public void clickCouleurElement(ActionEvent event) {
 
     }
-
-
-
 }

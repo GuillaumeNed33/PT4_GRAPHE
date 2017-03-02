@@ -85,12 +85,7 @@
                      <children>
                         <HBox>
                            <children>
-                              <MenuButton mnemonicParsing="false" text="Modèle">
-                                <items>
-                                  <MenuItem mnemonicParsing="false" text="Action 1" />
-                                  <MenuItem mnemonicParsing="false" text="Action 2" />
-                                </items>
-                              </MenuButton>
+                              <Button mnemonicParsing="false" text="Modèle" onAction="#clickToggleRepresentation"/>
                               <Button mnemonicParsing="false" onAction="#clickSupprimer" text="Supprimer" />
                               <Button mnemonicParsing="false" text="Représentation">
                                  <padding>

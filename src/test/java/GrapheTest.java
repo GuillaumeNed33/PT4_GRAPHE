@@ -220,8 +220,8 @@ public class GrapheTest {
 
         g.ajouterArete(s,s2);
 
-        Assert.assertEquals(g.source(g.getM_aretes().get(0)),s);
-        Assert.assertEquals(g.destination(g.getM_aretes().get(0)),s2);
+        Assert.assertEquals(g.source(g.getAretes().get(0)),s);
+        Assert.assertEquals(g.destination(g.getAretes().get(0)),s2);
     }
 
     @Test
@@ -230,8 +230,8 @@ public class GrapheTest {
         Size m = new Size(10,10);
         Graphe g = new Graphe();
 
-        g.setM_size(m);
-        Assert.assertEquals(m,g.getM_size());
+        g.setTaille(m);
+        Assert.assertEquals(m,g.getTaille());
     }
 
     @Test
@@ -247,9 +247,9 @@ public class GrapheTest {
 
         g.ajouterArete(s,s2);
 
-        g.changerCouleurArete(g.getM_aretes().get(0), Color.BLACK,Color.BLACK);
+        g.changerCouleurArete(g.getAretes().get(0), Color.BLACK,Color.BLACK);
 
-        Assert.assertEquals(g.getM_aretes().get(0).getCouleurArete(),Color.BLACK);
+        Assert.assertEquals(g.getAretes().get(0).getCouleurArete(),Color.BLACK);
     }
 
     @Test
@@ -289,10 +289,10 @@ public class GrapheTest {
         g.ajouterArete(s,s4);
         g.ajouterArete(s2,s3);
 
-        g.getM_aretes().get(0).setPoids(1);
-        g.getM_aretes().get(1).setPoids(4);
-        g.getM_aretes().get(2).setPoids(7);
-        g.getM_aretes().get(3).setPoids(12);
+        g.getAretes().get(0).setPoids(1);
+        g.getAretes().get(1).setPoids(4);
+        g.getAretes().get(2).setPoids(7);
+        g.getAretes().get(3).setPoids(12);
 
         Assert.assertEquals(g.indiceMaxArete(),12,0);
         Assert.assertEquals(g.indiceMinArete(),1,0);

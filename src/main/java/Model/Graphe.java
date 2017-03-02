@@ -21,37 +21,37 @@ public class Graphe {
     /**
      * Représente le nom du graphe.
      */
-    public static String nom;
+    public String nom;
 
     /**
      * Représente la taille du graphe.
      */
-    public static Size taille;
+    public Size taille;
 
     /**
      * Représente l'ensemble des sommets dans le graphe.
      */
-    public static ArrayList<Sommet> sommets;
+    public ArrayList<Sommet> sommets;
 
     /**
      * Représente l'ensemble des arete dans le graphe.
      */
-    public static ArrayList<Arete> aretes;
+    public ArrayList<Arete> aretes;
 
     /**
      * Représente une map liant pour chaque sommet sa liste d'aretes.
      */
-    public static HashMap<Sommet, ArrayList<Arete> > incidentes;
+    public HashMap<Sommet, ArrayList<Arete> > incidentes;
 
     /**
      * Représente une map liant pour chaque arete sa paire de sommets.
      */
-    public static HashMap<Arete, Pair<Sommet,Sommet>> extremites;    // conteneur liant pour chaque arete sa paire de sommets
+    public HashMap<Arete, Pair<Sommet,Sommet>> extremites;    // conteneur liant pour chaque arete sa paire de sommets
 
     /**
      * Représente l'ensemble des clefs de style (definies dans les fichier .graphml).
      */
-    public static ArrayList<KeyStyleGRAPHML> keyGML;
+    public ArrayList<KeyStyleGRAPHML> keyGML;
 
     /**
      *  Représente une valeur aléatoire.
@@ -61,7 +61,7 @@ public class Graphe {
     /**
      * Représente l'algorithme de représentation du graphe
      */
-    public static AlgorithmeRepresentation algorithmeRepresentation;
+    public AlgorithmeRepresentation algorithmeRepresentation;
 
     /**
      * Constructeur de la classe Graphe lisant un fichier .DOT ou .GRAPHML.
@@ -170,7 +170,7 @@ public class Graphe {
                         String [] name2 = decoup[1].split("\\[");
                         Sommet s1 = new Sommet(decoup[0].trim().replaceAll("\"", ""));
                         Sommet s2 = new Sommet(name2[0].trim().replaceAll("\"", ""));
-                        ajouterArete(s1,s2);
+                        //ajouterArete(s1,s2);
 
                         //PROPRIETE
                         if(ligne.contains("[")) {
@@ -204,7 +204,7 @@ public class Graphe {
                         String [] name2 = decoup[1].split("\\[");
                         Sommet s1 = new Sommet(decoup[0].trim().replaceAll("\"", ""));
                         Sommet s2 = new Sommet(name2[0].trim().replaceAll("\"", ""));
-                        ajouterArete(s1,s2);
+                        //ajouterArete(s1,s2);
 
                         //PROPRIETE
                         /*** http://graphviz.org/Documentation/dotguide.pdf ***/
@@ -260,15 +260,17 @@ public class Graphe {
             String tmpkeyID = null;
 
             while ((ligne = br.readLine()) != null) {
+
                 if(ligne.contains("<data ")) {
                     if(tmpIdNode != -999 || tmpIdEdge != -999) {
                         String keyId = ligne.split("key=\"")[1].split("\"")[0];
                         String value = ligne.split(">")[1].split("</")[0];
 
                         KeyStyleGRAPHML key = null;
-                        int i =1; boolean find = false;
+                        int i = 0;
+                        boolean find = false;
 
-                        while(i > keyGML.size() && !find) {
+                        while(i < keyGML.size() && !find) {
                             if(keyGML.get(i).getId().equals(keyId)) {
                                 find = true;
                                 key = keyGML.get(i);
@@ -296,7 +298,6 @@ public class Graphe {
 
                     }
                 }
-
                 else if (ligne.contains("<key")) {
                     tmpIdNode = -999;
                     tmpIdEdge = -999;
@@ -321,7 +322,7 @@ public class Graphe {
 
                     int i =1; boolean find = false;
 
-                    while(i > keyGML.size() && !find) {
+                    while(i < keyGML.size() && !find) {
                         if(keyGML.get(i).getId().equals(tmpkeyID)) {
                             find = true;
                             keyGML.get(i).setAttrType(value);                        }
@@ -349,11 +350,12 @@ public class Graphe {
 
                     String [] recupId = ligne.split("id=\"");
                     String id = recupId[1].split("\"")[0];
-
-                    if(br.readLine().contains("<data")) {
+                   /* if (br.readLine().contains("<data")) {
                         String keyId = ligne.split("key=\"")[1].split("\"")[0];
                         String value = ligne.split(">")[1].split("</")[0];
                     }
+                    */
+
                 }
 
                 else if (ligne.contains("<node ")) {
@@ -362,10 +364,11 @@ public class Graphe {
                     String id = recupId[1].split("\"")[0];
                     Size tailleFenetre = new Size(10,10);
 
-                    String style = ligne.split("style=\"")[1].split("\"")[0];
-
+                    if (ligne.contains("style")) {
+                        String style = ligne.split("style=\"")[1].split("\"")[0];
+                    }
                     Sommet s = new Sommet(id);
-                    ajouterSommet(s, tailleFenetre);
+                    ajouterSommetInitial(s);
                     tmpIdNode = s.getId();
                 }
 
@@ -379,6 +382,8 @@ public class Graphe {
                     else
                         directedArete = directedGraph;
 
+                    String [] recupId = ligne.split("id=\"");
+                    String id = recupId[1].split("\"")[0];
                     String [] recupSource = ligne.split("source=\"");
                     String source = recupSource[1].split("\"")[0];
 
@@ -386,8 +391,9 @@ public class Graphe {
                     String dest = recupTarget[1].split("\"")[0];
 
                     if(findSommet(source) != null && findSommet(dest) != null)
-                        ajouterArete(findSommet(source), findSommet(dest));
+                        ajouterAreteInitial(findSommet(source), findSommet(dest), id);
                 }
+                System.out.println(sommets.size());
             }
             br.close();
         }
@@ -601,6 +607,33 @@ public class Graphe {
         return true;
     }
 
+    public boolean ajouterSommetInitial(Sommet sommet){
+        if (verificationPossibiliteAjoutSommetInitial(sommet.getTag())) {
+            sommets.add(sommet);
+            incidentes.put(sommet, new ArrayList<Arete>());
+        }
+        else {
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean verificationPossibiliteAjoutSommetInitial(String tag) {
+        Iterator<Sommet> iterateur_sommet = sommets.iterator();
+        boolean trouver = false;
+
+        while (!trouver && iterateur_sommet.hasNext()) {
+            Sommet sommet_temp = iterateur_sommet.next();
+
+            if (sommet_temp.getTag() == tag) {
+                trouver = true;
+            }
+        }
+        return !trouver;
+
+    }
+
     /**
      * Permet de vérifier que les coordonnées du sommet sont correctes et qu'il n'existe pas un sommet à ces coordonnées.
      * @param coord_y_sommet Représente la coordonnée en y, à vérifier, du sommet.
@@ -706,6 +739,30 @@ public class Graphe {
     }
 
     /**
+     * Permet d'ajouter une arete nommée au graphe et qui se lie à 2 sommets distinct.
+     * Le boolean de retour permet de gérer les erreurs d'ajouts (aspect graphique).
+     * @param sommet_1 Représente le premier sommet à lier avec l'arete.
+     * @param sommet_2 Représente le second sommet à lier avec l'arete.
+     * @param tag reprséente le nom de l'arete
+     * @return Retourne vrai si l'ajout de l'arete ce fait ou faux dans le cas contraire.
+     */
+    public boolean ajouterAreteInitial(Sommet sommet_1, Sommet sommet_2, String tag) {
+
+        if (verificationPossibiliteAjoutArete(sommet_1, sommet_2)) {
+            Arete arete = new Arete(sommet_1, sommet_2, tag);
+            aretes.add(arete);
+
+            extremites.put(arete, new Pair<Sommet,Sommet>(sommet_1, sommet_2));
+            lierAreteAuSommet(arete, sommet_1);
+            lierAreteAuSommet(arete, sommet_2);
+        }
+        else {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Permet de vérifier si les sommets en paramètre sont différents et si ils sont bien initialisé.
      * La condition de la création de l'arete se fait exclusivement grâce aux sommets.
      * @param sommet_1 Représente le premier sommet qui sera lié à l'arete.
@@ -789,7 +846,7 @@ public class Graphe {
      * Affecte le degré du sommet (son nombre d'arêtes) à l'indice du sommet
      * @param s
      */
-    public static void setIndiceDegre(Sommet s){
+    public void setIndiceDegre(Sommet s){
         s.setIndice(incidentes.get(s).size());
     }
 
@@ -797,14 +854,14 @@ public class Graphe {
      * Affecte une valeur aléatoire à l'indice du sommet
      * @param s
      */
-    public static void setIndiceAleatoire (Sommet s){
+    public void setIndiceAleatoire (Sommet s){
         s.setIndice(rand.nextInt());
     }
 
     /**
      * Affecte pour chaque sommet du graphe son degré à son indice
      */
-    public static void setIndiceDegre(){
+    public void setIndiceDegre(){
         for (Sommet s: sommets) {
             setIndiceDegre(s);
         }
@@ -814,7 +871,7 @@ public class Graphe {
      *
      * Affecte pour chaque sommet du graphe une valeur aléatoire à son indice
      */
-    public static void setIndiceAleatoire(){
+    public void setIndiceAleatoire(){
         for (Sommet s: sommets) {
             setIndiceAleatoire(s);
         }
@@ -1021,51 +1078,51 @@ public class Graphe {
 
     // Accesseur et Mutateurs
 
-    public static ArrayList<Sommet> getSommets() {
+    public ArrayList<Sommet> getSommets() {
 
         return sommets;
     }
 
-    public static void setSommets(ArrayList<Sommet> sommets) {
+    public void setSommets(ArrayList<Sommet> sommets) {
 
-        Graphe.sommets = sommets;
+        this.sommets = sommets;
     }
 
-    public static ArrayList<Arete> getAretes() {
+    public ArrayList<Arete> getAretes() {
 
         return aretes;
     }
 
-    public static void setAretes(ArrayList<Arete> aretes) {
+    public void setAretes(ArrayList<Arete> aretes) {
 
-        Graphe.aretes = aretes;
+        this.aretes = aretes;
     }
 
-    public static HashMap<Sommet, ArrayList<Arete>> getIncidentes() {
+    public HashMap<Sommet, ArrayList<Arete>> getIncidentes() {
 
         return incidentes;
     }
 
-    public static void setIncidentes(HashMap<Sommet, ArrayList<Arete>> incidentes) {
+    public void setIncidentes(HashMap<Sommet, ArrayList<Arete>> incidentes) {
 
-        Graphe.incidentes = incidentes;
+        this.incidentes = incidentes;
     }
 
-    public static HashMap<Arete, Pair<Sommet, Sommet>> getM_extremites() {
+    public HashMap<Arete, Pair<Sommet, Sommet>> getM_extremites() {
 
         return extremites;
     }
 
-    public static void setM_extremites(HashMap<Arete, Pair<Sommet, Sommet>> m_extremites) {
+    public void setM_extremites(HashMap<Arete, Pair<Sommet, Sommet>> m_extremites) {
 
-        Graphe.extremites = m_extremites;
+        this.extremites = m_extremites;
     }
-    public static Size getTaille() {
+    public Size getTaille() {
         return taille;
     }
 
-    public static void setTaille(Size taille) {
-        Graphe.taille = taille;
+    public void setTaille(Size taille) {
+        this.taille = taille;
     }
 
 }

@@ -65,7 +65,7 @@ public class Arete {
     }
 
     /**
-     * Une arête peut être construite avec un poids notamment pour ma coloration des arêtes
+     * Une arête peut être construite avec un poids notamment pour la coloration des arêtes
      * @param entree Ce sommet représente le premier sommet au quel l'arete est liée.
      * @param sortie Ce sommet représente le second sommet au quel l'arrete est liée.
      * @param poids valeur entière représentant le poids de l'arête
@@ -77,6 +77,21 @@ public class Arete {
         this.tag = "";
         couleurArete = Color.web("000000");
         this.poids = poids;
+    }
+
+    /**
+     * Une arête peut être construite avec un nom
+     * @param entree Ce sommet représente le premier sommet au quel l'arete est liée.
+     * @param sortie Ce sommet représente le second sommet au quel l'arrete est liée.
+     * @param tag String représentant le nom de l'arête
+     */
+    public Arete(Sommet entree, Sommet sortie, String tag){
+        this.entree = entree;
+        this.sortie = sortie;
+        id = ++idActuel;
+        this.tag = tag;
+        couleurArete = Color.web("000000");
+        this.poids = 0;
     }
 
 

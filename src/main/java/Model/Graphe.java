@@ -539,7 +539,7 @@ public class Graphe {
      * @param sommet_origine Représente le sommet de référence pour déterminer si les autres sommets sont voisins.
      * @return Retourne la liste des sommets voisins.
      */
-    public ArrayList<Sommet> sommmetsVoisins(Sommet sommet_origine){
+    public ArrayList<Sommet> sommetsVoisins(Sommet sommet_origine){
         ArrayList<Sommet> voisinage = null;
         for(Arete arete : incidentes.get(sommet_origine)){
             voisinage.add(source(arete).getTag() == sommet_origine.getTag() ? destination(arete) : source(arete));

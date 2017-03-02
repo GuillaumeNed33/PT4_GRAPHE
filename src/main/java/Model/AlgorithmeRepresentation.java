@@ -72,7 +72,7 @@ public class AlgorithmeRepresentation {
      * @return La force d'attraction.
      */
     private float forceAttraction(Sommet sommet){
-        ArrayList<Sommet> voisins = graphe.sommmetsVoisins(sommet);
+        ArrayList<Sommet> voisins = graphe.sommetsVoisins(sommet);
         float force = 0;
         for (Sommet voisin : voisins) {
             double distance = Math.sqrt(Math.pow((double)(voisin.getX() - sommet.getX()), 2.) + Math.pow((double)(voisin.getY() - sommet.getY()), 2.));
@@ -88,7 +88,7 @@ public class AlgorithmeRepresentation {
      * @return Retourne la force de répulsion.
      */
     private float forceRepulsion(Sommet sommet){
-        ArrayList<Sommet> voisins = graphe.sommetsNonVoisins(graphe.sommmetsVoisins(sommet));
+        ArrayList<Sommet> voisins = graphe.sommetsNonVoisins(graphe.sommetsVoisins(sommet));
         float force = 0;
         for (Sommet voisin : voisins) {
             double distanceCarre = Math.pow((double)(voisin.getX() - sommet.getX()), 2.) + Math.pow((double)(voisin.getY() - sommet.getY()), 2.);

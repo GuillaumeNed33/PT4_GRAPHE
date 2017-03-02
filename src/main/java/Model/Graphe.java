@@ -81,7 +81,7 @@ public class Graphe {
         incidentes = new HashMap<Sommet, ArrayList<Arete>>();
         extremites = new HashMap<Arete, Pair<Sommet, Sommet>>();
         algorithmeRepresentation = new AlgorithmeRepresentation(this);
-        
+
         if (cheminFichier.contains(".dot")) {
             chargerGrapheDOT();
         }
@@ -347,6 +347,11 @@ public class Graphe {
      * @return Retourne vrai si la sauvegarde c'est bien passé ou faux dans le cas contraire.
      */
     public boolean sauvegarderGraphe (String chemin_sauvegarde) {
+
+        if (chemin_sauvegarde == null) {
+            chemin_sauvegarde = cheminFichier;
+        }
+
         if (chemin_sauvegarde.contains(".dot")) {
             return sauvegarderGrapheDot(chemin_sauvegarde);
         }
@@ -421,7 +426,7 @@ public class Graphe {
      * @return Retour vrai si la sauvegarde c'est bien passé ou faux dans le cas contraire.
      */
     private boolean sauvegarderGrapheGraphml (String chemin_sauvegarde) {
-        // TODO Essayer de se mettre d'accord pour les node-syle et key
+
         try {
             FileWriter fileWriter = new FileWriter (chemin_sauvegarde);
             BufferedWriter bufferedWriter = new BufferedWriter (fileWriter);
@@ -448,7 +453,6 @@ public class Graphe {
 
             fichierSortie.println("\t</graph>");
             fichierSortie.println("</graphml>");
-
 
             fichierSortie.close();
             bufferedWriter.close();

@@ -7,16 +7,33 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class FXMLController {
-    @FXML
-    private Button btnOpenFile;
     private Graphe g;
+    @FXML private Pane pane;
+
+    private ContextMenu contextMenu = new ContextMenu();
+    private MenuItem proprieteSommet = new MenuItem("Tableau de propriétés du sommet");
+    private MenuItem supprimerSommet = new MenuItem("Supprimer le sommet");
+    private MenuItem etiquetteSommet = new MenuItem("Etiquette du sommet");
+    private MenuItem copierEtiquetteSommet = new MenuItem("Copier l'étiquette du sommet");
+    private MenuItem collerEtquetteSommet = new MenuItem("Coller l'étiquette au sommet");
+
+    public void clicPane(MouseEvent mouseEvent) {
+        if(mouseEvent.getButton() == MouseButton.SECONDARY){
+            contextMenu.getItems().addAll(proprieteSommet,etiquetteSommet,supprimerSommet,copierEtiquetteSommet,collerEtquetteSommet);
+            contextMenu.show(pane, mouseEvent.getScreenX(), mouseEvent.getScreenY());
+        }
+    }
 
     public FXMLController(){
     }
@@ -61,11 +78,14 @@ public class FXMLController {
     }
 
     @FXML
-    public void clickAjouterSommet(MouseEvent mouseEvent) {
+    public void clickAjouterSommet() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AjoutSommet.fxml"));
             Parent root1 = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
+            stage.setTitle("Ajouter Sommet");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
             stage.setScene(new Scene(root1));
             stage.show();
         } catch(Exception e) {
@@ -74,11 +94,14 @@ public class FXMLController {
     }
 
     @FXML
-    public void clickAjouterArete(MouseEvent mouseEvent) {
+    public void clickAjouterArete() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AjoutArete.fxml"));
-            Parent root1 = (Parent) fxmlLoader.load();
+            Parent root1 = fxmlLoader.load();
             Stage stage = new Stage();
+            stage.setTitle("Ajouter Arete");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
             stage.setScene(new Scene(root1));
             stage.show();
         } catch(Exception e) {
@@ -86,12 +109,14 @@ public class FXMLController {
         }
     }
 
-    @FXML
-    public void clickSupprimer(MouseEvent mouseEvent) {
+    @FXML public void clickSupprimer() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/SupprSommer.fxml"));
-            Parent root1 = (Parent) fxmlLoader.load();
+            Parent root1 = fxmlLoader.load();
             Stage stage = new Stage();
+            stage.setTitle("Confirmer suppression");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
             stage.setScene(new Scene(root1));
             stage.show();
         } catch(Exception e) {

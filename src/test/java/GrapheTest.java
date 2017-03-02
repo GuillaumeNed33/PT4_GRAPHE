@@ -18,13 +18,13 @@ public class GrapheTest {
         //Test ajout sommet
         Size m = new Size(10,10);
         g.ajouterSommet(new Sommet("s1",1,1),m);
-        Assert.assertEquals(1,g.getM_sommets().size());
+        Assert.assertEquals(1,g.getSommets().size());
 
 
         //On ajoute le même sommet afin de voir si le graphe le prend tout de même en compte
         // (ce qui n'est pas attendu)
         g.ajouterSommet(new Sommet("s1",1,1),m);
-        Assert.assertEquals(1,g.getM_sommets().size());
+        Assert.assertEquals(1,g.getSommets().size());
     }
 
 
@@ -41,9 +41,9 @@ public class GrapheTest {
 
         //Test Suppression sommets
         g.supprimerSommet(s2);
-        Assert.assertEquals(1,g.getM_sommets().size());
+        Assert.assertEquals(1,g.getSommets().size());
         g.supprimerSommet(s);
-        Assert.assertEquals(0,g.getM_sommets().size());
+        Assert.assertEquals(0,g.getSommets().size());
     }
 
     @Test
@@ -64,15 +64,15 @@ public class GrapheTest {
 
         //Test ajout arete
         g.ajouterArete(s,s2);
-        Assert.assertEquals(1,g.getM_aretes().size());
+        Assert.assertEquals(1,g.getAretes().size());
         g.ajouterArete(s,s3);
         g.ajouterArete(s4,s2);
         g.ajouterArete(s3,s4);
-        Assert.assertEquals(4,g.getM_aretes().size());
+        Assert.assertEquals(4,g.getAretes().size());
 
         //Test ajout même arete
         g.ajouterArete(s,s2);
-        Assert.assertEquals(4,g.getM_aretes().size());
+        Assert.assertEquals(4,g.getAretes().size());
     }
 
     @Test
@@ -94,9 +94,9 @@ public class GrapheTest {
         g.ajouterArete(s,s2);
 
         //Test suppression sommet dans arete qui entraine la suppression de l'arete
-        Assert.assertEquals(1,g.getM_aretes().size());
+        Assert.assertEquals(1,g.getAretes().size());
         g.supprimerSommet(s);
-        Assert.assertEquals(0,g.getM_aretes().size());
+        Assert.assertEquals(0,g.getAretes().size());
     }
 
     @Test

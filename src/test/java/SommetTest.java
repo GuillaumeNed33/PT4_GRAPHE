@@ -1,7 +1,7 @@
+import Model.Sommet;
 import com.sun.glass.ui.Size;
 import javafx.scene.paint.Color;
 import org.junit.Test;
-import Model.Sommet;
 
 import static org.junit.Assert.assertEquals;
 
@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class SommetTest {
     @Test
-    public void testCreationSommet() throws Exception {
+    public void testCreationSommet() {
         Sommet sommet= new Sommet("s1",10,10);
         assertEquals(sommet.getTag(),"s1");
 
@@ -26,7 +26,7 @@ public class SommetTest {
     }
 
     @Test
-    public void testSetTag() throws Exception {
+    public void testSetTag() {
         Sommet sommet= new Sommet("s1",10,10);
         assertEquals(sommet.getTag(),"s1");
 
@@ -35,7 +35,7 @@ public class SommetTest {
     }
 
     @Test
-    public void testSetCouleur() throws Exception {
+    public void testSetCouleur() {
         Sommet sommet= new Sommet("s1",10,10);
         Color couleur = Color.web("000000");
         assertEquals(sommet.getCouleurSommet(), couleur);
@@ -46,7 +46,7 @@ public class SommetTest {
     }
 
     @Test
-    public void testSetCoordonnees() throws Exception {
+    public void testSetCoordonnees() {
         Sommet sommet= new Sommet("s1",10,10);
         assertEquals(sommet.getX(),10,0);
         assertEquals(sommet.getY(),10,0);
@@ -58,11 +58,20 @@ public class SommetTest {
     }
 
     @Test
-    public void testSetIndice() throws Exception {
+    public void testSetIndice() {
         Sommet sommet = new Sommet("s1",10,10);
         assertEquals(sommet.getIndice(),0);
 
         sommet.setIndice(5);
         assertEquals(sommet.getIndice(),5);
     }
+
+    /*@Test
+    public void testSetForme() {
+        Sommet sommet = new Sommet("s1",10,10);
+        assertEquals(sommet.getForme(), Forme_Sommet.Cercle);
+
+        sommet.setForme(Forme_Sommet.Losange);
+        assertEquals(sommet.getForme(),Forme_Sommet.Losange);
+    }*/
 }

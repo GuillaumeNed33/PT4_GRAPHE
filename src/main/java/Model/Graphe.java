@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
 import java.io.*;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -256,9 +257,51 @@ public class Graphe {
             BufferedReader br = new BufferedReader(ipsr);
             String ligne;
             boolean directedGraph = false;
+            int tmpIdNode=-999;
+            int tmpIdEdge=-999;
+            String tmpkeyID = null;
 
             while ((ligne = br.readLine()) != null) {
-                if (ligne.contains("<key")) {
+                if(ligne.contains("<data ")) {
+                    if(tmpIdNode != -999 || tmpIdEdge != -999) {
+                        String keyId = ligne.split("key=\"")[1].split("\"")[0];
+                        String value = ligne.split(">")[1].split("</")[0];
+
+                        KeyStyleGRAPHML key = null;
+                        int i =1; boolean find = false;
+                        while(i > m_keyGML.size() && !find) {
+                            if(m_keyGML.get(i).getId().equals(keyId)) {
+                                find = true;
+                                key = m_keyGML.get(i);
+                            }
+                            else
+                                i++;
+                        }
+
+                        if(tmpIdNode != 999) {
+
+                            if (key.getAttrName().equals("color")) {
+
+                            }
+                        }
+
+                        else {
+                            if (key.getAttrName().equals("weight")) {
+
+                            }
+                        }
+
+
+                    }
+                    else {
+
+                    }
+                }
+
+                else if (ligne.contains("<key")) {
+                    tmpIdNode = -999;
+                    tmpIdEdge = -999;
+
                     String [] recupId = ligne.split("id=\"");
                     String id = recupId[1].split("\"")[0];
 
@@ -268,20 +311,28 @@ public class Graphe {
                     String [] recupAttributeName = ligne.split("attr.name=\"");
                     String keyName = recupAttributeName[1].split("\"")[0];
 
-                    String typeAttribute="";
-                    if(keyName == "color") {
-                        ligne = br.readLine();
-                        String[] recupAttributeType = ligne.split("<default>");
-                        typeAttribute = recupAttributeType[1].split("<")[0];
+                    m_keyGML.add(new KeyStyleGRAPHML(id,type, keyName));
+                    tmpkeyID=id;
+                }
+
+                else if (ligne.contains("<default ")) {
+
+                    String [] recup = ligne.split("<default>");
+                    String value = recup[1].split("</")[0];
+
+                    int i =1; boolean find = false;
+                    while(i > m_keyGML.size() && !find) {
+                        if(m_keyGML.get(i).getId().equals(tmpkeyID)) {
+                            find = true;
+                            m_keyGML.get(i).setAttrType(value);                        }
+                        else
+                            i++;
                     }
-                    else {
-                        String[] recupAttributeType = ligne.split("attr.type=\"");
-                        typeAttribute = recupAttributeType[1].split("\"")[0];
-                    }
-                    m_keyGML.add(new KeyStyleGRAPHML(id,type, keyName, typeAttribute));
                 }
 
                 else if (ligne.contains("<graph ")) {
+                    tmpIdNode = -999;
+                    tmpIdEdge = -999;
                     String [] recupId = ligne.split("id=\"");
                     m_name = recupId[1].split("\"")[0];
                     String [] recupType = ligne.split("edgedefault=\"");
@@ -293,23 +344,33 @@ public class Graphe {
                 }
 
                 else if (ligne.contains("<node-style ")) {
+                    tmpIdNode = -999;
+                    tmpIdEdge = -999;
+
                     String [] recupId = ligne.split("id=\"");
                     String id = recupId[1].split("\"")[0];
 
                     if(br.readLine().contains("<data")) {
-
+                        String keyId = ligne.split("key=\"")[1].split("\"")[0];
+                        String value = ligne.split(">")[1].split("</")[0];
                     }
                 }
 
                 else if (ligne.contains("<node ")) {
-
+                    tmpIdEdge = -999;
                     String [] recupId = ligne.split("id=\"");
                     String id = recupId[1].split("\"")[0];
                     Size tailleFenetre = new Size(10,10);
-                    ajouterSommet(new Sommet(id), tailleFenetre);
+
+                    String style = ligne.split("style=\"")[1].split("\"")[0];
+
+                    Sommet s = new Sommet(id);
+                    ajouterSommet(s, tailleFenetre);
+                    tmpIdNode = s.getId();
                 }
 
                 else if (ligne.contains("<edge ")) {
+                    tmpIdNode = -999;
                     boolean directedArete;
                     if(ligne.contains("directed=\"true\""))
                         directedArete = true;
@@ -654,7 +715,7 @@ public class Graphe {
     private boolean verificationPossibiliteAjoutArete(Sommet sommet_1, Sommet sommet_2) {
 
         if (sommet_1.equals(sommet_2) || (sommet_1.equals(null) || sommet_2.equals(null)) || verificationDoublonArete(sommet_1, sommet_2)) {
-                return false;
+            return false;
         }
 
         return true;

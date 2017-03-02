@@ -10,18 +10,16 @@ public class KeyStyleGRAPHML {
     private String id;
     private boolean forNode;
     private String attrName;
-    private String attrType;
+    private String attrType = null;
 
 
-    public KeyStyleGRAPHML(String id, String forNode, String attrName, String attrType) {
+    public KeyStyleGRAPHML(String id, String forNode, String attrName) {
         this.id = id;
         if(forNode.equals("node"))
             this.forNode = true;
         else
             this.forNode = false;
         this.attrName = attrName;
-        this.attrType = attrType;
-
     }
 
     public String getId() {

@@ -1,0 +1,7 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea/
+PT4_GRAPHE.iml
+.travis.yml
+target/
+out/
+pt4_maquette_Mleveque/

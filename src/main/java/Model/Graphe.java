@@ -5,7 +5,10 @@ import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Random;
 
 /**
  * Created by audreylentilhac on 06/02/2017.
@@ -18,53 +21,59 @@ public class Graphe {
     /**
      * Représente le nom du graphe.
      */
-    private static String m_name;
+    public static String m_name;
 
     /**
      * Représente la taille du graphe.
      */
-    private static Size m_size;
+    public static Size m_size;
 
     /**
      * Représente l'ensemble des sommets dans le graphe.
      */
-    private static ArrayList<Sommet> m_sommets;
+    public static ArrayList<Sommet> m_sommets;
 
     /**
      * Représente l'ensemble des arete dans le graphe.
      */
-    private static ArrayList<Arete> m_aretes;
+    public static ArrayList<Arete> m_aretes;
 
     /**
      * Représente une map liant pour chaque sommet sa liste d'aretes.
      */
-    private static HashMap<Sommet, ArrayList<Arete> > m_incidentes;
+    public static HashMap<Sommet, ArrayList<Arete> > m_incidentes;
 
     /**
      * Représente une map liant pour chaque arete sa paire de sommets.
      */
-    private static HashMap<Arete, Pair<Sommet,Sommet>> m_extremites;    // conteneur liant pour chaque arete sa paire de sommets
+    public static HashMap<Arete, Pair<Sommet,Sommet>> m_extremites;    // conteneur liant pour chaque arete sa paire de sommets
 
     /**
      * Représente l'ensemble des clefs de style (definies dans les fichier .graphml).
      */
-    private static ArrayList<KeyStyleGRAPHML> m_keyGML;
+    public static ArrayList<KeyStyleGRAPHML> m_keyGML;
 
     /**
      *  Représente une valeur aléatoire.
      */
-    private static Random rand = new Random();
+    public static Random rand = new Random();
 
     /**
      * Représente l'algorithme de représentation du graphe
      */
-    private static AlgorithmeRepresentation algoRep;
+    public static AlgorithmeRepresentation algoRep;
 
     /**
      * Constructeur de la classe Graphe lisant un fichier .DOT ou .GRAPHML.
      * @param fichier
      */
     public Graphe (String fichier) {
+        m_name = "Mon Joli Graphe";
+        m_size = new Size(10,10);
+        m_sommets = new ArrayList<Sommet>();
+        m_aretes = new ArrayList<Arete>();
+        m_incidentes = new HashMap<Sommet, ArrayList<Arete>>();
+        m_extremites = new HashMap<Arete, Pair<Sommet, Sommet>>();
         algoRep = new AlgorithmeRepresentation(this);
         if (fichier.contains(".dot")) {
             chargerGrapheDOT(fichier);
@@ -239,6 +248,7 @@ public class Graphe {
      */
     private void chargerGrapheGRAPHML(String fichier) {
         String chaine = "";
+        m_keyGML = new ArrayList<KeyStyleGRAPHML>();
         try {
             InputStream ips = new FileInputStream(fichier);
             InputStreamReader ipsr = new InputStreamReader(ips);
@@ -267,30 +277,38 @@ public class Graphe {
                         String[] recupAttributeType = ligne.split("attr.type=\"");
                         typeAttribute = recupAttributeType[1].split("\"")[0];
                     }
-                    KeyStyleGRAPHML key = new KeyStyleGRAPHML(id,type, keyName, typeAttribute);
-                    m_keyGML.add(key);
+                    m_keyGML.add(new KeyStyleGRAPHML(id,type, keyName, typeAttribute));
                 }
 
-                else if (ligne.contains("<graph")) {
+                else if (ligne.contains("<graph ")) {
                     String [] recupId = ligne.split("id=\"");
                     m_name = recupId[1].split("\"")[0];
                     String [] recupType = ligne.split("edgedefault=\"");
                     String typeArete = recupType[1].split("\"")[0];
-                    if(typeArete=="undirected")
+                    if(typeArete.equals("undirected"))
                         directedGraph = false;
                     else
                         directedGraph = true;
                 }
 
-                else if (ligne.contains("<node")) {
+                else if (ligne.contains("<node-style ")) {
+                    String [] recupId = ligne.split("id=\"");
+                    String id = recupId[1].split("\"")[0];
+
+                    if(br.readLine().contains("<data")) {
+
+                    }
+                }
+
+                else if (ligne.contains("<node ")) {
 
                     String [] recupId = ligne.split("id=\"");
                     String id = recupId[1].split("\"")[0];
-                    Size tailleFenetre = new Size();
+                    Size tailleFenetre = new Size(10,10);
                     ajouterSommet(new Sommet(id), tailleFenetre);
                 }
 
-                else if (ligne.contains("<edge")) {
+                else if (ligne.contains("<edge ")) {
                     boolean directedArete;
                     if(ligne.contains("directed=\"true\""))
                         directedArete = true;
@@ -361,16 +379,17 @@ public class Graphe {
 
             if (!m_extremites.isEmpty() && !m_aretes.isEmpty()) {
                 for(Arete arete : m_aretes) {
-                    fichierSortie.println("\t\"node" + m_extremites.get(arete).getKey().getId() + "\" ->  \"node" + m_extremites.get(arete).getKey().getId() + "\" " +
-                            "[ color=" + arete.getCouleurArete().toString());
+                    String temp = "\t\"node" + m_extremites.get(arete).getKey().getId() + "\" ->  \"node" + m_extremites.get(arete).getKey().getId() + "\" " +
+                            "[ color=" + arete.getCouleurArete().toString();
+
 
                     if (!arete.getTag().equals("")) {
-                        fichierSortie.print(" label=\"" + arete.getTag() + "\" ];");
+                        temp += " label=\"" + arete.getTag() + "\" ];";
                     }
                     else {
-                        fichierSortie.print(" ];");
+                        temp += " ];";
                     }
-
+                    fichierSortie.println(temp);
                 }
             }
 
@@ -406,7 +425,7 @@ public class Graphe {
                     "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">");
 
 
-            fichierSortie.println("\t<graph id="+ m_name +" edgedefault=\"undirected\">");
+            fichierSortie.println("\t<graph id=\""+ m_name +"\" edgedefault=\"undirected\">");
 
             if (!m_sommets.isEmpty()) {
                 for (Sommet sommet : m_sommets) {
@@ -522,6 +541,17 @@ public class Graphe {
     }
 
     /**
+     * Permet d'ajouter des sommets qui viennent de fichiers (.dot ou .graphml).
+     * Nous n'avons pas besoins de vérifier les coordonnées car un algorithme de représentation placera les sommets.
+     * @param sommet Représente le sommet à ajouter.
+     */
+    public void ajouterSommetViaFichier(Sommet sommet){
+
+        m_sommets.add(sommet);
+        m_incidentes.put(sommet, new ArrayList<Arete>());
+    }
+
+    /**
      * Permet de vérifier que les coordonnées du sommet sont correctes et qu'il n'existe pas un sommet à ces coordonnées.
      * @param coord_y_sommet Représente la coordonnée en y, à vérifier, du sommet.
      * @param coord_x_sommet Représente la coordonnée en x, à vérifier, du sommet.
@@ -583,15 +613,21 @@ public class Graphe {
         if(!sommet.equals(null)) {
 
             if (m_incidentes.containsKey(sommet)) {
-                for (Arete arete : m_incidentes.get(sommet)) {
-                    m_extremites.remove(arete);
-                    m_aretes.remove(arete);
+
+                // Obligé de passer par une méthode car problème d'accès concurrents sur m_incidentes.
+                int cpt = 0;
+                int size = m_incidentes.get(sommet).size();
+
+                while (cpt < size) {
+                    supprimerArete(m_incidentes.get(sommet).get(0));
+                    ++cpt;
                 }
 
                 m_incidentes.remove(sommet);
             }
 
             m_sommets.remove(sommet);
+            boolean tempAretesASupprimer = m_incidentes.isEmpty();;
         }
     }
 
@@ -787,6 +823,7 @@ public class Graphe {
         return min;
     }
 
+
     /**
      * Fonction permettant de changer la couleur de tous les sommet du graphe
      * en fonction d'une couleur minimale et d'une couleur maximale
@@ -808,7 +845,7 @@ public class Graphe {
      * @param cmax
      */
     public void changerCouleurSommet (Sommet s, Color cmin, Color cmax){
-        if (indiceFixe(s.getIndice())) {
+        if (indiceFixe()) {
             int valeur = s.getIndice();
             double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMaxSommet(), indiceMinSommet());
             double vert = intensite(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxSommet(), indiceMinSommet());
@@ -838,7 +875,7 @@ public class Graphe {
      * @param cmax
      */
     public void changerCouleurArete (Arete s, Color cmin, Color cmax){
-        if (indiceFixe(s.getPoids())) {
+        if (indiceFixe()) {
             int valeur = s.getPoids();
             double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMaxArete(), indiceMinArete());
             double vert = intensite(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxArete(), indiceMinArete());
@@ -860,8 +897,9 @@ public class Graphe {
         return (((valeur - indiceMin)/(indiceMax - indiceMin)) * (cmax - cmin) + cmin);
     }
 
+
     public void changerTailleSommet(Sommet s, float maxSommet, float minSommet){
-        if (indiceFixe(s.getIndice())) {
+        if (indiceFixe()) {
             int valeur = s.getIndice();
             int largeur = (int) intensite(valeur, maxSommet, minSommet, indiceMaxSommet(), indiceMinSommet());
             Size taille = new Size(largeur, s.getTailleForme().height);
@@ -870,7 +908,7 @@ public class Graphe {
     }
 
     public void changerTailleArete(Arete a, float maxArete, float minArete){
-        if (indiceFixe(a.getPoids())) {
+        if (indiceFixe()) {
             int valeur = a.getPoids();
             int largeur = (int) intensite(valeur, maxArete, minArete, indiceMaxArete(), indiceMinArete());
             Size taille = new Size(largeur, a.getEpaisseur().height);
@@ -889,13 +927,39 @@ public class Graphe {
 
     /**
      * Vérifie si l'indice du sommet ou de l'arete a été initialisé
-     * @param indice
      * @return
      */
-    private boolean indiceFixe (int indice){
-        return (indice == 0 ? false : true);
+    private boolean indiceFixe (){
+        int i = 0;
+        for (Sommet s : m_sommets){
+            i += s.getIndice();
+        }
+        return (i == 0 ? false : true);
     }
 
+    /**
+     * Modifie la représentation du graphe suivant l'algorithme choisi
+     * @param algorithme
+     * @param largeurEcran
+     */
+    public void setAlgorithmeRepresentation(char algorithme, int largeurEcran){
+        switch (algorithme){
+            case 'a' :{
+                algoRep.distributionAleatoire(largeurEcran);
+                break;
+            }
+            case 'c': {
+                algoRep.distributionCirculaire(largeurEcran);
+                break;
+            }
+            case 'f': {
+                algoRep.distributionModeleForces(largeurEcran);
+                break;
+            }
+            default:
+                break;
+        }
+    }
 
     // Accesseur et Mutateurs
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="318.0" prefWidth="446.0">
+         <children>
+            <RadioButton layoutX="65.0" layoutY="101.0" mnemonicParsing="false" text="Aléatoire" />
+            <RadioButton layoutX="65.0" layoutY="172.0" mnemonicParsing="false" text="Degré du sommet" />
+            <Button layoutX="283.0" layoutY="259.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="57.0" text="OK" />
+            <Button layoutX="366.0" layoutY="259.0" mnemonicParsing="false" text="Annuler" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

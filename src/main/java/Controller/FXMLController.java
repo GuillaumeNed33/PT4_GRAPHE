@@ -98,7 +98,7 @@ public class FXMLController {
         FileChooser fileChooser = createFileChooser("Importer");
         File file = fileChooser.showOpenDialog(null);
         if (file != null){
-            this.g = new Graphe(file.getAbsolutePath());
+            this.g = new Graphe(file.getAbsolutePath(), 600);
         }
     }
 

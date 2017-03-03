@@ -67,8 +67,8 @@ public class Graphe {
      * Constructeur de la classe Graphe lisant un fichier .DOT ou .GRAPHML.
      * @param fichier
      */
-    public Graphe (String fichier) {
-        nom = "Mon Joli Graphe";
+    public Graphe (String fichier, int largeurEcran) {
+        nom = "";
         taille = new Size(10,10);
         sommets = new ArrayList<Sommet>();
         aretes = new ArrayList<Arete>();
@@ -81,6 +81,7 @@ public class Graphe {
         else if (fichier.contains(".graphml")) {
             chargerGrapheGRAPHML(fichier);
         }
+        setAlgorithmeRepresentation('a', largeurEcran);
     }
 
     /**
@@ -393,7 +394,6 @@ public class Graphe {
                     if(findSommet(source) != null && findSommet(dest) != null)
                         ajouterAreteInitial(findSommet(source), findSommet(dest), id);
                 }
-                System.out.println(sommets.size());
             }
             br.close();
         }

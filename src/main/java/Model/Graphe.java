@@ -65,7 +65,8 @@ public class Graphe {
 
     /**
      * Constructeur de la classe Graphe lisant un fichier .DOT ou .GRAPHML.
-     * @param fichier
+     * @param fichier chemin d'accès du fichier du graphe
+     * @param largeurEcran valeur entière représentant la largeur de la fenêtre d'affichage
      */
     public Graphe (String fichier, int largeurEcran) {
         nom = "";

@@ -1,3 +1,4 @@
+import Model.Forme_Sommet;
 import Model.Sommet;
 import com.sun.glass.ui.Size;
 import javafx.scene.paint.Color;
@@ -65,13 +66,12 @@ public class SommetTest {
         sommet.setIndice(5);
         assertEquals(sommet.getIndice(),5);
     }
-
-    /*@Test
+    @Test
     public void testSetForme() {
         Sommet sommet = new Sommet("s1",10,10);
         assertEquals(sommet.getForme(), Forme_Sommet.Cercle);
 
         sommet.setForme(Forme_Sommet.Losange);
         assertEquals(sommet.getForme(),Forme_Sommet.Losange);
-    }*/
+    }
 }

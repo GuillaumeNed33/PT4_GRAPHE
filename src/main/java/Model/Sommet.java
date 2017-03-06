@@ -3,10 +3,6 @@ package Model;
 import com.sun.glass.ui.Size;
 import javafx.scene.paint.Color;
 
-enum Forme_Sommet {
-    Rectangle, Cercle, Triangle, Losange
-}
-
 /**
  * Created by audreylentilhac on 02/02/2017.
  */

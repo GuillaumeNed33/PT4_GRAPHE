@@ -5,14 +5,17 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class Sommet extends Pane {
-    private String id;
-    private Node vue;
+import java.awt.*;
 
-    public Sommet(String id, int x, int y) {
+
+public abstract class Sommet extends Pane {
+    static public float RAYON_SOMMET = 5.0f;
+    protected Color color;
+    private String id;
+    protected Node vue;
+
+    public Sommet(String id) {
         this.id = id;
-        vue = new Circle(5.0f, Color.AQUA );
-        vue.relocate(x,y);
-        getChildren().add(vue);
+        this.color = Color.BLUE;
     }
 }

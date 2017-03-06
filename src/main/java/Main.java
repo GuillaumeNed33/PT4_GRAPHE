@@ -1,7 +1,5 @@
 
-import View.Arete;
-import View.Sommet;
-import View.ZoomableScrollPane;
+import View.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -20,8 +18,8 @@ public class Main extends Application {
         /** GESTION DES NODES **/
         VBox root = new VBox();
         TabPane menu = FXMLLoader.load(getClass().getResource("/fxml/MainApplication.fxml"));
-        Sommet s = new Sommet("id",100,100);
-        Sommet s1 = new Sommet("moche", 200,200);
+        Sommet s = new CercleSommet("id",100,100);
+        Sommet s1 = new RectangleSommet("moche", 300,620);
         Arete a = new Arete(s,s1);
         Pane test = new Pane();
         test.getChildren().addAll(s,a,s1);

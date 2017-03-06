@@ -76,7 +76,7 @@ public class Graphe {
         incidentes = new HashMap<Sommet, ArrayList<Arete>>();
         extremites = new HashMap<Arete, Pair<Sommet, Sommet>>();
         algorithmeRepresentation = new AlgorithmeRepresentation(this);
-        if (fichier.contains(".dot")) {
+        if (fichier.contains(".gv")) {
             chargerGrapheDOT(fichier);
         }
         else if (fichier.contains(".graphml")) {
@@ -410,7 +410,7 @@ public class Graphe {
      * @return Retourne vrai si la sauvegarde c'est bien passé ou faux dans le cas contraire.
      */
     public boolean sauvegarderGraphe (String chemin_sauvegarde) {
-        if (chemin_sauvegarde.contains(".dot")) {
+        if (chemin_sauvegarde.contains(".gv")) {
             return sauvegarderGrapheDot(chemin_sauvegarde);
         }
         else if (chemin_sauvegarde.contains(".graphml")) {

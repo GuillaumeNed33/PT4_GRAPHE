@@ -3,8 +3,6 @@ import Model.Forme_Sommet;
 import View.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
@@ -18,7 +16,7 @@ public class Main extends Application {
 
         /** GESTION DES NODES **/
         VBox root = new VBox();
-        TabPane menu = FXMLLoader.load(getClass().getResource("/fxml/MainApplication.fxml"));
+        TabPane menu = FXMLLoader.load(getClass().getResource("/fxml/MainMenu.fxml"));
         Sommet s = new Sommet("id", Forme_Sommet.Cercle, 100,100);
         Sommet s1 = new Sommet("moche", Forme_Sommet.Rectangle, 300,620);
         Arete a = new Arete(s,s1);

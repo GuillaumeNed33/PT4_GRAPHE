@@ -946,21 +946,13 @@ public class Graphe {
     }
 
     /**
-     <<<<<<< HEAD
      * Permet de changer la couleur d'un sommet en fonction d'une couleur
      * minimale et d'une couleur maximale et de la valeur de l'indice du sommet.
      * @param sommet Représente le sommet sur lequel on doit modifier la couleur.
      * @param cmin Représente le min intervalle de couleur.
      * @param cmax Représente la max intervalle de couleur.
-    =======
-     * Fonction permettant de changer la couleur d'un sommet en fonction d'une couleur
-     * minimale et d'une couleur maximale et de la valeur de l'indice du sommet
-     * @param sommet
-     * @param cmin
-     * @param cmax
-    >>>>>>> acfb859f85741245b4d4bbed9c13b287efbde186
      */
-    public void changerCouleurSommet (Sommet sommet, Color cmin, Color cmax){
+      public void changerCouleurSommet (Sommet sommet, Color cmin, Color cmax){
         if (indiceFixe()) {
             int valeur = sommet.getIndice();
             double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMaxSommet(), indiceMinSommet());

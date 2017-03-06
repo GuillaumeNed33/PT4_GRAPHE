@@ -1,4 +1,5 @@
 
+import Model.Forme_Sommet;
 import View.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,8 +19,8 @@ public class Main extends Application {
         /** GESTION DES NODES **/
         VBox root = new VBox();
         TabPane menu = FXMLLoader.load(getClass().getResource("/fxml/MainApplication.fxml"));
-        Sommet s = new CercleSommet("id",100,100);
-        Sommet s1 = new RectangleSommet("moche", 300,620);
+        Sommet s = new Sommet("id", Forme_Sommet.Cercle, 100,100);
+        Sommet s1 = new Sommet("moche", Forme_Sommet.Rectangle, 300,620);
         Arete a = new Arete(s,s1);
         Pane test = new Pane();
         test.getChildren().addAll(s,a,s1);

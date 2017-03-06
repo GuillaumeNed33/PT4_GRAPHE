@@ -77,7 +77,7 @@ public class Graphe {
         extremites = new HashMap<Arete, Pair<Sommet, Sommet>>();
         algorithmeRepresentation = new AlgorithmeRepresentation(this);
         if (fichier.contains(".gv")) {
-            chargerGrapheDOT(fichier);
+            chargerGrapheGV(fichier);
         }
         else if (fichier.contains(".graphml")) {
             chargerGrapheGRAPHML(fichier);
@@ -99,10 +99,10 @@ public class Graphe {
     }
 
     /**
-     * Charge les fichiers .DOT.
+     * Charge les fichiers .GV.
      * @param fichier Représente le path du fichier à charger.
      */
-    private void chargerGrapheDOT(String fichier){
+    private void chargerGrapheGV(String fichier){
         String chaine = "";
         try{
             InputStream ips=new FileInputStream(fichier);
@@ -115,52 +115,29 @@ public class Graphe {
                 nom = decoup[1];
             }
             else {
-                throw new Exception("Error syntax in the .dot file : '"+fichier+"'.");
+                throw new Exception("Error syntax in the .gv file : '"+fichier+"'.");
             }
             while ((ligne=br.readLine())!=null){
-                if(ligne.contains("size=")) {
-                    decoup = ligne.split("\"");
-                    String [] decoup2 = decoup[1].split(",");
-                    //taille = new Size(Integer.parseInt(decoup2[0]), Integer.parseInt(decoup2[1]));
-                    //  System.out.println(taille);
-                }
-
                 //GESTION DES NOEUDS
                 if(!ligne.contains(" -> ") &&
                         !ligne.contains(" -- ") &&
                         !ligne.contains("size")) {
-                    if(ligne.contains("[")) {
-                        String[] node = ligne.split("\\[");
-                        Sommet s = new Sommet(node[0].trim().replaceAll("\"",""));
-                    }
-                    else {
-                        String node = ligne.trim().replaceAll("\"", "");
-                        Sommet s = new Sommet(node);
-                    }
-
                     //PROPRIETE
                     if(ligne.contains("[")) {
-
-                        /*** http://graphviz.org/Documentation/dotguide.pdf ***/
-                        if(ligne.contains("type")) {
-                            String [] type = ligne.split("type=");
-                            String [] typeFinal = type[1].split(" ");
-                        }
-                        if(ligne.contains("style")) {
-                            String [] style = ligne.split("style=");
-                            String [] styleFinal = style[1].split(" ");
-                        }
+                        String colorFinal = null, id = null, labelFinal = null;
                         if(ligne.contains("color")) {
                             String [] color = ligne.split("color=");
-                            String [] colorFinal = color[1].split(" ");
-                        }
-                        if(ligne.contains("fontcolor")) {
-                            String [] fontcolor = ligne.split("fontcolor=");
-                            String [] fontcolorFinal = fontcolor[1].split(" ");
+                            colorFinal = color[1].split(", ")[0];
                         }
                         if(ligne.contains("label")) {
                             String [] label = ligne.split("label=\"");
-                            String [] labelFinal = label[1].split("\"");
+                            labelFinal = label[1].split("\"")[0];
+                            id = ligne.split("\"")[0].split("\\[")[0].trim().replace("node", "");
+                            
+                            Sommet s = new Sommet(Integer.parseInt(id));
+                            s.setTag(labelFinal);
+                            s.setCouleurSommet(Color.web(colorFinal));
+                            ajouterSommetInitial(s);
                         }
                     }
                 }
@@ -176,21 +153,9 @@ public class Graphe {
 
                         //PROPRIETE
                         if(ligne.contains("[")) {
-                            if(ligne.contains("type")) {
-                                String [] type = ligne.split("type=");
-                                String [] typeFinal = type[1].split(" ");
-                            }
-                            if(ligne.contains("style")) {
-                                String [] style = ligne.split("style=");
-                                String [] styleFinal = style[1].split(" ");
-                            }
                             if(ligne.contains("color")) {
                                 String [] color = ligne.split("color=");
                                 String [] colorFinal = color[1].split(" ");
-                            }
-                            if(ligne.contains("fontcolor")) {
-                                String [] fontcolor = ligne.split("fontcolor=");
-                                String [] fontcolorFinal = fontcolor[1].split(" ");
                             }
                             if(ligne.contains("label")) {
                                 String [] label = ligne.split("label=\"");
@@ -209,23 +174,10 @@ public class Graphe {
                         //ajouterArete(s1,s2);
 
                         //PROPRIETE
-                        /*** http://graphviz.org/Documentation/dotguide.pdf ***/
                         if(ligne.contains("[")) {
-                            if(ligne.contains("type")) {
-                                String [] type = ligne.split("type=");
-                                String [] typeFinal = type[1].split(" ");
-                            }
-                            if(ligne.contains("style")) {
-                                String [] style = ligne.split("style=");
-                                String [] styleFinal = style[1].split(" ");
-                            }
                             if(ligne.contains("color")) {
                                 String [] color = ligne.split("color=");
                                 String [] colorFinal = color[1].split(" ");
-                            }
-                            if(ligne.contains("fontcolor")) {
-                                String [] fontcolor = ligne.split("fontcolor=");
-                                String [] fontcolorFinal = fontcolor[1].split(" ");
                             }
                             if(ligne.contains("label")) {
                                 String [] label = ligne.split("label=\"");
@@ -340,10 +292,7 @@ public class Graphe {
                     nom = recupId[1].split("\"")[0];
                     String [] recupType = ligne.split("edgedefault=\"");
                     String typeArete = recupType[1].split("\"")[0];
-                    if(typeArete.equals("undirected"))
-                        directedGraph = false;
-                    else
-                        directedGraph = true;
+                    directedGraph = !typeArete.equals("undirected");
                 }
 
                 else if (ligne.contains("<node-style ")) {
@@ -711,7 +660,7 @@ public class Graphe {
             }
 
             sommets.remove(sommet);
-            boolean tempAretesASupprimer = incidentes.isEmpty();;
+            boolean tempAretesASupprimer = incidentes.isEmpty();
         }
     }
 
@@ -772,11 +721,7 @@ public class Graphe {
      */
     private boolean verificationPossibiliteAjoutArete(Sommet sommet_1, Sommet sommet_2) {
 
-        if (sommet_1.equals(sommet_2) || (sommet_1.equals(null) || sommet_2.equals(null)) || verificationDoublonArete(sommet_1, sommet_2)) {
-            return false;
-        }
-
-        return true;
+        return !(sommet_1.equals(sommet_2) || (sommet_1.equals(null) || sommet_2.equals(null)) || verificationDoublonArete(sommet_1, sommet_2));
     }
 
     /**
@@ -836,11 +781,8 @@ public class Graphe {
      * @return Retourne vrai si les coordonnées sont valide ou faux le cas contraire.
      */
     public boolean verificationCoordonneesValide(float coord_x, float coord_y, Size tailleFenetre) {
-        if(coord_x >= 0 && coord_y >= 0 && coord_x <= tailleFenetre.width && coord_y <= tailleFenetre.height) {
-            return true;
-        }
+        return coord_x >= 0 && coord_y >= 0 && coord_x <= tailleFenetre.width && coord_y <= tailleFenetre.height;
 
-        return false;
     }
 
     /**
@@ -1002,7 +944,11 @@ public class Graphe {
      * @return
      */
     private double intensite(int valeur, double cmax, double cmin, int indiceMax, int indiceMin){
-        return (((valeur - indiceMin)/(indiceMax - indiceMin)) * (cmax - cmin) + cmin);
+        if (indiceMax != indiceMin) {
+            return (((valeur - indiceMin) / (indiceMax - indiceMin)) * (cmax - cmin) + cmin);
+        }
+        else
+            return cmin;
     }
 
 
@@ -1042,7 +988,7 @@ public class Graphe {
         for (Sommet s : sommets){
             i += s.getIndice();
         }
-        return (i == 0 ? false : true);
+        return (i != 0);
     }
 
     /**

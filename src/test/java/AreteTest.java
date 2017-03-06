@@ -1,9 +1,8 @@
-import com.sun.glass.ui.Size;
-import javafx.scene.paint.Color;
-import org.junit.Assert;
-import org.junit.Test;
 import Model.Arete;
 import Model.Sommet;
+import com.sun.glass.ui.Size;
+import javafx.scene.paint.Color;
+import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
@@ -24,9 +23,6 @@ public class AreteTest {
 
         Arete areteB = new Arete(departB,arriveeB);
         assertEquals(areteB.getSortie(), arriveeB);
-
-        assertEquals(arete.getId(),1,0);
-        assertEquals(areteB.getId(),2,0);
     }
 
     @Test

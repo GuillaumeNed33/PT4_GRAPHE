@@ -11,16 +11,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class SommetTest {
     @Test
-    public void testId() {
-
-        Sommet sommet = new Sommet("UnNom");
-        assertEquals(sommet.getId(),1,0);
-
-        Sommet sommet1 = new Sommet(13);
-        assertEquals(sommet1.getId(),13,0);
-    }
-
-    @Test
     public void testCreationSommet() {
         Sommet sommet= new Sommet("s1");
         assertEquals(sommet.getTag(),"s1");

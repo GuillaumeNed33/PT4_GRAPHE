@@ -1,4 +1,3 @@
-import Model.Arete;
 import Model.Graphe;
 import Model.Sommet;
 import com.sun.glass.ui.Size;

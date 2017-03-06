@@ -11,17 +11,23 @@ import static org.junit.Assert.assertEquals;
  */
 public class SommetTest {
     @Test
+    public void testId() {
+
+        Sommet sommet = new Sommet("UnNom");
+        assertEquals(sommet.getId(),1,0);
+
+        Sommet sommet1 = new Sommet(13);
+        assertEquals(sommet1.getId(),13,0);
+    }
+
+    @Test
     public void testCreationSommet() {
-        Sommet sommet= new Sommet("s1",10,10);
+        Sommet sommet= new Sommet("s1");
         assertEquals(sommet.getTag(),"s1");
 
         Color couleur = Color.web("000000");
         assertEquals(sommet.getCouleurSommet(), couleur);
 
-
-        // On les parse en string car si assertEqual compare les Size
-        // il compare leurs adresses memoires, ce qui n'est pas
-        // le cas pour un string
         String size = new Size(10,10).toString();
         assertEquals(sommet.getTailleForme().toString(),size);
     }
@@ -57,7 +63,6 @@ public class SommetTest {
         assertEquals(sommet.getX(),13,0);
         assertEquals(sommet.getY(),15,0);
     }
-
     @Test
     public void testSetIndice() {
         Sommet sommet = new Sommet("s1",10,10);
@@ -66,6 +71,7 @@ public class SommetTest {
         sommet.setIndice(5);
         assertEquals(sommet.getIndice(),5);
     }
+
     @Test
     public void testSetForme() {
         Sommet sommet = new Sommet("s1",10,10);
@@ -73,5 +79,18 @@ public class SommetTest {
 
         sommet.setForme(Forme_Sommet.Losange);
         assertEquals(sommet.getForme(),Forme_Sommet.Losange);
+    }
+
+    @Test
+    public void testTaille() {
+        Sommet sommet = new Sommet("UnSommet");
+        assertEquals(sommet.getTailleForme().height,10,0);
+        assertEquals(sommet.getTailleForme().width,10,0);
+
+        Size size = new Size(15,15);
+        sommet.setTailleForme(size);
+
+        assertEquals(sommet.getTailleForme().height,15,0);
+        assertEquals(sommet.getTailleForme().width,15,0);
     }
 }

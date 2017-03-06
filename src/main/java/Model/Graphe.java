@@ -497,7 +497,7 @@ public class Graphe {
 
             if (!sommets.isEmpty()) {
                 for (Sommet sommet : sommets) {
-                    fichierSortie.println("\t\t< node id=\"" + sommet.getTag() + "\" style=\"\" />");
+                    fichierSortie.println("\t\t< node id=\"" + sommet.getTag() + "\" />");
                 }
             }
 

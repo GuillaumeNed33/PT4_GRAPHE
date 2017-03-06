@@ -89,6 +89,17 @@ public class Sommet {
     }
 
 
+    public Sommet(int id) {
+        this.id = id;
+        this.tag = "";
+        this.x = 0;
+        this.y = 0;
+        this.forme = Forme_Sommet.Cercle;
+        this.tailleForme = new Size(10,10);
+        this.couleurSommet = Color.web("000000");
+    }
+
+
     // Accesseur et Mutateurs
 
     public int getId() {

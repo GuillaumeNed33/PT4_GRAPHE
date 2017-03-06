@@ -1,18 +1,24 @@
 package Controller;
 
 import Model.Graphe;
+import View.Arete;
+import View.Sommet;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -20,7 +26,17 @@ import javafx.stage.Stage;
 import java.io.File;
 
 public class FXMLController {
+
+    private Parent Pop_up_view;
+    private Stage pop_up_window;
+
     private Graphe g;
+
+    public FXMLController() {
+        pop_up_window = new Stage();
+        pop_up_window.initModality(Modality.APPLICATION_MODAL);
+        pop_up_window.setResizable(false);
+    }
     @FXML private Pane pane;
 
     private ContextMenu contextMenu = new ContextMenu();
@@ -89,8 +105,7 @@ public class FXMLController {
         }
     }
 
-    public FXMLController(){
-    }
+
     /**
      * Fonction ouvrant une fenetre (FileChooser) permettant l'importation d'un fichier dans le logiciel.
      */
@@ -187,13 +202,9 @@ public class FXMLController {
     public void clickAjouterArete() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AjoutArete.fxml"));
-            Parent root1 = fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Ajouter Arete");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setResizable(false);
-            stage.setScene(new Scene(root1));
-            stage.show();
+            pop_up_window.setTitle("Ajouter Arête");
+            pop_up_window.setScene(new Scene((Parent)fxmlLoader.load()));
+            pop_up_window.show();
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -202,13 +213,9 @@ public class FXMLController {
     @FXML public void clickSupprimer() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/SupprSommer.fxml"));
-            Parent root1 = fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Confirmer suppression");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setResizable(false);
-            stage.setScene(new Scene(root1));
-            stage.show();
+            pop_up_window.setTitle("Confirmer suppression");
+            pop_up_window.setScene(new Scene((Parent)fxmlLoader.load()));
+            pop_up_window.show();
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -275,4 +282,21 @@ public class FXMLController {
     @FXML public void clickCouleurElement(ActionEvent event) {
 
     }
+
+    /**
+     *
+     */
+    @FXML public void clickOptionGraphe() {
+        try {
+            pop_up_window.setTitle("Options Graphe");
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TailleGraphe.fxml"));
+            pop_up_window.setScene(new Scene((Parent)fxmlLoader.load()));
+            pop_up_window.show();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 }

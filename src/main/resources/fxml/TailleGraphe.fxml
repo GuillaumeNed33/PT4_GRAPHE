@@ -1,45 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.VBox?>
 
-<GridPane xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
-   <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-   </rowConstraints>
+<VBox stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+      <GridPane hgap="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" vgap="5.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
          <children>
-            <Label layoutX="87.0" layoutY="71.0" scaleShape="false" text="Sommets">
+            <Label text="Sommets :">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="113.0" layoutY="122.0" text="Minimum" />
-            <Label layoutX="309.0" layoutY="122.0" text="Maximum" />
-            <Label layoutX="113.0" layoutY="270.0" text="Minimum" />
-            <Label layoutX="309.0" layoutY="270.0" text="Maximum" />
-            <Label layoutX="87.0" layoutY="224.0" prefHeight="17.0" prefWidth="52.0" scaleShape="false" text="Arêtes">
+            <Label text="Minimum" GridPane.rowIndex="1" />
+            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Label text="Maximum" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Label text="Minimum" GridPane.rowIndex="3" />
+            <Label text="Maximum" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Label text="Arêtes : " GridPane.rowIndex="2">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Button layoutX="410.0" layoutY="344.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="OK" />
-            <Button layoutX="492.0" layoutY="344.0" mnemonicParsing="false" text="Annuler" />
-            <TextField layoutX="175.0" layoutY="118.0" prefHeight="25.0" prefWidth="92.0" />
-            <TextField layoutX="371.0" layoutY="118.0" prefHeight="25.0" prefWidth="92.0" />
-            <TextField layoutX="175.0" layoutY="266.0" prefHeight="25.0" prefWidth="92.0" />
-            <TextField layoutX="371.0" layoutY="266.0" prefHeight="25.0" prefWidth="92.0" />
          </children>
-      </Pane>
+      </GridPane>
+      <HBox alignment="TOP_RIGHT">
+         <children>
+            <Button mnemonicParsing="false" text="Ok">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" text="Annuler">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </HBox>
    </children>
-</GridPane>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</VBox>

@@ -1,3 +1,4 @@
+import Model.Arete;
 import Model.Graphe;
 import Model.Sommet;
 import com.sun.glass.ui.Size;
@@ -135,7 +136,7 @@ public class GrapheTest {
         Assert.assertEquals(s3.getIndice(),2);
 
         g.supprimerSommet(s3);
-        g.setIndiceDegre(s);
+        g.setIndiceDegre();
         g.setIndiceDegre(s2);
         g.setIndiceDegre(s4);
         Assert.assertEquals(s2.getIndice(),1);
@@ -246,6 +247,7 @@ public class GrapheTest {
         g.ajouterSommet(s2, m);
 
         g.ajouterArete(s,s2);
+        g.setIndiceDegre();
 
         g.changerCouleurArete(g.getAretes().get(0), Color.BLACK,Color.BLACK);
 

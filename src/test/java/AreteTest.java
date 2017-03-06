@@ -21,6 +21,7 @@ public class AreteTest {
 
         Arete arete = new Arete(depart,arrivee);
         assertEquals(arete.getEntree(),depart);
+
         Arete areteB = new Arete(departB,arriveeB);
         assertEquals(areteB.getSortie(), arriveeB);
 

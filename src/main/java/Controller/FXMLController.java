@@ -18,6 +18,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -37,7 +38,7 @@ public class FXMLController {
         pop_up_window.initModality(Modality.APPLICATION_MODAL);
         pop_up_window.setResizable(false);
     }
-    @FXML private Pane pane;
+    @FXML private StackPane subPane;
 
     private ContextMenu contextMenu = new ContextMenu();
     private MenuItem proprieteSommet = new MenuItem("Tableau de propriétés du sommet");
@@ -91,18 +92,18 @@ public class FXMLController {
             copierEtiquetteSommet.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    //TODO On peut pasle faire maintenant lol
+                    //TODO Il faut pouvoir récupérer un sommet
                 }
             });
 
             collerEtquetteSommet.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    //TODO On peut pasle faire maintenant lol
+                    //TODO Il faut pouvoir récupérer un sommet
                 }
             });
 
-            contextMenu.show(pane, mouseEvent.getScreenX(), mouseEvent.getScreenY());
+            contextMenu.show(subPane, mouseEvent.getScreenX(), mouseEvent.getScreenY());
         } else {
             //Actions autre que clic droit
 
@@ -137,7 +138,7 @@ public class FXMLController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(exporter);
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("DOT", "*.dot"),
+                new FileChooser.ExtensionFilter("GV", "*.gv"),
                 new FileChooser.ExtensionFilter("GRAPHML", "*.graphml")
         );
         return fileChooser;

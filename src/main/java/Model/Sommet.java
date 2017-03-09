@@ -103,6 +103,11 @@ public class Sommet {
         return id;
     }
 
+    public void setId(int id) {
+
+        this.id = id;
+    }
+
     public String getTag() {
 
         return tag;
@@ -138,7 +143,27 @@ public class Sommet {
     }
 
     public void setForme(Forme_Sommet forme) {
+
         this.forme = forme;
+    }
+
+    public void setForme(String forme) {
+
+        if (forme.equals("circle") || forme.equals("ellipse")) {
+            this.forme = Forme_Sommet.Cercle;
+        }
+        else if (forme.equals("rectangle") || forme.equals("square")) {
+            this.forme = Forme_Sommet.Rectangle;
+        }
+        else if (forme.equals("triangle")) {
+            this.forme = Forme_Sommet.Triangle;
+        }
+        else if (forme.equals("losange")) {
+            this.forme = Forme_Sommet.Losange;
+        }
+        else { // Par défaut
+            this.forme = Forme_Sommet.Cercle;
+        }
     }
 
     public Size getTailleForme() {

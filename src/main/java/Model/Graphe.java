@@ -9,12 +9,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by audreylentilhac on 06/02/2017.
  */
 
-/**
+/**Pattern
  *  Classe Graphe
  */
 public class Graphe {
@@ -76,10 +78,10 @@ public class Graphe {
         incidentes = new HashMap<Sommet, ArrayList<Arete>>();
         extremites = new HashMap<Arete, Pair<Sommet, Sommet>>();
         algorithmeRepresentation = new AlgorithmeRepresentation(this);
-        if (fichier.contains(".gv")) {
+        if (fichier.matches(".+.gv$")) {
             chargerGrapheGV(fichier);
         }
-        else if (fichier.contains(".graphml")) {
+        else if (fichier.matches(".+.graphml$")) {
             chargerGrapheGRAPHML(fichier);
         }
         setAlgorithmeRepresentation('a', largeurEcran);
@@ -128,7 +130,7 @@ public class Graphe {
                 // [1] -> [
                 // [2 à n-1] -> ...
                 // [n] -> ];
-                // -----------------------------
+                // ---------------------------
                 // Creation arete :
                 // "node1" -> "node2" [ ... ]
                 // Après le split sur un espace
@@ -137,84 +139,51 @@ public class Graphe {
                 // [2] -> "node2"
                 // [3 à n-1] -> ...
                 // [n] -> ];
-                // label=\"+.+\"
+                //
                 if (elementLigne.length > 1) {
+
                     if (elementLigne[1].equals("[")) { // Creation sommet
-                        System.out.println("chui passé");
+
+                        String elementSommet = ligne.split("\\[+.+;$")[0].trim();
+                        int idSommet = Integer.parseInt(elementSommet.split("node")[1].replace("\"", ""));
+
+                        Sommet sommet;
+
+                        if (!verificationSommetOuAreteDoublonParId(true, idSommet)) { // Pas de doublon
+
+                            sommet = new Sommet(idSommet);
+                        }
+                        else {
+                            sommet = trouverSommetParID(idSommet);
+                        }
+
+                        Pattern pattern = Pattern.compile("label=\"+.+\""); // label du sommet
+                        Matcher matcher = pattern.matcher(ligne); // On le cherche dans la ligne
+
+                        if (matcher.find()) { // Si le label existe
+                            String label = matcher.group().split("=\"")[1];
+                            label = label.replaceAll("\"$", "");
+                            sommet.setTag(label);
+                        }
+
+                        pattern = Pattern.compile("shape=+.+\\ "); // forme du sommet
+                        matcher = pattern.matcher(ligne); // On le cherche dans la ligne
+
+                        if (matcher.find()) {
+                            String shape = matcher.group().split("=")[1].trim();
+                            sommet.setForme(shape);
+                        }
+
+                        sommets.add(sommet);
+
                     } else if (elementLigne[1].equals("->")) { // Creation arete
 
+                        String elementSommet = ligne.split("\\[+.+;$")[0].trim();
+                        String[] sommet = elementSommet.split("->");
+                        int idSommetSource = Integer.parseInt(sommet[0].split("node")[1].replace("\"", "").trim());
+                        int idSommetDestination = Integer.parseInt(sommet[1].split("node")[1].replace("\"", "").trim());
                     }
                 }
-
-                //GESTION DES NOEUDS
-                /*if(!ligne.contains(" -> ") &&
-                        !ligne.contains(" -- ") &&
-                        !ligne.contains("size")) {
-                    //PROPRIETE
-                    if(ligne.contains("[")) {
-                        String colorFinal = null, id = null, labelFinal = null;
-                        if(ligne.contains("color")) {
-                            String [] color = ligne.split("color=");
-                            colorFinal = color[1].split(", ")[0];
-                        }
-                        if(ligne.contains("label")) {
-                            String [] label = ligne.split("label=\"");
-                            labelFinal = label[1].split("\"")[0];
-                            id = ligne.split("\"")[0].split("\\[")[0].trim().replace("node", "");
-                            
-                            Sommet s = new Sommet(Integer.parseInt(id));
-                            s.setTag(labelFinal);
-                            s.setCouleurSommet(Color.web(colorFinal));
-                            ajouterSommetInitial(s);
-                        }
-                    }
-                }
-
-                if(nom == "graph") {
-                    //GESTION DES ARETES
-                    if(ligne.contains("--") && !ligne.contains("label=\"--")) {
-                        decoup = ligne.split("->");
-                        String [] name2 = decoup[1].split("\\[");
-                        Sommet s1 = new Sommet(decoup[0].trim().replaceAll("\"", ""));
-                        Sommet s2 = new Sommet(name2[0].trim().replaceAll("\"", ""));
-                        //ajouterArete(s1,s2);
-
-                        //PROPRIETE
-                        if(ligne.contains("[")) {
-                            if(ligne.contains("color")) {
-                                String [] color = ligne.split("color=");
-                                String [] colorFinal = color[1].split(" ");
-                            }
-                            if(ligne.contains("label")) {
-                                String [] label = ligne.split("label=\"");
-                                String [] labelFinal = label[1].split("\"");
-                            }
-                        }
-                    }
-                }
-                else {
-                    //GESTION DES ARETES DIRIGEES
-                    if(ligne.contains("->") && !ligne.contains("label=\"->")) {
-                        decoup = ligne.split("->");
-                        String [] name2 = decoup[1].split("\\[");
-                        Sommet s1 = new Sommet(decoup[0].trim().replaceAll("\"", ""));
-                        Sommet s2 = new Sommet(name2[0].trim().replaceAll("\"", ""));
-                        //ajouterArete(s1,s2);
-
-                        //PROPRIETE
-                        if(ligne.contains("[")) {
-                            if(ligne.contains("color")) {
-                                String [] color = ligne.split("color=");
-                                String [] colorFinal = color[1].split(" ");
-                            }
-                            if(ligne.contains("label")) {
-                                String [] label = ligne.split("label=\"");
-                                String [] labelFinal = label[1].split("\"");
-                            }
-                        }
-                    }
-                }*/
-                // System.out.println(ligne);
                 chaine+=ligne+"\n";
             }
             br.close();
@@ -222,6 +191,39 @@ public class Graphe {
         catch (Exception e){
             System.out.println(e.toString());
         }
+    }
+
+    /**
+     *
+     * @param sommetOuArete Si la valeur vaut true alors c'est sommet sinon c'est une arete.
+     * @param id
+     * @return
+     */
+    private boolean verificationSommetOuAreteDoublonParId(boolean sommetOuArete, int id) {
+
+        boolean existe = false;
+        int cpt = 0;
+
+        if (sommetOuArete) {
+            while (!existe && cpt < sommets.size()) {
+                if (sommets.get(cpt).getId() == id) {
+                    existe = true;
+                } else {
+                    cpt++;
+                }
+            }
+        }
+        else {
+            while (!existe && cpt < aretes.size()) {
+                if (aretes.get(cpt).getId() == id) {
+                    existe = true;
+                } else {
+                    cpt++;
+                }
+            }
+        }
+
+        return existe;
     }
 
     /**
@@ -369,8 +371,8 @@ public class Graphe {
                     String [] recupTarget = ligne.split("target=\"");
                     String dest = recupTarget[1].split("\"")[0];
 
-                    if(findSommet(source) != null && findSommet(dest) != null)
-                        ajouterAreteInitial(findSommet(source), findSommet(dest), id);
+                    if(trouverSommetParTag(source) != null && trouverSommetParTag(dest) != null)
+                        ajouterAreteInitial(trouverSommetParTag(source), trouverSommetParTag(dest), id);
                 }
             }
             br.close();
@@ -502,17 +504,32 @@ public class Graphe {
         return false;
     }
 
-    private Sommet findSommet(String source) {
+    private Sommet trouverSommetParID(int id) {
         boolean trouve = false;
-        int i = 0;
+        int cpt = 0;
         Sommet res = null;
-        while(!trouve && i < sommets.size()) {
-            if(sommets.get(i).getTag().equals(source)) {
+        while(!trouve && cpt < sommets.size()) {
+            if(sommets.get(cpt).getId() == id) {
                 trouve = true;
-                res = sommets.get(i);
+                res = sommets.get(cpt);
             }
             else
-                i++;
+                cpt++;
+        }
+        return res;
+    }
+
+    private Sommet trouverSommetParTag(String source) {
+        boolean trouve = false;
+        int cpt = 0;
+        Sommet res = null;
+        while(!trouve && cpt < sommets.size()) {
+            if(sommets.get(cpt).getTag().equals(source)) {
+                trouve = true;
+                res = sommets.get(cpt);
+            }
+            else
+                cpt++;
         }
         return res;
     }

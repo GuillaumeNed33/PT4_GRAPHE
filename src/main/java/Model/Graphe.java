@@ -524,9 +524,12 @@ public class Graphe {
      * @return Retourne la liste des sommets voisins.
      */
     public ArrayList<Sommet> sommetsVoisins(Sommet sommet_origine){
-        ArrayList<Sommet> voisinage = null;
+        ArrayList<Sommet> voisinage = new ArrayList<Sommet>();
         for(Arete arete : incidentes.get(sommet_origine)){
-            voisinage.add(source(arete).getTag() == sommet_origine.getTag() ? destination(arete) : source(arete));
+            if( source(arete).getTag() == sommet_origine.getTag()){
+                voisinage.add(destination(arete));
+            }
+            //voisinage.add(source(arete).getTag() == sommet_origine.getTag() ? destination(arete) : source(arete));
         }
         return voisinage;
     }
@@ -547,8 +550,8 @@ public class Graphe {
      * @return Retourne le sommet de destination.
      */
     public Sommet destination(Arete arete){
-
-        return extremites.get(arete).getValue();
+        Sommet destination = extremites.get(arete).getValue();
+        return destination;
     }
 
     /**
@@ -556,15 +559,14 @@ public class Graphe {
      * @param voisins Représente la liste de sommets de référence pour déterminer les sommets n'étant pas voisins.
      * @return Retourne la liste des sommets non voisins.
      */
-    public ArrayList<Sommet> sommetsNonVoisins(ArrayList<Sommet> voisins){
-        ArrayList<Sommet> nonVoisins = null;
+    public ArrayList<Sommet> sommetsNonVoisins(ArrayList<Sommet> voisins, Sommet sommetOrigine){
+        ArrayList<Sommet> nonVoisins = new ArrayList<Sommet>();
         for (Sommet s: sommets) {
-            if (!voisins.contains(s))
+            if (!voisins.contains(s) && s!= sommetOrigine)
                 nonVoisins.add(s);
         }
         return nonVoisins;
     }
-
     /**
      * Permet d'ajouter un sommet dans le graphe.
      * Le boolean de retour permet de gérer les erreurs d'ajouts (aspect graphique).

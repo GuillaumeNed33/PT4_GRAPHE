@@ -446,6 +446,6 @@ public class GrapheTest {
         sommetsNonVoisinsS2.add(s4);
 
         Assert.assertEquals(g.sommetsVoisins(s),sommetsVoisinsS);
-        Assert.assertEquals(g.sommetsNonVoisins(sommetsVoisinsS2), sommetsNonVoisinsS2);
+        Assert.assertEquals(g.sommetsNonVoisins(sommetsVoisinsS2, s2), sommetsNonVoisinsS2);
     }
 }

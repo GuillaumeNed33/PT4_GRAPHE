@@ -88,7 +88,7 @@ public class AlgorithmeRepresentation {
      * @return Retourne la force de répulsion.
      */
     private float forceRepulsion(Sommet sommet){
-        ArrayList<Sommet> voisins = graphe.sommetsNonVoisins(graphe.sommetsVoisins(sommet));
+        ArrayList<Sommet> voisins = graphe.sommetsNonVoisins(graphe.sommetsVoisins(sommet), sommet);
         float force = 0;
         for (Sommet voisin : voisins) {
             double distanceCarre = Math.pow((double)(voisin.getX() - sommet.getX()), 2.) + Math.pow((double)(voisin.getY() - sommet.getY()), 2.);

@@ -1,0 +1,8 @@
+digraph "DotFileParser" {
+    size="12.8,10.24";
+    "node0" [ label="BOF" shape=ellipse ];
+    "node1" [ label="EOF" shape=ellipse ];
+    "node2" [ label="graphName" shape=ellipse ];
+    "node0" -> "node1" [ color=black fontcolor=black label="Empty file" ];
+    "node0" -> "node2" [ color=black ];
+}

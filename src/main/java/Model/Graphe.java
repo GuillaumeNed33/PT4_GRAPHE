@@ -139,49 +139,18 @@ public class Graphe {
                 // [2] -> "node2"
                 // [3 à n-1] -> ...
                 // [n] -> ];
-                //
                 if (elementLigne.length > 1) {
 
                     if (elementLigne[1].equals("[")) { // Creation sommet
 
                         String elementSommet = ligne.split("\\[+.+;$")[0].trim();
-                        int idSommet = Integer.parseInt(elementSommet.split("node")[1].replace("\"", ""));
+                        int idImportationSommet = Integer.parseInt(elementSommet.split("node")[1].replace("\"", ""));
 
-                        Sommet sommet;
-
-                        if (!verificationSommetOuAreteDoublonParId(true, idSommet)) { // Pas de doublon
-
-                            sommet = new Sommet(idSommet);
-                        }
-                        else {
-                            sommet = trouverSommetParID(idSommet);
-                        }
-
-                        Pattern pattern = Pattern.compile("label=\"+.+\""); // label du sommet
-                        Matcher matcher = pattern.matcher(ligne); // On le cherche dans la ligne
-
-                        if (matcher.find()) { // Si le label existe
-                            String label = matcher.group().split("=\"")[1];
-                            label = label.replaceAll("\"$", "");
-                            sommet.setTag(label);
-                        }
-
-                        pattern = Pattern.compile("shape=+.+\\ "); // forme du sommet
-                        matcher = pattern.matcher(ligne); // On le cherche dans la ligne
-
-                        if (matcher.find()) {
-                            String shape = matcher.group().split("=")[1].trim();
-                            sommet.setForme(shape);
-                        }
-
-                        sommets.add(sommet);
+                        verificationSommetDoublonParIdImportation(idImportationSommet, false, ligne);// Pas de doublon
 
                     } else if (elementLigne[1].equals("->")) { // Creation arete
 
-                        String elementSommet = ligne.split("\\[+.+;$")[0].trim();
-                        String[] sommet = elementSommet.split("->");
-                        int idSommetSource = Integer.parseInt(sommet[0].split("node")[1].replace("\"", "").trim());
-                        int idSommetDestination = Integer.parseInt(sommet[1].split("node")[1].replace("\"", "").trim());
+                        creationArete(ligne);
                     }
                 }
                 chaine+=ligne+"\n";
@@ -193,37 +162,127 @@ public class Graphe {
         }
     }
 
+
+    private void ajoutAttributsSommet(Sommet sommet, String ligne, boolean existe) {
+        if (sommet != null) {
+
+            Pattern pattern = Pattern.compile("label=\"+.+\""); // label du sommet
+            Matcher matcher = pattern.matcher(ligne); // On le cherche dans la ligne
+
+            if (matcher.find()) { // Si le label existe
+                String label = matcher.group().split("=\"")[1];
+                label = label.replaceAll("\"$", "");
+                sommet.setTag(label);
+            }
+
+            pattern = Pattern.compile("shape=+.+[a-z]"); // forme du sommet
+            matcher = pattern.matcher(ligne); // On le cherche dans la ligne
+
+            if (matcher.find()) {
+                String shape = matcher.group().split("=")[1];
+                sommet.setForme(shape);
+            }
+
+            if (!existe) {
+                sommets.add(sommet);
+            }
+        }
+    }
+
+    private void ajoutAttributsArete(String ligne) {
+
+        Arete arete = aretes.get(aretes.size()-1); // On récupère la dernière car dernière ajoutée
+
+        Pattern pattern = Pattern.compile("label=\"+.+\""); // label du sommet
+        Matcher matcher = pattern.matcher(ligne); // On le cherche dans la ligne
+
+        if (matcher.find()) { // Si le label existe
+            String tag = matcher.group().split("=\"")[1];
+            tag = tag.replaceAll("\"$", "");
+            arete.setTag(tag);
+        }
+
+        pattern = Pattern.compile("color=+.+[a-z]"); // forme du sommet
+        matcher = pattern.matcher(ligne); // On le cherche dans la ligne
+
+        if (matcher.find()) {
+            String couleur = matcher.group().split("=")[1];
+            arete.setCouleurAreteStr(couleur);
+        }
+    }
+
+    private void creationArete(String ligne) {
+        String elementSommet = ligne.split("\\[+.+;$")[0].trim();
+        String[] sommet = elementSommet.split("->");
+        int idImportationSommetSource = Integer.parseInt(sommet[0].split("node")[1].replace("\"", "").trim());
+        int idImportationSommetDestination = Integer.parseInt(sommet[1].split("node")[1].replace("\"", "").trim());
+
+        boolean doublonArete = verificationDoublonAreteParId(idImportationSommetSource, idImportationSommetDestination);
+
+        if (!doublonArete) {
+            Sommet sommetSource = verificationSommetDoublonParIdImportation(idImportationSommetSource, true, ligne);
+            Sommet sommetDestination = verificationSommetDoublonParIdImportation(idImportationSommetDestination, true, ligne);
+
+            ajouterArete(sommetSource, sommetDestination);
+
+            ajoutAttributsArete(ligne);
+        }
+    }
+
+    private boolean verificationDoublonAreteParId(int idSommetSource, int idSommetDestination) {
+
+        boolean doublonArete = false;
+        if (!aretes.isEmpty()) {
+            int cptArete = 0;
+            while (cptArete < aretes.size()) {
+                if (aretes.get(cptArete).getEntree().getIdImportation() == idSommetSource &&
+                        aretes.get(cptArete).getSortie().getIdImportation() == idSommetDestination) {
+                    doublonArete = true;
+                }
+
+                ++cptArete;
+            }
+        }
+
+        return doublonArete;
+    }
+
     /**
      *
-     * @param sommetOuArete Si la valeur vaut true alors c'est sommet sinon c'est une arete.
-     * @param id
+     * @param idImportation
      * @return
      */
-    private boolean verificationSommetOuAreteDoublonParId(boolean sommetOuArete, int id) {
+    private Sommet verificationSommetDoublonParIdImportation(int idImportation, boolean arete, String ligne) {
 
         boolean existe = false;
         int cpt = 0;
 
-        if (sommetOuArete) {
-            while (!existe && cpt < sommets.size()) {
-                if (sommets.get(cpt).getId() == id) {
-                    existe = true;
-                } else {
-                    cpt++;
-                }
-            }
-        }
-        else {
-            while (!existe && cpt < aretes.size()) {
-                if (aretes.get(cpt).getId() == id) {
-                    existe = true;
-                } else {
-                    cpt++;
-                }
+        Sommet sommet = null;
+        while (!existe && cpt < sommets.size()) {
+            if (sommets.get(cpt).getIdImportation() == idImportation) {
+                existe = true;
+                sommet = sommets.get(cpt);
+            } else {
+                cpt++;
             }
         }
 
-        return existe;
+        if (!existe && arete) {
+            sommet = new Sommet(idImportation);
+            sommets.add(sommet);
+        }
+        else if (!existe) {
+            sommet = new Sommet(idImportation);
+        }
+
+        if (arete) {
+            return sommet;
+        }
+        else {
+            ajoutAttributsSommet(sommet, ligne, existe);
+
+            return null;
+        }
     }
 
     /**
@@ -350,7 +409,7 @@ public class Graphe {
                     }
                     Sommet s = new Sommet(id);
                     ajouterSommetInitial(s);
-                    tmpIdNode = s.getId();
+                    tmpIdNode = s.getIdImportation();
                 }
 
                 else if (ligne.contains("<edge ")) {
@@ -414,7 +473,6 @@ public class Graphe {
 
             //Les specs détaillés indique que se sont des graphs non orientés
             fichierSortie.println ("graph \"" + nom + "\" {");
-
 
             fichierSortie.println("\tsize=\"" + taille.width + "," + taille.height + "\"");
 
@@ -504,12 +562,12 @@ public class Graphe {
         return false;
     }
 
-    private Sommet trouverSommetParID(int id) {
+    private Sommet trouverSommetParID(int idImportation) {
         boolean trouve = false;
         int cpt = 0;
         Sommet res = null;
         while(!trouve && cpt < sommets.size()) {
-            if(sommets.get(cpt).getId() == id) {
+            if(sommets.get(cpt).getIdImportation() == idImportation) {
                 trouve = true;
                 res = sommets.get(cpt);
             }
@@ -707,7 +765,6 @@ public class Graphe {
             }
 
             sommets.remove(sommet);
-            boolean tempAretesASupprimer = incidentes.isEmpty();
         }
     }
 
@@ -768,7 +825,7 @@ public class Graphe {
      */
     private boolean verificationPossibiliteAjoutArete(Sommet sommet_1, Sommet sommet_2) {
 
-        return !(sommet_1.equals(sommet_2) || (sommet_1.equals(null) || sommet_2.equals(null)) || verificationDoublonArete(sommet_1, sommet_2));
+        return !(sommet_1.equals(sommet_2) || (sommet_1.equals(null) || sommet_2.equals(null)) || verificationDoublonAreteParId(sommet_1.getId(), sommet_2.getId()));
     }
 
     /**
@@ -779,10 +836,17 @@ public class Graphe {
      */
     private boolean verificationDoublonArete(Sommet sommet_1, Sommet sommet_2) {
 
-        for(Arete arete : incidentes.get(sommet_1)) {
-            if (incidentes.get(sommet_2).contains(arete)) {
-                return true;
-            }
+        boolean doublonArete = false;
+        if (!aretes.isEmpty()) {
+            int cptArete = 0;
+            /*while (cptArete < aretes.size()) {
+                if (aretes.get(cptArete).getEntree().getIdImportation() == idImportationSommetSource &&
+                        aretes.get(cptArete).getSortie().getIdImportation() == idImportationSommetDestination) {
+                    doublonArete = true;
+                }
+
+                ++cptArete;
+            }*/
         }
 
         return false;

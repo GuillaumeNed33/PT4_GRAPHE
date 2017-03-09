@@ -40,6 +40,11 @@ public class Arete {
     private Color couleurArete;
 
     /**
+     * Représente la couleur de l'arete en string.
+     */
+    private String couleurAreteStr;
+
+    /**
      * Représente le poids d'un arête
      */
     private int poids;
@@ -61,6 +66,7 @@ public class Arete {
         id = ++idActuel;
         this.tag = "";
         couleurArete = Color.web("000000");
+        couleurAreteStr = "Black";
         this.poids = 0;
     }
 
@@ -76,6 +82,7 @@ public class Arete {
         id = ++idActuel;
         this.tag = "";
         couleurArete = Color.web("000000");
+        couleurAreteStr = "Black";
         this.poids = poids;
     }
 
@@ -91,6 +98,7 @@ public class Arete {
         id = ++idActuel;
         this.tag = tag;
         couleurArete = Color.web("000000");
+        couleurAreteStr = "Black";
         this.poids = 0;
     }
 
@@ -111,6 +119,14 @@ public class Arete {
 
     public void setCouleurArete(Color couleurArete) {
         this.couleurArete = couleurArete;
+    }
+
+    public String getCouleurAreteStr() {
+        return couleurAreteStr;
+    }
+
+    public void setCouleurAreteStr(String couleurAreteStr) {
+        this.couleurAreteStr = couleurAreteStr;
     }
 
     public int getPoids() { return poids; }

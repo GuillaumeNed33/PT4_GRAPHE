@@ -20,6 +20,11 @@ public class Sommet {
     private int id;
 
     /**
+     * Représente l'id contenu dans le fichier.
+     */
+    private int idImportation;
+
+    /**
      * Représente le tag du sommet.
      */
     private String tag;
@@ -59,7 +64,7 @@ public class Sommet {
      * @param nom Représente le nom du sommet.
      */
     public Sommet(String nom) {
-        this.id = ++idActuel;
+        this.id = idActuel++;
         this.tag = nom;
         this.x = 0;
         this.y = 0;
@@ -76,6 +81,7 @@ public class Sommet {
      * @param y Représente la coordonnée en y du sommet.
      */
     public Sommet(String tag, float x, float y) {
+        this.id = idActuel++;
         this.tag = tag;
         this.x = x;
         this.y = y;
@@ -85,8 +91,9 @@ public class Sommet {
     }
 
 
-    public Sommet(int id) {
-        this.id = id;
+    public Sommet(int idImportation) {
+        this.id = idActuel++;
+        this.idImportation = idImportation;
         this.tag = "";
         this.x = 0;
         this.y = 0;
@@ -103,9 +110,9 @@ public class Sommet {
         return id;
     }
 
-    public void setId(int id) {
+    public int getIdImportation() {
 
-        this.id = id;
+        return idImportation;
     }
 
     public String getTag() {

@@ -15,6 +15,9 @@ public class SommetTest {
         Sommet sommet= new Sommet("s1");
         assertEquals(sommet.getTag(),"s1");
 
+        Sommet sommet1 = new Sommet(3);
+        assertEquals(sommet1.getId(),3,0);
+
         Color couleur = Color.web("000000");
         assertEquals(sommet.getCouleurSommet(), couleur);
 

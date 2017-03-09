@@ -1,9 +1,13 @@
+import Model.Arete;
 import Model.Graphe;
 import Model.Sommet;
 import com.sun.glass.ui.Size;
 import javafx.scene.paint.Color;
+import javafx.util.Pair;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 /**
  * Created by Mathieu on 06/02/2017.
@@ -297,5 +301,151 @@ public class GrapheTest {
 
         Assert.assertEquals(g.indiceMaxArete(),12,0);
         Assert.assertEquals(g.indiceMinArete(),1,0);
+    }
+
+    @Test
+    public void testSetSommets() {
+
+        Size m = new Size(10,10);
+        Graphe g = new Graphe();
+
+        Sommet s = new Sommet("s1",1,1);
+        Sommet s2 = new Sommet("s2",2,2);
+        Sommet s3 = new Sommet("s3",3,3);
+        Sommet s4 = new Sommet("s4",4,4);
+
+        ArrayList<Sommet> sommets = new ArrayList<Sommet>();
+        sommets.add(s);
+        sommets.add(s2);
+        sommets.add(s3);
+        sommets.add(s4);
+
+        g.setSommets(sommets);
+        Assert.assertEquals(sommets, g.getSommets());
+    }
+
+    @Test
+    public void testSetAretes() {
+
+        Size m = new Size(10,10);
+        Graphe g = new Graphe();
+
+        Sommet s = new Sommet("s1",1,1);
+        Sommet s2 = new Sommet("s2",2,2);
+        Sommet s3 = new Sommet("s3",3,3);
+        Sommet s4 = new Sommet("s4",4,4);
+
+        Arete a = new Arete(s,s2);
+        Arete a1 = new Arete(s,s3);
+        Arete a2 = new Arete(s,s4);
+        Arete a3 = new Arete(s2,s3);
+
+        ArrayList<Arete> aretes = new ArrayList<Arete>();
+        aretes.add(a);
+        aretes.add(a1);
+        aretes.add(a2);
+        aretes.add(a3);
+
+        g.setAretes(aretes);
+
+        Assert.assertEquals(aretes,g.getAretes());
+    }
+
+    @Test
+    public void testGetIncidentes() {
+
+        Size m = new Size(10,10);
+        Graphe g = new Graphe();
+
+        Sommet s = new Sommet("s1",1,1);
+        Sommet s2 = new Sommet("s2",2,2);
+        Sommet s3 = new Sommet("s3",3,3);
+        Sommet s4 = new Sommet("s4",4,4);
+
+        g.ajouterSommet(s,m);
+        g.ajouterSommet(s2,m);
+        g.ajouterSommet(s3,m);
+        g.ajouterSommet(s4,m);
+
+        g.ajouterArete(s,s2);
+        g.ajouterArete(s,s3);
+        g.ajouterArete(s,s4);
+
+        Assert.assertEquals(g.getIncidentes().get(s).size(),3,0);
+    }
+
+    @Test
+    public void testGetExtremite() {
+
+        Size m = new Size(10,10);
+        Graphe g = new Graphe();
+
+        Sommet s = new Sommet("s1",1,1);
+        Sommet s2 = new Sommet("s2",2,2);
+
+        Pair<Sommet,Sommet> pair = new Pair<Sommet, Sommet>(s,s2);
+
+        g.ajouterSommet(s,m);
+        g.ajouterSommet(s2,m);
+
+        g.ajouterArete(s,s2);
+
+        Assert.assertEquals(g.getM_extremites().get(g.getAretes().get(0)),pair);
+    }
+
+    @Test
+    public void testAjouterAreteSommetInitial() {
+
+        Size m = new Size(10,10);
+        Graphe g = new Graphe();
+
+        Sommet s = new Sommet("s1",1,1);
+        Sommet s2 = new Sommet("s2",2,2);
+
+        g.ajouterSommetInitial(s);
+        g.ajouterSommetInitial(s2);
+
+        g.ajouterAreteInitial(s,s2,"TagArete");
+
+
+        Assert.assertEquals(g.getAretes().size(),1,0);
+        Assert.assertEquals(g.getAretes().get(0).getEntree(),s);
+        Assert.assertEquals(g.getAretes().get(0).getSortie(),s2);
+        Assert.assertEquals(g.getAretes().get(0).getTag(),"TagArete");
+    }
+
+    @Test
+    public void testSommetsVoisinsNonVoisins() {
+
+        Size m = new Size(10,10);
+        Graphe g = new Graphe();
+
+        Sommet s = new Sommet("s1",1,1);
+        Sommet s2 = new Sommet("s2",2,2);
+        Sommet s3 = new Sommet("s3",3,3);
+        Sommet s4 = new Sommet("s4",4,4);
+
+        g.ajouterSommet(s,m);
+        g.ajouterSommet(s2,m);
+        g.ajouterSommet(s3,m);
+        g.ajouterSommet(s4,m);
+
+        g.ajouterArete(s,s2);
+        g.ajouterArete(s,s3);
+        g.ajouterArete(s,s4);
+
+        ArrayList<Sommet> sommetsVoisinsS = new ArrayList<Sommet>();
+        sommetsVoisinsS.add(s2);
+        sommetsVoisinsS.add(s3);
+        sommetsVoisinsS.add(s4);
+
+        ArrayList<Sommet> sommetsVoisinsS2 = new ArrayList<Sommet>();
+        sommetsVoisinsS2.add(s);
+        ArrayList<Sommet> sommetsNonVoisinsS2 = new ArrayList<Sommet>();
+        sommetsNonVoisinsS2.add(s3);
+        sommetsNonVoisinsS2.add(s4);
+
+        Assert.assertEquals(g.sommetsVoisins(s),sommetsVoisinsS);
+        Assert.assertEquals(g.sommetsNonVoisins(sommetsVoisinsS2), sommetsNonVoisinsS2);
     }
 }

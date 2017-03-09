@@ -413,4 +413,39 @@ public class GrapheTest {
         Assert.assertEquals(g.getAretes().get(0).getSortie(),s2);
         Assert.assertEquals(g.getAretes().get(0).getTag(),"TagArete");
     }
+
+    @Test
+    public void testSommetsVoisinsNonVoisins() {
+
+        Size m = new Size(10,10);
+        Graphe g = new Graphe();
+
+        Sommet s = new Sommet("s1",1,1);
+        Sommet s2 = new Sommet("s2",2,2);
+        Sommet s3 = new Sommet("s3",3,3);
+        Sommet s4 = new Sommet("s4",4,4);
+
+        g.ajouterSommet(s,m);
+        g.ajouterSommet(s2,m);
+        g.ajouterSommet(s3,m);
+        g.ajouterSommet(s4,m);
+
+        g.ajouterArete(s,s2);
+        g.ajouterArete(s,s3);
+        g.ajouterArete(s,s4);
+
+        ArrayList<Sommet> sommetsVoisinsS = new ArrayList<Sommet>();
+        sommetsVoisinsS.add(s2);
+        sommetsVoisinsS.add(s3);
+        sommetsVoisinsS.add(s4);
+
+        ArrayList<Sommet> sommetsVoisinsS2 = new ArrayList<Sommet>();
+        sommetsVoisinsS2.add(s);
+        ArrayList<Sommet> sommetsNonVoisinsS2 = new ArrayList<Sommet>();
+        sommetsNonVoisinsS2.add(s3);
+        sommetsNonVoisinsS2.add(s4);
+
+        Assert.assertEquals(g.sommetsVoisins(s),sommetsVoisinsS);
+        Assert.assertEquals(g.sommetsNonVoisins(sommetsVoisinsS2), sommetsNonVoisinsS2);
+    }
 }

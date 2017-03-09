@@ -118,8 +118,36 @@ public class Graphe {
                 throw new Exception("Error syntax in the .gv file : '"+fichier+"'.");
             }
             while ((ligne=br.readLine())!=null){
+                ligne = ligne.trim();
+                String[] elementLigne = ligne.split(" ");
+
+                // Creation sommet :
+                // "node1" [ ... ]
+                // Après le split sur un espace
+                // [0] -> "node1"
+                // [1] -> [
+                // [2 à n-1] -> ...
+                // [n] -> ];
+                // -----------------------------
+                // Creation arete :
+                // "node1" -> "node2" [ ... ]
+                // Après le split sur un espace
+                // [0] -> "node1"
+                // [1] -> ->
+                // [2] -> "node2"
+                // [3 à n-1] -> ...
+                // [n] -> ];
+                // label=\"+.+\"
+                if (elementLigne.length > 1) {
+                    if (elementLigne[1].equals("[")) { // Creation sommet
+                        System.out.println("chui passé");
+                    } else if (elementLigne[1].equals("->")) { // Creation arete
+
+                    }
+                }
+
                 //GESTION DES NOEUDS
-                if(!ligne.contains(" -> ") &&
+                /*if(!ligne.contains(" -> ") &&
                         !ligne.contains(" -- ") &&
                         !ligne.contains("size")) {
                     //PROPRIETE
@@ -185,7 +213,7 @@ public class Graphe {
                             }
                         }
                     }
-                }
+                }*/
                 // System.out.println(ligne);
                 chaine+=ligne+"\n";
             }

@@ -64,8 +64,9 @@
             <HBox>
             <MenuButton mnemonicParsing="false" text="Modèles">
               <items>
-                <MenuItem mnemonicParsing="false" text="Aléatoire" />
-                <MenuItem mnemonicParsing="false" text="De Force" />
+                <MenuItem mnemonicParsing="false" text="Aléatoire" onAction="#clickRepresentationAleatoire"/>
+                <MenuItem mnemonicParsing="false" text="Circulaire" onAction="#clickRepresentationCirculaire"/>
+                  <MenuItem mnemonicParsing="false" text="Modèle De Forces"  onAction="#clickRepresentationForces"/>
               </items>
             </MenuButton>
                 <Button mnemonicParsing="false" onAction="#clickSupprimer" text="Supprimer" />
@@ -100,8 +101,8 @@
                 </MenuButton>
                 <MenuButton mnemonicParsing="false" text="Indice">
                     <items>
-                        <RadioMenuItem mnemonicParsing="false" text="Aléatoire" />
-                        <RadioMenuItem mnemonicParsing="false" text="Degrès" />
+                        <RadioMenuItem mnemonicParsing="false" text="Aléatoire" onAction="#clickIndicageAleatoire" />
+                        <RadioMenuItem mnemonicParsing="false" text="Degrès" onAction="#clickIndicageDegré" />
                     </items>
                 </MenuButton>
             </HBox>

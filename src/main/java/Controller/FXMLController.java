@@ -7,9 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
@@ -311,8 +309,31 @@ public class FXMLController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TailleGraphe.fxml"));
             pop_up_window.setScene(new Scene((Parent)fxmlLoader.load()));
             pop_up_window.show();
+
         } catch(Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    TextField idMinSommet, idMaxSommet, idMinArete, idMaxArete;
+    @FXML
+    Button okTailleGraphe;
+    public void changementTailleGraphe(MouseEvent mouseEvent) {
+
+        float minSommet = (float) Integer.parseInt(idMinSommet.getText());
+        float maxSommet = (float) Integer.parseInt(idMaxSommet.getText());
+
+        float minArete = (float) Integer.parseInt(idMinArete.getText());
+        float maxArete = (float) Integer.parseInt(idMaxArete.getText());
+
+        g.changerTailleGraphe(maxSommet, minSommet, maxArete, minArete);
+
+        okButtonFunction(okTailleGraphe);
+    }
+
+    private void okButtonFunction(Button button) {
+        Stage stage = (Stage) button.getScene().getWindow();
+        stage.close();
     }
 }

@@ -30,10 +30,7 @@
       <HBox prefHeight="140.0" prefWidth="275.0">
          <children>
             <ListView fx:id="listViewSommetsS" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="180.0" prefWidth="175.0" />
-            <ListView fx:id="listViewSommetsE" prefHeight="180.0" prefWidth="173.0">
-               <padding>
-                  <Insets bottom="20.0" />
-               </padding></ListView>
+            <ListView fx:id="listViewSommetsE" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="180.0" prefWidth="175.0" />
          </children>
       </HBox>
       <Label fx:id="erreurAjoutArete" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="34.0" textFill="#ee0000" />
@@ -44,7 +41,7 @@
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="59.0" text="Annuler">
+            <Button fx:id="boutonAnnulerAjoutArete" mnemonicParsing="false" onAction="#fermerAjoutArete" prefHeight="25.0" prefWidth="59.0" text="Annuler">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>

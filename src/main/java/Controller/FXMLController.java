@@ -300,6 +300,13 @@ public class FXMLController extends VBox{
         }
     }
 
+    @FXML
+    private
+    Button boutonAnnulerAjoutArete;
+    @FXML public void fermerAjoutArete() {
+        fermerPopup(boutonAnnulerAjoutArete);
+    }
+
     @FXML public void clickSupprimer() {
         if (graphe != null) {
             try {
@@ -448,6 +455,5 @@ public class FXMLController extends VBox{
         Stage stage = (Stage) button.getScene().getWindow();
 
         stage.close();
-        stage.getScene().setRoot(null);
     }
 }

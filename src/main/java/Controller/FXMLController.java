@@ -1,25 +1,18 @@
 package Controller;
 
 import Model.Graphe;
-import View.Arete;
-import View.Sommet;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -173,6 +166,19 @@ public class FXMLController {
         this.g.setAlgorithmeRepresentation('f',600);
     }
 
+    /**
+     * Fonction permettant d'indicer aléatoirement tous les sommets du graphe
+     */
+    @FXML
+    public void clickIndicageAleatoire(){
+        this.g.setIndiceAleatoire();
+    }
+
+    @FXML
+    public void clickIndicageDegré() {
+        this.g.setIndiceDegre();
+    }
+
     @FXML
     public void clickToggleRepresentation(){
         try {
@@ -302,7 +308,4 @@ public class FXMLController {
             e.printStackTrace();
         }
     }
-
-
-
 }

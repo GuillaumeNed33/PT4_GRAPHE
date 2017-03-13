@@ -217,7 +217,7 @@ public class Graphe {
         int idImportationSommetSource = Integer.parseInt(sommet[0].split("node")[1].replace("\"", "").trim());
         int idImportationSommetDestination = Integer.parseInt(sommet[1].split("node")[1].replace("\"", "").trim());
 
-        boolean doublonArete = verificationDoublonAreteParId(idImportationSommetSource, idImportationSommetDestination);
+        boolean doublonArete = verificationDoublonAreteParId(true, idImportationSommetSource, idImportationSommetDestination);
 
         if (!doublonArete) {
             Sommet sommetSource = verificationSommetDoublonParIdImportation(idImportationSommetSource, true, ligne);
@@ -229,15 +229,27 @@ public class Graphe {
         }
     }
 
-    private boolean verificationDoublonAreteParId(int idSommetSource, int idSommetDestination) {
+    private boolean verificationDoublonAreteParId(boolean parId, int idSommetSource, int idSommetDestination) {
 
         boolean doublonArete = false;
         if (!aretes.isEmpty()) {
             int cptArete = 0;
             while (cptArete < aretes.size()) {
-                if (aretes.get(cptArete).getEntree().getIdImportation() == idSommetSource &&
-                        aretes.get(cptArete).getSortie().getIdImportation() == idSommetDestination) {
-                    doublonArete = true;
+                if (parId) {
+                    if ((aretes.get(cptArete).getEntree().getIdImportation() == idSommetSource &&
+                            aretes.get(cptArete).getSortie().getIdImportation() == idSommetDestination) || (
+                            aretes.get(cptArete).getEntree().getIdImportation() == idSommetDestination &&
+                                    aretes.get(cptArete).getSortie().getIdImportation() == idSommetSource)) {
+                        doublonArete = true;
+                    }
+                }
+                else {
+                    if ((aretes.get(cptArete).getEntree().getId() == idSommetSource &&
+                            aretes.get(cptArete).getSortie().getId() == idSommetDestination) || (
+                            aretes.get(cptArete).getEntree().getId() == idSommetDestination &&
+                            aretes.get(cptArete).getSortie().getId() == idSommetSource)) {
+                        doublonArete = true;
+                    }
                 }
 
                 ++cptArete;
@@ -825,7 +837,7 @@ public class Graphe {
      */
     private boolean verificationPossibiliteAjoutArete(Sommet sommet_1, Sommet sommet_2) {
 
-        return !(sommet_1.equals(sommet_2) || (sommet_1.equals(null) || sommet_2.equals(null)) || verificationDoublonAreteParId(sommet_1.getId(), sommet_2.getId()));
+        return !(sommet_1.equals(sommet_2) || (sommet_1.equals(null) || sommet_2.equals(null)) || verificationDoublonAreteParId(false, sommet_1.getId(), sommet_2.getId()));
     }
 
     /**

@@ -285,7 +285,14 @@ public class FXMLController {
      *
      */
     @FXML public void clickCouleurGraphe(ActionEvent event) {
-
+        try {
+            pop_up_window.setTitle("Changement Couleur");
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CouleurGraphe.fxml"));
+            pop_up_window.setScene(new Scene((Parent)fxmlLoader.load()));
+            pop_up_window.show();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

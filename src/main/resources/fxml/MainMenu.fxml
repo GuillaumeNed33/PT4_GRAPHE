@@ -62,7 +62,12 @@
     <Tab text="Modifier">
         <AnchorPane maxHeight="-Infinity" styleClass="tab_panel">
             <HBox>
-                <Button mnemonicParsing="false" onAction="#clickToggleRepresentation" text="Modèle" />
+            <MenuButton mnemonicParsing="false" text="Modèles">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Aléatoire" />
+                <MenuItem mnemonicParsing="false" text="De Force" />
+              </items>
+            </MenuButton>
                 <Button mnemonicParsing="false" onAction="#clickSupprimer" text="Supprimer" />
                 <Button mnemonicParsing="false" text="Représentation">
                     <padding>

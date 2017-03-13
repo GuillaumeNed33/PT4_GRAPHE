@@ -150,7 +150,7 @@ public class Graphe {
 
                     } else if (elementLigne[1].equals("->")) { // Creation arete
 
-                        creationArete(ligne);
+                        creationAreteImportation(ligne);
                     }
                 }
                 chaine+=ligne+"\n";
@@ -211,7 +211,7 @@ public class Graphe {
         }
     }
 
-    private void creationArete(String ligne) {
+    private void creationAreteImportation(String ligne) {
         String elementSommet = ligne.split("\\[+.+;$")[0].trim();
         String[] sommet = elementSommet.split("->");
         int idImportationSommetSource = Integer.parseInt(sommet[0].split("node")[1].replace("\"", "").trim());
@@ -574,12 +574,12 @@ public class Graphe {
         return false;
     }
 
-    private Sommet trouverSommetParID(int idImportation) {
+    public Sommet trouverSommetParID(int id) {
         boolean trouve = false;
         int cpt = 0;
         Sommet res = null;
         while(!trouve && cpt < sommets.size()) {
-            if(sommets.get(cpt).getIdImportation() == idImportation) {
+            if(sommets.get(cpt).getId() == id) {
                 trouve = true;
                 res = sommets.get(cpt);
             }

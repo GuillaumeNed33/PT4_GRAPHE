@@ -1,6 +1,12 @@
 package Controller;
 
 import Model.Graphe;
+import Model.Sommet;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -17,17 +23,19 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FXMLController extends VBox{
 
     private Parent Pop_up_view;
-    private Stage pop_up_window;
-    private Graphe g;
+    private Stage popUpWindow;
+    private Graphe graphe;
 
     public FXMLController() {
-        pop_up_window = new Stage();
-        pop_up_window.initModality(Modality.APPLICATION_MODAL);
-        pop_up_window.setResizable(false);
+        popUpWindow = new Stage();
+        popUpWindow.initModality(Modality.APPLICATION_MODAL);
+        popUpWindow.setResizable(false);
     }
     @FXML private StackPane subPane;
 
@@ -110,7 +118,9 @@ public class FXMLController extends VBox{
         FileChooser fileChooser = createFileChooser("Importer");
         File file = fileChooser.showOpenDialog(null);
         if (file != null){
-            this.g = new Graphe(file.getAbsolutePath(), 600);
+            this.graphe = new Graphe(file.getAbsolutePath(), 600);
+
+
         }
     }
 
@@ -118,10 +128,12 @@ public class FXMLController extends VBox{
      * Fonction ouvrant une fenetre (FileChooser) permettant l'exportation d'un fichier dans le logiciel.
      */
     @FXML public void clickFichierExporter() {
-        FileChooser fileChooser = createFileChooser("Exporter");
-        File file = fileChooser.showSaveDialog(null);
-        if (file != null){
-            this.g.sauvegarderGraphe(file.getAbsolutePath());
+        if (graphe != null) {
+            FileChooser fileChooser = createFileChooser("Exporter");
+            File file = fileChooser.showSaveDialog(null);
+            if (file != null) {
+                this.graphe.sauvegarderGraphe(file.getAbsolutePath());
+            }
         }
     }
 
@@ -139,21 +151,21 @@ public class FXMLController extends VBox{
      * Fonction ouvrant une fenetre (FileChooser) permettant l'enregistrement d'un fichier dans le logiciel.
      */
     @FXML public void clickFichierEnregistrer() {
-        this.g.sauvegarderGraphe(null);
+        this.graphe.sauvegarderGraphe(null);
     }
 
     /**
      * Fonction permettant d'appliquer une distribution aléatoire des positions des sommets du graphe
      */
     @FXML public void clickRepresentationAleatoire() {
-        this.g.setAlgorithmeRepresentation('a',600);
+        this.graphe.setAlgorithmeRepresentation('a',600);
     }
 
     /**
      * Fonction permettant d'appliquer une distribution circulaire des positions des sommets du graphe
      */
     @FXML public void clickRepresentationCirculaire() {
-        this.g.setAlgorithmeRepresentation('c',600);
+        this.graphe.setAlgorithmeRepresentation('c',600);
     }
 
     /**
@@ -161,7 +173,7 @@ public class FXMLController extends VBox{
      */
     @FXML
     public void clickRepresentationForces() {
-        this.g.setAlgorithmeRepresentation('f',600);
+        this.graphe.setAlgorithmeRepresentation('f',600);
     }
 
     /**
@@ -169,12 +181,16 @@ public class FXMLController extends VBox{
      */
     @FXML
     public void clickIndicageAleatoire(){
-        this.g.setIndiceAleatoire();
+        if (graphe != null) {
+            this.graphe.setIndiceAleatoire();
+        }
     }
 
     @FXML
     public void clickIndicageDegré() {
-        this.g.setIndiceDegre();
+        if (graphe != null) {
+            this.graphe.setIndiceDegre();
+        }
     }
 
     @FXML
@@ -194,40 +210,106 @@ public class FXMLController extends VBox{
     }
     @FXML
     public void clickAjouterSommet() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AjoutSommet.fxml"));
-            Parent root1 = (Parent) fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Ajouter Sommet");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setResizable(false);
-            stage.setScene(new Scene(root1));
-            stage.show();
-        } catch(Exception e) {
-            e.printStackTrace();
+        if (graphe != null) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AjoutSommet.fxml"));
+                Parent root1 = (Parent) fxmlLoader.load();
+                Stage stage = new Stage();
+                stage.setTitle("Ajouter Sommet");
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setResizable(false);
+                stage.setScene(new Scene(root1));
+                stage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    private String sommetEntreSelectionne, sommetSortieSelectionne;
+    @FXML
+    private
+    ListView listViewSommetsE, listViewSommetsS;
+    @FXML
+    public void clickAjouterArete() {
+        if (graphe != null) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AjoutArete.fxml"));
+
+                fxmlLoader.setRoot(this);
+                fxmlLoader.setController(this);
+
+                popUpWindow.setTitle("Ajouter Arête");
+                popUpWindow.setScene(new Scene((Parent)fxmlLoader.load()));
+
+                popUpWindow.show();
+
+                List<String> sommetsStr = new ArrayList<String>();
+
+                for (Sommet sommet : graphe.getSommets()) {
+                    sommetsStr.add("id : " + sommet.getId() + " ( tag : " + sommet.getTag() + ")");
+                }
+
+                ListProperty<String> listProperty = new SimpleListProperty<String>();
+                listProperty.set(FXCollections.observableArrayList(sommetsStr));
+
+
+                listViewSommetsE.itemsProperty().bind(listProperty);
+                listViewSommetsS.itemsProperty().bind(listProperty);
+
+                listViewSommetsE.getSelectionModel().selectedItemProperty()
+                        .addListener(new ChangeListener<String>() {
+                            public void changed(ObservableValue<? extends String> ov,
+                                                String old_val, String new_val) {
+                                sommetEntreSelectionne = new_val;
+                            }
+                        });
+
+                listViewSommetsS.getSelectionModel().selectedItemProperty()
+                        .addListener(new ChangeListener<String>() {
+                            public void changed(ObservableValue<? extends String> ov,
+                                                String old_val, String new_val) {
+                                sommetSortieSelectionne = new_val;
+                            }
+                        });
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @FXML
-    public void clickAjouterArete() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AjoutArete.fxml"));
-            pop_up_window.setTitle("Ajouter Arête");
-            pop_up_window.setScene(new Scene((Parent)fxmlLoader.load()));
-            pop_up_window.show();
-        } catch(Exception e) {
-            e.printStackTrace();
+    private
+    Label erreurAjoutArete;
+    @FXML public void ajouterArete() {
+
+        if (sommetEntreSelectionne != null && sommetSortieSelectionne != null) {
+
+            int idSommetEntre = Integer.parseInt(sommetEntreSelectionne.split(" ")[2]);
+            int idSommetSortie = Integer.parseInt(sommetSortieSelectionne.split(" ")[2]);
+
+
+            if (idSommetEntre != -1 && idSommetSortie != 1 && !graphe.ajouterArete(graphe.trouverSommetParID(idSommetEntre), graphe.trouverSommetParID(idSommetSortie))) {
+                erreurAjoutArete.setText("Erreur - Arete existante ou 2 sommets identiques \nsélectionnés.");
+            }
+        }
+        else {
+            erreurAjoutArete.setText("Erreur - Sélectionnez 2 sommets.");
         }
     }
 
     @FXML public void clickSupprimer() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/SupprSommer.fxml"));
-            pop_up_window.setTitle("Confirmer suppression");
-            pop_up_window.setScene(new Scene((Parent)fxmlLoader.load()));
-            pop_up_window.show();
-        } catch(Exception e) {
-            e.printStackTrace();
+        if (graphe != null) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/SupprSommer.fxml"));
+                popUpWindow.setTitle("Confirmer suppression");
+                popUpWindow.setScene(new Scene((Parent) fxmlLoader.load()));
+                popUpWindow.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
     /**
@@ -283,13 +365,15 @@ public class FXMLController extends VBox{
      *
      */
     @FXML public void clickCouleurGraphe(ActionEvent event) {
-        try {
-            pop_up_window.setTitle("Changement Couleur");
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CouleurGraphe.fxml"));
-            pop_up_window.setScene(new Scene((Parent)fxmlLoader.load()));
-            pop_up_window.show();
-        } catch(Exception e) {
-            e.printStackTrace();
+        if (graphe != null) {
+            try {
+                popUpWindow.setTitle("Changement Couleur");
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CouleurGraphe.fxml"));
+                popUpWindow.setScene(new Scene((Parent) fxmlLoader.load()));
+                popUpWindow.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -304,38 +388,66 @@ public class FXMLController extends VBox{
      *
      */
     @FXML public void clickOptionGraphe() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TailleGraphe.fxml"));
-            pop_up_window.setTitle("Taille du Graphe");
-            fxmlLoader.setRoot(this);
-            fxmlLoader.setController(this);
-            pop_up_window.setScene(new Scene((Parent)fxmlLoader.load()));
-            pop_up_window.show();
+        if (graphe != null) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TailleGraphe.fxml"));
+                popUpWindow.setTitle("Taille du Graphe");
 
-        } catch(Exception e) {
-            e.printStackTrace();
+                fxmlLoader.setRoot(this);
+                fxmlLoader.setController(this);
+
+                popUpWindow.setScene(new Scene((Parent) fxmlLoader.load()));
+                popUpWindow.show();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @FXML
+    private
     TextField idMinSommet, idMaxSommet, idMinArete, idMaxArete;
     @FXML
+    private
     Button okTailleGraphe;
+    @FXML
+    private
+    Label erreurMessageId;
     @FXML public void changementTailleGraphe() {
 
-        float minSommet = (float) Integer.parseInt(idMinSommet.getText());
-        float maxSommet = (float) Integer.parseInt(idMaxSommet.getText());
+        if (idMinSommet.getText().matches("^[0-9]+$") && idMaxSommet.getText().matches("^[0-9]+$") &&
+                idMinArete.getText().matches("^[0-9]+$") && idMaxArete.getText().matches("^[0-9]+$")) {
 
-        float minArete = (float) Integer.parseInt(idMinArete.getText());
-        float maxArete = (float) Integer.parseInt(idMaxArete.getText());
+            float minSommet = (float) Integer.parseInt(idMinSommet.getText());
+            float maxSommet = (float) Integer.parseInt(idMaxSommet.getText());
 
-        this.g.changerTailleGraphe(maxSommet, minSommet, maxArete, minArete);
+            float minArete = (float) Integer.parseInt(idMinArete.getText());
+            float maxArete = (float) Integer.parseInt(idMaxArete.getText());
 
-        okButtonFunction(okTailleGraphe);
+            if ((minSommet < maxSommet && minArete < maxArete) &&
+                    (minSommet >= 1 && maxSommet > 1 && minArete >= 1 && maxArete > 1)) {
+                this.graphe.changerTailleGraphe(maxSommet, minSommet, maxArete, minArete);
+                fermerPopup(okTailleGraphe);
+            } else {
+                erreurMessageId.setText("Erreur - Valeurs incorrectes (max > min, min >= 1 et max >1).");
+            }
+        } else {
+            erreurMessageId.setText("Erreur - Vérifiez la présence de lettres, oublie de valeurs et/ou valeurs négatives.");
+        }
     }
 
-    private void okButtonFunction(Button button) {
+    @FXML
+    private
+    Button boutonAnnuler;
+    @FXML public void fermerPopupChangementTaille() {
+        fermerPopup(boutonAnnuler);
+    }
+
+    private void fermerPopup(Button button) {
         Stage stage = (Stage) button.getScene().getWindow();
+
         stage.close();
+        stage.getScene().setRoot(null);
     }
 }

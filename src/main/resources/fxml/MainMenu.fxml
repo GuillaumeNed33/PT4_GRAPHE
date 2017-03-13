@@ -12,6 +12,7 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
@@ -64,9 +65,9 @@
             <HBox>
             <MenuButton mnemonicParsing="false" text="Modèles">
               <items>
-                <MenuItem mnemonicParsing="false" text="Aléatoire" onAction="#clickRepresentationAleatoire"/>
-                <MenuItem mnemonicParsing="false" text="Circulaire" onAction="#clickRepresentationCirculaire"/>
-                  <MenuItem mnemonicParsing="false" text="Modèle De Forces"  onAction="#clickRepresentationForces"/>
+                <MenuItem mnemonicParsing="false" onAction="#clickRepresentationAleatoire" text="Aléatoire" />
+                <MenuItem mnemonicParsing="false" onAction="#clickRepresentationCirculaire" text="Circulaire" />
+                  <MenuItem mnemonicParsing="false" onAction="#clickRepresentationForces" text="Modèle De Forces" />
               </items>
             </MenuButton>
                 <Button mnemonicParsing="false" onAction="#clickSupprimer" text="Supprimer" />
@@ -101,8 +102,11 @@
                 </MenuButton>
                 <MenuButton mnemonicParsing="false" text="Indice">
                     <items>
-                        <RadioMenuItem mnemonicParsing="false" text="Aléatoire" onAction="#clickIndicageAleatoire" />
-                        <RadioMenuItem mnemonicParsing="false" text="Degrès" onAction="#clickIndicageDegré" />
+                        <RadioMenuItem mnemonicParsing="false" onAction="#clickIndicageAleatoire" text="Aléatoire">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="IndicageRadioButtonGroup" />
+                     </toggleGroup></RadioMenuItem>
+                        <RadioMenuItem mnemonicParsing="false" onAction="#clickIndicageDegré" text="Degrès" toggleGroup="$IndicageRadioButtonGroup" />
                     </items>
                 </MenuButton>
             </HBox>

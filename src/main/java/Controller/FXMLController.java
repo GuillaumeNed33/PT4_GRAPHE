@@ -11,17 +11,17 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
 
-public class FXMLController {
+public class FXMLController extends VBox{
 
     private Parent Pop_up_view;
     private Stage pop_up_window;
-
     private Graphe g;
 
     public FXMLController() {
@@ -305,8 +305,10 @@ public class FXMLController {
      */
     @FXML public void clickOptionGraphe() {
         try {
-            pop_up_window.setTitle("Options Graphe");
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TailleGraphe.fxml"));
+            pop_up_window.setTitle("Taille du Graphe");
+            fxmlLoader.setRoot(this);
+            fxmlLoader.setController(this);
             pop_up_window.setScene(new Scene((Parent)fxmlLoader.load()));
             pop_up_window.show();
 
@@ -319,7 +321,7 @@ public class FXMLController {
     TextField idMinSommet, idMaxSommet, idMinArete, idMaxArete;
     @FXML
     Button okTailleGraphe;
-    public void changementTailleGraphe(MouseEvent mouseEvent) {
+    @FXML public void changementTailleGraphe() {
 
         float minSommet = (float) Integer.parseInt(idMinSommet.getText());
         float maxSommet = (float) Integer.parseInt(idMaxSommet.getText());
@@ -327,7 +329,7 @@ public class FXMLController {
         float minArete = (float) Integer.parseInt(idMinArete.getText());
         float maxArete = (float) Integer.parseInt(idMaxArete.getText());
 
-        g.changerTailleGraphe(maxSommet, minSommet, maxArete, minArete);
+        this.g.changerTailleGraphe(maxSommet, minSommet, maxArete, minArete);
 
         okButtonFunction(okTailleGraphe);
     }

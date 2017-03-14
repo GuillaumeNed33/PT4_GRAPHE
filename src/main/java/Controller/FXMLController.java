@@ -25,7 +25,8 @@ public class FXMLController extends VBox{
     protected Stage popUpWindow;
     protected Graphe graphe;
 
-    public FXMLController() {
+    public FXMLController() throws IOException {
+
         initPopup();
     }
 
@@ -33,6 +34,12 @@ public class FXMLController extends VBox{
         popUpWindow = new Stage();
         popUpWindow.initModality(Modality.APPLICATION_MODAL);
         popUpWindow.setResizable(false);
+    }
+
+    protected void afficherPopup() {
+        if (graphe != null) {
+            popUpWindow.show();
+        }
     }
 
     @FXML private StackPane subPane;
@@ -117,8 +124,6 @@ public class FXMLController extends VBox{
         File file = fileChooser.showOpenDialog(null);
         if (file != null){
             this.graphe = new Graphe(file.getAbsolutePath(), 600);
-
-
         }
     }
 
@@ -208,14 +213,12 @@ public class FXMLController extends VBox{
     }
     @FXML
     public void clickAjouterSommet() throws IOException {
-        AjoutSommetController s = new AjoutSommetController(this.graphe);
-        this.graphe = s.getGraphe();
+        AjoutSommetController ajoutSommetController = new AjoutSommetController(graphe);
     }
 
     @FXML
     public void clickAjouterArete() throws IOException {
-        AjoutAreteController a = new AjoutAreteController(this.graphe);
-        this.graphe = a.getGraphe();
+        AjoutAreteController ajoutAreteController = new AjoutAreteController(graphe);
     }
     @FXML
     public void clickOptionGraphe(MouseEvent mouseEvent) throws IOException {

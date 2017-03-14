@@ -13,12 +13,8 @@ import java.io.IOException;
  * Created by audreylentilhac on 14/03/2017.
  */
 public class AjoutSommetController extends FXMLController {
-    public Graphe getGraphe() {
-        return graphe;
-    }
 
-    private Graphe graphe;
-    public AjoutSommetController(Graphe graphe) throws IOException {
+    AjoutSommetController(Graphe graphe) throws IOException {
         super();
         this.graphe = graphe;
         if (this.graphe != null) {

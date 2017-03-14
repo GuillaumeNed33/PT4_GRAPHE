@@ -16,12 +16,7 @@ import java.io.IOException;
  */
 public class TailleGrapheController extends FXMLController {
 
-    public Graphe getGraphe() {
-        return graphe;
-    }
-
-    private Graphe graphe;
-    public TailleGrapheController(Graphe graphe) throws IOException {
+    TailleGrapheController(Graphe graphe) throws IOException {
         super();
         this.graphe = graphe;
         if (this.graphe != null) {

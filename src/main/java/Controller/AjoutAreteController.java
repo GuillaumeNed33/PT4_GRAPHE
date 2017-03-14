@@ -23,11 +23,7 @@ import java.util.List;
  * Created by audreylentilhac on 14/03/2017.
  */
 public class AjoutAreteController extends FXMLController {
-    public Graphe getGraphe() {
-        return graphe;
-    }
 
-    private Graphe graphe;
     private String sommetEntreSelectionne, sommetSortieSelectionne;
     @FXML
     private
@@ -35,7 +31,7 @@ public class AjoutAreteController extends FXMLController {
     @FXML
     private ListView<String> listViewSommetsS;
 
-    public AjoutAreteController(Graphe graphe) throws IOException {
+    AjoutAreteController(Graphe graphe) throws IOException {
         super();
         this.graphe = graphe;
         if (this.graphe != null) {
@@ -77,7 +73,6 @@ public class AjoutAreteController extends FXMLController {
                     });
         }
     }
-
 
     @FXML
     private

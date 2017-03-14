@@ -12,7 +12,7 @@
 
 <!--<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">-->
 
-<fx:root prefHeight="272.0" prefWidth="295.0" stylesheets="@style.css" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="272.0" prefWidth="295.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane alignment="CENTER" hgap="5.0" vgap="5.0">
         <columnConstraints>
@@ -23,11 +23,11 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="143.0" text="Sommet 1" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="170.0" text="Sommet 1" />
             <Label alignment="CENTER" prefHeight="17.0" prefWidth="170.0" text="Sommet 2" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <HBox prefHeight="140.0" prefWidth="275.0">
+      <HBox prefHeight="155.0" prefWidth="275.0">
          <children>
             <ListView fx:id="listViewSommetsS" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="180.0" prefWidth="175.0" />
             <ListView fx:id="listViewSommetsE" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="180.0" prefWidth="175.0" />
@@ -36,7 +36,7 @@
       <Label fx:id="erreurAjoutArete" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="34.0" textFill="#ee0000" />
       <HBox alignment="CENTER" prefHeight="0.0" prefWidth="205.0">
          <children>
-            <Button fx:id="bouttonOKAjoutArete" mnemonicParsing="false" onAction="#ajouterArete" prefHeight="27.0" prefWidth="73.0" text="OK">
+            <Button fx:id="boutonOKAjoutArete" mnemonicParsing="false" onAction="#ajouterArete" prefHeight="27.0" prefWidth="73.0" text="OK">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>

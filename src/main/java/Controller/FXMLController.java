@@ -1,12 +1,6 @@
 package Controller;
 
 import Model.Graphe;
-import Model.Sommet;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -23,20 +17,24 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
 public class FXMLController extends VBox{
 
-    private Parent Pop_up_view;
-    private Stage popUpWindow;
-    private Graphe graphe;
+    protected Parent Pop_up_view;
+    protected Stage popUpWindow;
+    protected Graphe graphe;
 
     public FXMLController() {
+        initPopup();
+    }
+
+    public void initPopup() {
         popUpWindow = new Stage();
         popUpWindow.initModality(Modality.APPLICATION_MODAL);
         popUpWindow.setResizable(false);
     }
+
     @FXML private StackPane subPane;
 
     private ContextMenu contextMenu = new ContextMenu();
@@ -78,7 +76,7 @@ public class FXMLController extends VBox{
                 public void handle(ActionEvent event) {
                     try {
                         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/EtiquetteSommet.fxml"));
-                        Parent root1 = (Parent) fxmlLoader.load();
+                        Parent root1 = fxmlLoader.load();
                         Stage stage = new Stage();
                         stage.setScene(new Scene(root1));
                         stage.show();
@@ -197,7 +195,7 @@ public class FXMLController extends VBox{
     public void clickToggleRepresentation(){
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/ModeleRepresentation.fxml"));
-            Parent root1 = (Parent) fxmlLoader.load();
+            Parent root1 = fxmlLoader.load();
             Stage stage = new Stage();
             stage.setTitle("Choix du modèle de la représentation");
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -209,102 +207,24 @@ public class FXMLController extends VBox{
         }
     }
     @FXML
-    public void clickAjouterSommet() {
-        if (graphe != null) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AjoutSommet.fxml"));
-                Parent root1 = (Parent) fxmlLoader.load();
-                Stage stage = new Stage();
-                stage.setTitle("Ajouter Sommet");
-                stage.initModality(Modality.APPLICATION_MODAL);
-                stage.setResizable(false);
-                stage.setScene(new Scene(root1));
-                stage.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
-    private String sommetEntreSelectionne, sommetSortieSelectionne;
-    @FXML
-    private
-    ListView listViewSommetsE, listViewSommetsS;
-    @FXML
-    public void clickAjouterArete() {
-        if (graphe != null) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AjoutArete.fxml"));
-
-                fxmlLoader.setRoot(this);
-                fxmlLoader.setController(this);
-
-                popUpWindow.setTitle("Ajouter Arête");
-                popUpWindow.setScene(new Scene((Parent)fxmlLoader.load()));
-
-                popUpWindow.show();
-
-                List<String> sommetsStr = new ArrayList<String>();
-
-                for (Sommet sommet : graphe.getSommets()) {
-                    sommetsStr.add("id : " + sommet.getId() + " ( tag : " + sommet.getTag() + ")");
-                }
-
-                ListProperty<String> listProperty = new SimpleListProperty<String>();
-                listProperty.set(FXCollections.observableArrayList(sommetsStr));
-
-
-                listViewSommetsE.itemsProperty().bind(listProperty);
-                listViewSommetsS.itemsProperty().bind(listProperty);
-
-                listViewSommetsE.getSelectionModel().selectedItemProperty()
-                        .addListener(new ChangeListener<String>() {
-                            public void changed(ObservableValue<? extends String> ov,
-                                                String old_val, String new_val) {
-                                sommetEntreSelectionne = new_val;
-                            }
-                        });
-
-                listViewSommetsS.getSelectionModel().selectedItemProperty()
-                        .addListener(new ChangeListener<String>() {
-                            public void changed(ObservableValue<? extends String> ov,
-                                                String old_val, String new_val) {
-                                sommetSortieSelectionne = new_val;
-                            }
-                        });
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+    public void clickAjouterSommet() throws IOException {
+        AjoutSommetController s = new AjoutSommetController(this.graphe);
+        this.graphe = s.getGraphe();
     }
 
     @FXML
-    private
-    Label erreurAjoutArete;
-    @FXML public void ajouterArete() {
-
-        if (sommetEntreSelectionne != null && sommetSortieSelectionne != null) {
-
-            int idSommetEntre = Integer.parseInt(sommetEntreSelectionne.split(" ")[2]);
-            int idSommetSortie = Integer.parseInt(sommetSortieSelectionne.split(" ")[2]);
-
-
-            if (idSommetEntre != -1 && idSommetSortie != 1 && !graphe.ajouterArete(graphe.trouverSommetParID(idSommetEntre), graphe.trouverSommetParID(idSommetSortie))) {
-                erreurAjoutArete.setText("Erreur - Arete existante ou 2 sommets identiques \nsélectionnés.");
-            }
-        }
-        else {
-            erreurAjoutArete.setText("Erreur - Sélectionnez 2 sommets.");
-        }
+    public void clickAjouterArete() throws IOException {
+        AjoutAreteController a = new AjoutAreteController(this.graphe);
+        this.graphe = a.getGraphe();
+    }
+    @FXML
+    public void clickOptionGraphe(MouseEvent mouseEvent) throws IOException {
+        TailleGrapheController t = new TailleGrapheController(this.graphe);
+        this.graphe = t.getGraphe();
     }
 
-    @FXML
-    private
-    Button boutonAnnulerAjoutArete;
-    @FXML public void fermerAjoutArete() {
-        fermerPopup(boutonAnnulerAjoutArete);
+    protected void fermerPopup(Button button) {
+        popUpWindow.close();
     }
 
     @FXML public void clickSupprimer() {
@@ -389,71 +309,5 @@ public class FXMLController extends VBox{
      */
     @FXML public void clickCouleurElement(ActionEvent event) {
 
-    }
-
-    /**
-     *
-     */
-    @FXML public void clickOptionGraphe() {
-        if (graphe != null) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TailleGraphe.fxml"));
-                popUpWindow.setTitle("Taille du Graphe");
-
-                fxmlLoader.setRoot(this);
-                fxmlLoader.setController(this);
-
-                popUpWindow.setScene(new Scene((Parent) fxmlLoader.load()));
-                popUpWindow.show();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @FXML
-    private
-    TextField idMinSommet, idMaxSommet, idMinArete, idMaxArete;
-    @FXML
-    private
-    Button okTailleGraphe;
-    @FXML
-    private
-    Label erreurMessageId;
-    @FXML public void changementTailleGraphe() {
-
-        if (idMinSommet.getText().matches("^[0-9]+$") && idMaxSommet.getText().matches("^[0-9]+$") &&
-                idMinArete.getText().matches("^[0-9]+$") && idMaxArete.getText().matches("^[0-9]+$")) {
-
-            float minSommet = (float) Integer.parseInt(idMinSommet.getText());
-            float maxSommet = (float) Integer.parseInt(idMaxSommet.getText());
-
-            float minArete = (float) Integer.parseInt(idMinArete.getText());
-            float maxArete = (float) Integer.parseInt(idMaxArete.getText());
-
-            if ((minSommet < maxSommet && minArete < maxArete) &&
-                    (minSommet >= 1 && maxSommet > 1 && minArete >= 1 && maxArete > 1)) {
-                this.graphe.changerTailleGraphe(maxSommet, minSommet, maxArete, minArete);
-                fermerPopup(okTailleGraphe);
-            } else {
-                erreurMessageId.setText("Erreur - Valeurs incorrectes (max > min, min >= 1 et max >1).");
-            }
-        } else {
-            erreurMessageId.setText("Erreur - Vérifiez la présence de lettres, oublie de valeurs et/ou valeurs négatives.");
-        }
-    }
-
-    @FXML
-    private
-    Button boutonAnnuler;
-    @FXML public void fermerPopupChangementTaille() {
-        fermerPopup(boutonAnnuler);
-    }
-
-    private void fermerPopup(Button button) {
-        Stage stage = (Stage) button.getScene().getWindow();
-
-        stage.close();
     }
 }

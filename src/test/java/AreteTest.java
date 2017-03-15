@@ -52,7 +52,7 @@ public class AreteTest {
         assertEquals(areteBis.getPoids(),3);
 
         Arete arete = new Arete(depart,arrivee);
-        assertEquals(arete.getPoids(),0);
+        assertEquals(arete.getPoids(),1);
 
         arete.setPoids(poids);
         assertEquals(arete.getPoids(),poids);

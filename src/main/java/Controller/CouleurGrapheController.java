@@ -31,24 +31,24 @@ public class CouleurGrapheController extends FXMLController {
             popUpWindow.show();
         }
     }
-    @FXML CheckBox checkBoxSommets, checkBoxAretes;
+    @FXML CheckBox checkSommets, checkAretes;
     @FXML ColorPicker miniCouleur, maxiCouleur;
     @FXML Button OKCouleurGraphe;
     @FXML Label erreurCouleurGraphe;
     @FXML
     public void colorierGraphe(){
-        if (graphe.indiceFixe()) {
-            if (checkBoxAretes.isSelected()) {
-                graphe.changerCouleurAretes(miniCouleur.getValue(), maxiCouleur.getValue());
-            }
-            if (checkBoxSommets.isSelected()) {
-                graphe.changerCouleurSommets(miniCouleur.getValue(), maxiCouleur.getValue());
-            }
+        if (checkAretes.isSelected()) {
+            graphe.changerCouleurAretes(miniCouleur.getValue(), maxiCouleur.getValue());
+            fermerPopup(OKCouleurGraphe);
+        }
+        if (checkSommets.isSelected() && graphe.indiceFixe()) {
+            graphe.changerCouleurSommets(miniCouleur.getValue(), maxiCouleur.getValue());
             fermerPopup(OKCouleurGraphe);
         }
         else {
             erreurCouleurGraphe.setText("Erreur - Les sommets ne sont pas indicés.");
         }
+
     }
     private Button annulerCouleurGraphe;
     @FXML

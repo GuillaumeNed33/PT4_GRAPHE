@@ -2,16 +2,18 @@ package Controller;
 
 import Model.Graphe;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -24,6 +26,8 @@ public class FXMLController extends VBox{
     protected Parent Pop_up_view;
     protected Stage popUpWindow;
     protected Graphe graphe;
+    private Stage primaryStage;
+    private VBox vbox;
 
     public FXMLController() throws IOException {
 
@@ -296,7 +300,18 @@ public class FXMLController extends VBox{
     /**
      *
      */
-    @FXML public void clickCouleurFond(ActionEvent event) {
+    @FXML private ColorPicker couleurFond;
+    @FXML public void clickCouleurFond(MouseEvent event) throws IOException {
+        couleurFond.setOnAction(new EventHandler() {
+            public void handle(Event t) {
+                Color c = couleurFond.getValue();
+                vbox.setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
 
+            }
+        });
+    }
+
+    public void setVbox(VBox vbox) {
+        this.vbox = vbox;
     }
 }

@@ -102,7 +102,7 @@ public class AjoutSommetController extends FXMLController {
                 }
             } else {
                 erreurAjoutSommet.setText("Erreur - Une ou aucune valeur rentrée pour la taille du sommet.\n" +
-                        "Les différentes valeurs doivent être séparées par un espace (Exemple : 2, 2)");
+                        "Les valeurs doivent être séparées par un espace (Exemple : 2, 2)");
             }
         }
         else {
@@ -115,50 +115,49 @@ public class AjoutSommetController extends FXMLController {
 
     private Pair<Float, Float> déterminationPositionRentrerParUtilisateur() {
 
+        String[] elementsDansPosition = positionSommet.getText().split(" ");
+        if (elementsDansPosition.length > 1) {
 
-            String[] elementsDansPosition = positionSommet.getText().split(" ");
-            if (elementsDansPosition.length > 1) {
+            Pattern pattern = Pattern.compile("[0-9]+\\.+[0-9]+");
+            Matcher matcher;
 
-                Pattern pattern = Pattern.compile("[0-9]+\\.+[0-9]+");
-                Matcher matcher;
+            float coordX = 0;
+            float coordY = 0;
+            int cptDetrompeur = 0; // Pour compter si il n'y a pas plus de valeurs que prévus
+            int cptElement = 0;
+            while (cptElement < elementsDansPosition.length && cptDetrompeur != -1 && cptDetrompeur <= 2) {
 
-                float coordX = 0;
-                float coordY = 0;
-                int cptDetrompeur = 0; // Pour compter si il n'y a pas plus de valeurs que prévus
-                int cptElement = 0;
-                while (cptElement < elementsDansPosition.length && cptDetrompeur != -1 && cptDetrompeur <= 2) {
+                matcher = pattern.matcher(elementsDansPosition[cptElement]);
 
-                    matcher = pattern.matcher(elementsDansPosition[cptElement]);
-
-                    if (matcher.find() && elementsDansPosition[cptElement].contains(".")) {
-                        if (cptDetrompeur == 0) {
-                            coordX = Float.parseFloat(matcher.group());
-                        } else if (cptDetrompeur == 1) {
-                            coordY = Float.parseFloat(matcher.group());
-                        }
-
-                        ++cptDetrompeur;
-                    }
-                    else {
-                         erreurAjoutSommet.setText("Erreur - Seul les valeurs décimales sont acceptées.");
-                         cptDetrompeur = -1; // Sortie de la boucle
+                if (matcher.find() && elementsDansPosition[cptElement].contains(".")) {
+                    if (cptDetrompeur == 0) {
+                        coordX = Float.parseFloat(matcher.group());
+                    } else if (cptDetrompeur == 1) {
+                        coordY = Float.parseFloat(matcher.group());
                     }
 
-                    ++cptElement;
+                    ++cptDetrompeur;
+                }
+                else {
+                    erreurAjoutSommet.setText("Erreur - Seul les valeurs décimales sont acceptées.");
+                    cptDetrompeur = -1; // Sortie de la boucle
                 }
 
-                if (cptDetrompeur <= 2 && cptDetrompeur != 1) {
-                    return new Pair<Float, Float>(coordX, coordY);
-
-                }
-                else if (cptDetrompeur != 1) {
-                    erreurAjoutSommet.setText("Erreur - Trop de valeurs.");
-                }
-
-            } else {
-                erreurAjoutSommet.setText("Erreur - Une ou aucune valeur rentrée pour la taille du sommet.\n" +
-                        "Les différentes valeurs doivent être séparées par un espace (Exemple : 2, 2)");
+                ++cptElement;
             }
+
+            if (cptDetrompeur <= 2 && cptDetrompeur != 1) {
+                return new Pair<Float, Float>(coordX, coordY);
+
+            }
+            else if (cptDetrompeur != 1) {
+                erreurAjoutSommet.setText("Erreur - Trop de valeurs.");
+            }
+
+        } else {
+            erreurAjoutSommet.setText("Erreur - Une ou aucune valeur rentrée pour la taille du sommet.\n" +
+                    "Les valeurs doivent être séparées par un espace (Exemple : 2.2, 2.2)");
+        }
 
         return null;
     }

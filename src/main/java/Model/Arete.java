@@ -67,7 +67,7 @@ public class Arete {
         this.tag = "";
         couleurArete = Color.web("000000");
         couleurAreteStr = "Black";
-        this.poids = 0;
+        this.poids = 1;
     }
 
     /**
@@ -99,7 +99,7 @@ public class Arete {
         this.tag = tag;
         couleurArete = Color.web("000000");
         couleurAreteStr = "Black";
-        this.poids = 0;
+        this.poids = 1;
     }
 
 

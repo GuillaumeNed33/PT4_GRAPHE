@@ -1103,10 +1103,10 @@ public class Graphe {
     }
 
     /**
-     * Vérifie si l'indice du sommet ou de l'arete a été initialisé
+     * Vérifie si l'indice du sommet a été initialisé
      * @return
      */
-    private boolean indiceFixe (){
+    public boolean indiceFixe (){
         int i = 0;
         for (Sommet s : sommets){
             i += s.getIndice();

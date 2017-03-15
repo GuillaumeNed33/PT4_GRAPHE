@@ -221,9 +221,16 @@ public class FXMLController extends VBox{
         AjoutAreteController ajoutAreteController = new AjoutAreteController(graphe);
     }
     @FXML
-    public void clickOptionGraphe(MouseEvent mouseEvent) throws IOException {
-        TailleGrapheController t = new TailleGrapheController(this.graphe);
-        this.graphe = t.getGraphe();
+    public void clickTailleGraphe(MouseEvent mouseEvent) throws IOException {
+        TailleGrapheController t = new TailleGrapheController(graphe);
+    }
+
+    /**
+     *
+     * @param event
+     */
+    @FXML public void clickCouleurGraphe(MouseEvent event) throws IOException {
+        CouleurGrapheController c = new CouleurGrapheController(graphe);
     }
 
     protected void fermerPopup(Button button) {
@@ -242,6 +249,7 @@ public class FXMLController extends VBox{
             }
         }
     }
+
     /**
      * Fonction traitant le ToggleButton permettant l'affichage ou non des sommets du graphe.
      */
@@ -289,28 +297,6 @@ public class FXMLController extends VBox{
      *
      */
     @FXML public void clickCouleurFond(ActionEvent event) {
-
-    }
-    /**
-     *
-     */
-    @FXML public void clickCouleurGraphe(ActionEvent event) {
-        if (graphe != null) {
-            try {
-                popUpWindow.setTitle("Changement Couleur");
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CouleurGraphe.fxml"));
-                popUpWindow.setScene(new Scene((Parent) fxmlLoader.load()));
-                popUpWindow.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /**
-     *
-     */
-    @FXML public void clickCouleurElement(ActionEvent event) {
 
     }
 }

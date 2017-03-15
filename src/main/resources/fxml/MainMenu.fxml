@@ -38,25 +38,16 @@
                 <ToggleButton mnemonicParsing="false" onAction="#clickToggleSommet" text="Sommets" />
                 <ToggleButton mnemonicParsing="false" onAction="#clickToggleArete" text="Arêtes" />
                 <ToggleButton mnemonicParsing="false" onAction="#clickToggleEtiquette" text="Étiquettes" />
-                <MenuButton mnemonicParsing="false" text="Couleur">
+                <MenuButton mnemonicParsing="false" text="Couleur du fond">
                     <items>
                         <MenuItem mnemonicParsing="false" text="Fond">
                             <graphic>
                                 <ColorPicker />
                             </graphic>
                         </MenuItem>
-                        <MenuItem mnemonicParsing="false" text="Graphe">
-                            <graphic>
-                                <ColorPicker />
-                            </graphic>
-                        </MenuItem>
-                        <MenuItem mnemonicParsing="false" text="Élément">
-                            <graphic>
-                                <ColorPicker />
-                            </graphic>
-                        </MenuItem>
                     </items>
                 </MenuButton>
+                <Button mnemonicParsing="false" onMouseClicked="#clickCouleurGraphe" text="Couleur du graphe" />
             </HBox>
         </AnchorPane>
     </Tab>
@@ -93,7 +84,7 @@
     <Tab text="Édition">
         <AnchorPane maxHeight="-Infinity" styleClass="tab_panel">
             <HBox>
-                <Button mnemonicParsing="false" onMouseClicked="#clickOptionGraphe" text="Options graphe" />
+                <Button mnemonicParsing="false" onMouseClicked="#clickTailleGraphe" text="Taille du graphe" />
                 <MenuButton mnemonicParsing="false" text="Ajout">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#clickAjouterArete" text="Arête" />

@@ -1068,8 +1068,6 @@ public class Graphe {
      */
     private double intensite(int valeur, double cmax, double cmin, int indiceMax, int indiceMin){
         if (indiceMax != indiceMin) {
-            System.out.println((((double)valeur - indiceMin) / ((double)indiceMax - (double)indiceMin)));
-            System.out.println("diff : "+ (cmin - cmax));
             if (cmin - cmax >= 0){
                 return (Math.abs((((double)valeur - indiceMin) / ((double)indiceMax - (double)indiceMin)) * (cmin - cmax) + cmax));
             }

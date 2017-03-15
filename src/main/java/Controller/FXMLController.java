@@ -213,16 +213,16 @@ public class FXMLController extends VBox{
     }
     @FXML
     public void clickAjouterSommet() throws IOException {
-        AjoutSommetController ajoutSommetController = new AjoutSommetController(graphe);
+        new AjoutSommetController(graphe);
     }
 
     @FXML
     public void clickAjouterArete() throws IOException {
-        AjoutAreteController ajoutAreteController = new AjoutAreteController(graphe);
+        new AjoutAreteController(graphe);
     }
     @FXML
     public void clickTailleGraphe(MouseEvent mouseEvent) throws IOException {
-        TailleGrapheController t = new TailleGrapheController(graphe);
+        new TailleGrapheController(graphe);
     }
 
     /**

@@ -42,7 +42,7 @@
                     <items>
                         <MenuItem mnemonicParsing="false" text="Fond">
                             <graphic>
-                                <ColorPicker />
+                                <ColorPicker  fx:id="couleurFond" onMouseClicked="#clickCouleurFond"/>
                             </graphic>
                         </MenuItem>
                     </items>

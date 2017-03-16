@@ -8,10 +8,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
 import java.io.IOException;
@@ -47,7 +45,9 @@ public class AjoutSommetController extends FXMLController {
     }
 
     @FXML
-    private TextField tailleSommet, positionSommet;
+    private TextField tailleSommet, positionSommet, tagSommet;
+    @FXML
+    ColorPicker colorPickerSommet;
     @FXML
     private Label erreurAjoutSommet;
     @FXML public void creerSommet() {
@@ -61,8 +61,24 @@ public class AjoutSommetController extends FXMLController {
         }
 
         if (tailleSommet != null && coordSommet != null) {
-            //ToDo créer le sommet
-            
+
+            String tag = tagSommet.getText();
+
+            Sommet sommet = new Sommet(tag, coordSommet.getKey(), coordSommet.getValue());
+
+            Color couleur = colorPickerSommet.getValue();
+            String forme = (String) comboBoxForme.getValue();
+
+
+            sommet.setCouleurSommet(couleur);
+            sommet.setForme(forme);
+
+            if (!graphe.ajouterSommet(sommet, graphe.getTaille())) {
+                erreurAjoutSommet.setText("Erreur - Sommet existant en cette coordonnée.");
+            }
+            else {
+                popUpWindow.close();
+            }
         }
     }
 

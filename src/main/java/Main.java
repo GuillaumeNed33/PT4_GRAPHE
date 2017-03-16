@@ -35,6 +35,7 @@ public class Main extends Application {
         primaryStage.show();
         FXMLController controller = (FXMLController)loader.getController();
         controller.setVbox(root);
+        controller.setPane(test);
     }
     public static void main(String[] args) {
         launch(args);

@@ -16,6 +16,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -36,6 +37,7 @@ public class FXMLController extends VBox{
     protected Graphe graphe;
     private Stage primaryStage;
     private VBox vbox;
+    private Pane pane;
 
     public FXMLController() throws IOException {
 
@@ -54,8 +56,6 @@ public class FXMLController extends VBox{
         }
     }
 
-    @FXML private StackPane subPane;
-
     private ContextMenu contextMenu = new ContextMenu();
     private MenuItem proprieteSommet = new MenuItem("Tableau de propriétés du sommet");
     private MenuItem supprimerSommet = new MenuItem("Supprimer le sommet");
@@ -63,68 +63,65 @@ public class FXMLController extends VBox{
     private MenuItem copierEtiquetteSommet = new MenuItem("Copier l'étiquette du sommet");
     private MenuItem collerEtquetteSommet = new MenuItem("Coller l'étiquette au sommet");
 
-    public void clicPane(MouseEvent mouseEvent) {
-        if(mouseEvent.getButton() == MouseButton.SECONDARY){
-            contextMenu = new ContextMenu();
-            contextMenu.getItems().addAll(proprieteSommet,etiquetteSommet,supprimerSommet,copierEtiquetteSommet,collerEtquetteSommet);
+    /**
+     * Fonction d'insertion des options du contextMenu
+     */
+    public void setContextMenu() {
 
-            proprieteSommet.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/ProprietesSommetTab.fxml"));
-                        Parent root1 = fxmlLoader.load();
-                        Stage stage = new Stage();
-                        stage.setScene(new Scene(root1));
-                        stage.show();
-                    } catch(Exception e) {
-                        e.printStackTrace();
-                    }
+        contextMenu = new ContextMenu();
+        contextMenu.getItems().addAll(proprieteSommet,etiquetteSommet,supprimerSommet,copierEtiquetteSommet,collerEtquetteSommet);
+
+        proprieteSommet.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/ProprietesSommetTab.fxml"));
+                    Parent root1 = fxmlLoader.load();
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root1));
+                    stage.show();
+                } catch(Exception e) {
+                    e.printStackTrace();
                 }
-            });
+            }
+        });
 
-            supprimerSommet.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    clickSupprimer();
+        supprimerSommet.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                clickSupprimer();
+            }
+        });
+
+        etiquetteSommet.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/EtiquetteSommet.fxml"));
+                    Parent root1 = fxmlLoader.load();
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root1));
+                    stage.show();
+                } catch(Exception e) {
+                    e.printStackTrace();
                 }
-            });
+            }
+        });
 
-            etiquetteSommet.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/EtiquetteSommet.fxml"));
-                        Parent root1 = fxmlLoader.load();
-                        Stage stage = new Stage();
-                        stage.setScene(new Scene(root1));
-                        stage.show();
-                    } catch(Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+        copierEtiquetteSommet.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                //TODO Il faut pouvoir récupérer un sommet
+            }
+        });
 
-            copierEtiquetteSommet.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    //TODO Il faut pouvoir récupérer un sommet
-                }
-            });
+        collerEtquetteSommet.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                //TODO Il faut pouvoir récupérer un sommet
+            }
+        });
 
-            collerEtquetteSommet.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    //TODO Il faut pouvoir récupérer un sommet
-                }
-            });
-
-            contextMenu.show(subPane, mouseEvent.getScreenX(), mouseEvent.getScreenY());
-        } else {
-            //Actions autre que clic droit
-
-            contextMenu.hide();
-        }
     }
 
 
@@ -166,7 +163,8 @@ public class FXMLController extends VBox{
      * Fonction ouvrant une fenetre (FileChooser) permettant l'enregistrement d'un fichier dans le logiciel.
      */
     @FXML public void clickFichierEnregistrer() {
-        this.graphe.sauvegarderGraphe(null);
+        if (graphe != null)
+            this.graphe.sauvegarderGraphe(null);
     }
 
     /**
@@ -327,6 +325,46 @@ public class FXMLController extends VBox{
     @FXML public void clickModifyArete() throws IOException {
         //TODO modif aretes
         new ModifyAreteController(graphe);
+    }
+
+    /**
+     * Récupère le Pane du Main et gère le contextMenu lors d'un clic droit.
+     * @param pane
+     */
+    public void setPane(Pane pane){
+        this.pane = pane;
+        pane.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+            @Override
+            public void handle(ContextMenuEvent event) {
+                if (event.getSource() == MouseButton.SECONDARY){
+                    if (graphe!=null){
+
+                        setContextMenu();
+                        boolean trouve = false;
+                        int cpt = 0;
+                        Sommet tmp = null;
+
+                        while(!trouve && cpt<graphe.getSommets().size()) { // DETECTION CLIC DROIT SUR SOMMET (On ne veut pas clic droit n'importe ou).
+                            tmp = graphe.getSommets().get(cpt);
+                            if(event.getSceneX() >= tmp.getX()-tmp.getTailleForme().width &&
+                                    event.getSceneX() <= tmp.getX()+tmp.getTailleForme().width &&
+                                    event.getSceneY() >= tmp.getY()-tmp.getTailleForme().height &&
+                                    event.getSceneY() <= tmp.getY()+tmp.getTailleForme().height){
+                                trouve = true;
+                            }
+                        }
+
+
+                        if(trouve) { //Si c'est sur un sommet, affichage du contextMenu.
+                            contextMenu.show(vbox, event.getScreenX(), event.getScreenY());
+                            event.consume();
+                        }
+                    }
+                }else{
+                    contextMenu.hide();
+                }
+            }
+        });
     }
 
 }

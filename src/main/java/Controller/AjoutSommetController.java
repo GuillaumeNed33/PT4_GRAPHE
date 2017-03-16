@@ -62,6 +62,7 @@ public class AjoutSommetController extends FXMLController {
 
         if (tailleSommet != null && coordSommet != null) {
             //ToDo créer le sommet
+            
         }
     }
 

@@ -1,6 +1,12 @@
 package Controller;
 
 import Model.Graphe;
+import Model.Sommet;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -20,6 +26,8 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FXMLController extends VBox{
 
@@ -260,6 +268,7 @@ public class FXMLController extends VBox{
     @FXML public void clickToggleSommet(ActionEvent event) {
         if(((ToggleButton)event.getSource()).isSelected()) {
             //TODO affichage Sommet
+
         } else {
             //TODO suppression de l'affichage sommet
         }
@@ -294,7 +303,7 @@ public class FXMLController extends VBox{
     /**
      *
      */
-    @FXML public void clickZoomPlus() {
+    @FXML public void clickZoomPlus() throws IOException {
         //TODO zoom plus
     }
     /**
@@ -314,4 +323,10 @@ public class FXMLController extends VBox{
     public void setVbox(VBox vbox) {
         this.vbox = vbox;
     }
+
+    @FXML public void clickModifyArete() throws IOException {
+        //TODO modif aretes
+        new ModifyAreteController(graphe);
+    }
+
 }

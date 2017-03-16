@@ -46,7 +46,7 @@ public class AjoutSommetController extends FXMLController {
     }
 
     @FXML
-    private TextField tailleSommet, positionSommet;
+    private TextField tailleSommet, positionSommet, tagSommet;
     @FXML
     ColorPicker colorPickerSommet;
     @FXML
@@ -62,10 +62,14 @@ public class AjoutSommetController extends FXMLController {
         }
 
         if (tailleSommet != null && coordSommet != null) {
-            Sommet sommet = new Sommet("", coordSommet.getKey(), coordSommet.getValue());
+
+            String tag = tagSommet.getText();
+
+            Sommet sommet = new Sommet(tag, coordSommet.getKey(), coordSommet.getValue());
 
             Color couleur = colorPickerSommet.getValue();
             String forme = (String) comboBoxForme.getValue();
+
 
             sommet.setCouleurSommet(couleur);
             sommet.setForme(forme);

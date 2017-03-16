@@ -12,6 +12,7 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
@@ -37,25 +38,16 @@
                 <ToggleButton mnemonicParsing="false" onAction="#clickToggleSommet" text="Sommets" />
                 <ToggleButton mnemonicParsing="false" onAction="#clickToggleArete" text="Arêtes" />
                 <ToggleButton mnemonicParsing="false" onAction="#clickToggleEtiquette" text="Étiquettes" />
-                <MenuButton mnemonicParsing="false" text="Couleur">
+                <MenuButton mnemonicParsing="false" text="Couleur du fond">
                     <items>
                         <MenuItem mnemonicParsing="false" text="Fond">
                             <graphic>
-                                <ColorPicker />
-                            </graphic>
-                        </MenuItem>
-                        <MenuItem mnemonicParsing="false" text="Graphe">
-                            <graphic>
-                                <ColorPicker />
-                            </graphic>
-                        </MenuItem>
-                        <MenuItem mnemonicParsing="false" text="Élément">
-                            <graphic>
-                                <ColorPicker />
+                                <ColorPicker  fx:id="couleurFond" onMouseClicked="#clickCouleurFond"/>
                             </graphic>
                         </MenuItem>
                     </items>
                 </MenuButton>
+                <Button mnemonicParsing="false" onMouseClicked="#clickCouleurGraphe" text="Couleur du graphe" />
             </HBox>
         </AnchorPane>
     </Tab>
@@ -64,8 +56,9 @@
             <HBox>
             <MenuButton mnemonicParsing="false" text="Modèles">
               <items>
-                <MenuItem mnemonicParsing="false" text="Aléatoire" />
-                <MenuItem mnemonicParsing="false" text="De Force" />
+                <MenuItem mnemonicParsing="false" onAction="#clickRepresentationAleatoire" text="Aléatoire" />
+                <MenuItem mnemonicParsing="false" onAction="#clickRepresentationCirculaire" text="Circulaire" />
+                  <MenuItem mnemonicParsing="false" onAction="#clickRepresentationForces" text="Modèle De Forces" />
               </items>
             </MenuButton>
                 <Button mnemonicParsing="false" onAction="#clickSupprimer" text="Supprimer" />
@@ -91,7 +84,7 @@
     <Tab text="Édition">
         <AnchorPane maxHeight="-Infinity" styleClass="tab_panel">
             <HBox>
-                <Button mnemonicParsing="false" onMouseClicked="#clickOptionGraphe" text="Options graphe" />
+                <Button mnemonicParsing="false" onMouseClicked="#clickTailleGraphe" text="Taille du graphe" />
                 <MenuButton mnemonicParsing="false" text="Ajout">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#clickAjouterArete" text="Arête" />
@@ -100,8 +93,11 @@
                 </MenuButton>
                 <MenuButton mnemonicParsing="false" text="Indice">
                     <items>
-                        <RadioMenuItem mnemonicParsing="false" text="Aléatoire" />
-                        <RadioMenuItem mnemonicParsing="false" text="Degrès" />
+                        <RadioMenuItem mnemonicParsing="false" onAction="#clickIndicageAleatoire" text="Aléatoire">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="IndicageRadioButtonGroup" />
+                     </toggleGroup></RadioMenuItem>
+                        <RadioMenuItem mnemonicParsing="false" onAction="#clickIndicageDegré" text="Degrès" toggleGroup="$IndicageRadioButtonGroup" />
                     </items>
                 </MenuButton>
             </HBox>

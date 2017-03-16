@@ -150,7 +150,7 @@ public class Graphe {
 
                     } else if (elementLigne[1].equals("->")) { // Creation arete
 
-                        creationArete(ligne);
+                        creationAreteImportation(ligne);
                     }
                 }
                 chaine+=ligne+"\n";
@@ -211,13 +211,13 @@ public class Graphe {
         }
     }
 
-    private void creationArete(String ligne) {
+    private void creationAreteImportation(String ligne) {
         String elementSommet = ligne.split("\\[+.+;$")[0].trim();
         String[] sommet = elementSommet.split("->");
         int idImportationSommetSource = Integer.parseInt(sommet[0].split("node")[1].replace("\"", "").trim());
         int idImportationSommetDestination = Integer.parseInt(sommet[1].split("node")[1].replace("\"", "").trim());
 
-        boolean doublonArete = verificationDoublonAreteParId(idImportationSommetSource, idImportationSommetDestination);
+        boolean doublonArete = verificationDoublonAreteParId(true, idImportationSommetSource, idImportationSommetDestination);
 
         if (!doublonArete) {
             Sommet sommetSource = verificationSommetDoublonParIdImportation(idImportationSommetSource, true, ligne);
@@ -229,15 +229,27 @@ public class Graphe {
         }
     }
 
-    private boolean verificationDoublonAreteParId(int idSommetSource, int idSommetDestination) {
+    private boolean verificationDoublonAreteParId(boolean parId, int idSommetSource, int idSommetDestination) {
 
         boolean doublonArete = false;
         if (!aretes.isEmpty()) {
             int cptArete = 0;
             while (cptArete < aretes.size()) {
-                if (aretes.get(cptArete).getEntree().getIdImportation() == idSommetSource &&
-                        aretes.get(cptArete).getSortie().getIdImportation() == idSommetDestination) {
-                    doublonArete = true;
+                if (parId) {
+                    if ((aretes.get(cptArete).getEntree().getIdImportation() == idSommetSource &&
+                            aretes.get(cptArete).getSortie().getIdImportation() == idSommetDestination) || (
+                            aretes.get(cptArete).getEntree().getIdImportation() == idSommetDestination &&
+                                    aretes.get(cptArete).getSortie().getIdImportation() == idSommetSource)) {
+                        doublonArete = true;
+                    }
+                }
+                else {
+                    if ((aretes.get(cptArete).getEntree().getId() == idSommetSource &&
+                            aretes.get(cptArete).getSortie().getId() == idSommetDestination) || (
+                            aretes.get(cptArete).getEntree().getId() == idSommetDestination &&
+                            aretes.get(cptArete).getSortie().getId() == idSommetSource)) {
+                        doublonArete = true;
+                    }
                 }
 
                 ++cptArete;
@@ -562,12 +574,12 @@ public class Graphe {
         return false;
     }
 
-    private Sommet trouverSommetParID(int idImportation) {
+    public Sommet trouverSommetParID(int id) {
         boolean trouve = false;
         int cpt = 0;
         Sommet res = null;
         while(!trouve && cpt < sommets.size()) {
-            if(sommets.get(cpt).getIdImportation() == idImportation) {
+            if(sommets.get(cpt).getId() == id) {
                 trouve = true;
                 res = sommets.get(cpt);
             }
@@ -825,7 +837,7 @@ public class Graphe {
      */
     private boolean verificationPossibiliteAjoutArete(Sommet sommet_1, Sommet sommet_2) {
 
-        return !(sommet_1.equals(sommet_2) || (sommet_1.equals(null) || sommet_2.equals(null)) || verificationDoublonAreteParId(sommet_1.getId(), sommet_2.getId()));
+        return !(sommet_1.equals(sommet_2) || (sommet_1.equals(null) || sommet_2.equals(null)) || verificationDoublonAreteParId(false, sommet_1.getId(), sommet_2.getId()));
     }
 
     /**
@@ -1056,7 +1068,11 @@ public class Graphe {
      */
     private double intensite(int valeur, double cmax, double cmin, int indiceMax, int indiceMin){
         if (indiceMax != indiceMin) {
-            return (((valeur - indiceMin) / (indiceMax - indiceMin)) * (cmax - cmin) + cmin);
+            if (cmin - cmax >= 0){
+                return (Math.abs((((double)valeur - indiceMin) / ((double)indiceMax - (double)indiceMin)) * (cmin - cmax) + cmax));
+            }
+            else
+                return (Math.abs((((double)valeur - indiceMin) / ((double)indiceMax - (double)indiceMin)) * (cmax - cmin) + cmin));
         }
         else
             return cmin;
@@ -1091,10 +1107,10 @@ public class Graphe {
     }
 
     /**
-     * Vérifie si l'indice du sommet ou de l'arete a été initialisé
+     * Vérifie si l'indice du sommet a été initialisé
      * @return
      */
-    private boolean indiceFixe (){
+    public boolean indiceFixe (){
         int i = 0;
         for (Sommet s : sommets){
             i += s.getIndice();

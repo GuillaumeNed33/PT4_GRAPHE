@@ -1,43 +1,51 @@
 package Controller;
 
 import Model.Graphe;
-import View.Arete;
-import View.Sommet;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 
-public class FXMLController {
+public class FXMLController extends VBox{
 
-    private Parent Pop_up_view;
-    private Stage pop_up_window;
+    protected Parent Pop_up_view;
+    protected Stage popUpWindow;
+    protected Graphe graphe;
+    private Stage primaryStage;
+    private VBox vbox;
 
-    private Graphe g;
+    public FXMLController() throws IOException {
 
-    public FXMLController() {
-        pop_up_window = new Stage();
-        pop_up_window.initModality(Modality.APPLICATION_MODAL);
-        pop_up_window.setResizable(false);
+        initPopup();
     }
+
+    public void initPopup() {
+        popUpWindow = new Stage();
+        popUpWindow.initModality(Modality.APPLICATION_MODAL);
+        popUpWindow.setResizable(false);
+    }
+
+    protected void afficherPopup() {
+        if (graphe != null) {
+            popUpWindow.show();
+        }
+    }
+
     @FXML private StackPane subPane;
 
     private ContextMenu contextMenu = new ContextMenu();
@@ -79,7 +87,7 @@ public class FXMLController {
                 public void handle(ActionEvent event) {
                     try {
                         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/EtiquetteSommet.fxml"));
-                        Parent root1 = (Parent) fxmlLoader.load();
+                        Parent root1 = fxmlLoader.load();
                         Stage stage = new Stage();
                         stage.setScene(new Scene(root1));
                         stage.show();
@@ -119,7 +127,7 @@ public class FXMLController {
         FileChooser fileChooser = createFileChooser("Importer");
         File file = fileChooser.showOpenDialog(null);
         if (file != null){
-            this.g = new Graphe(file.getAbsolutePath(), 600);
+            this.graphe = new Graphe(file.getAbsolutePath(), 600);
         }
     }
 
@@ -127,10 +135,12 @@ public class FXMLController {
      * Fonction ouvrant une fenetre (FileChooser) permettant l'exportation d'un fichier dans le logiciel.
      */
     @FXML public void clickFichierExporter() {
-        FileChooser fileChooser = createFileChooser("Exporter");
-        File file = fileChooser.showSaveDialog(null);
-        if (file != null){
-            this.g.sauvegarderGraphe(file.getAbsolutePath());
+        if (graphe != null) {
+            FileChooser fileChooser = createFileChooser("Exporter");
+            File file = fileChooser.showSaveDialog(null);
+            if (file != null) {
+                this.graphe.sauvegarderGraphe(file.getAbsolutePath());
+            }
         }
     }
 
@@ -148,21 +158,21 @@ public class FXMLController {
      * Fonction ouvrant une fenetre (FileChooser) permettant l'enregistrement d'un fichier dans le logiciel.
      */
     @FXML public void clickFichierEnregistrer() {
-        this.g.sauvegarderGraphe(null);
+        this.graphe.sauvegarderGraphe(null);
     }
 
     /**
      * Fonction permettant d'appliquer une distribution aléatoire des positions des sommets du graphe
      */
     @FXML public void clickRepresentationAleatoire() {
-        this.g.setAlgorithmeRepresentation('a',600);
+        this.graphe.setAlgorithmeRepresentation('a',600);
     }
 
     /**
      * Fonction permettant d'appliquer une distribution circulaire des positions des sommets du graphe
      */
     @FXML public void clickRepresentationCirculaire() {
-        this.g.setAlgorithmeRepresentation('c',600);
+        this.graphe.setAlgorithmeRepresentation('c',600);
     }
 
     /**
@@ -170,14 +180,31 @@ public class FXMLController {
      */
     @FXML
     public void clickRepresentationForces() {
-        this.g.setAlgorithmeRepresentation('f',600);
+        this.graphe.setAlgorithmeRepresentation('f',600);
+    }
+
+    /**
+     * Fonction permettant d'indicer aléatoirement tous les sommets du graphe
+     */
+    @FXML
+    public void clickIndicageAleatoire(){
+        if (graphe != null) {
+            this.graphe.setIndiceAleatoire();
+        }
+    }
+
+    @FXML
+    public void clickIndicageDegré() {
+        if (graphe != null) {
+            this.graphe.setIndiceDegre();
+        }
     }
 
     @FXML
     public void clickToggleRepresentation(){
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/ModeleRepresentation.fxml"));
-            Parent root1 = (Parent) fxmlLoader.load();
+            Parent root1 = fxmlLoader.load();
             Stage stage = new Stage();
             stage.setTitle("Choix du modèle de la représentation");
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -189,43 +216,44 @@ public class FXMLController {
         }
     }
     @FXML
-    public void clickAjouterSommet() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AjoutSommet.fxml"));
-            Parent root1 = (Parent) fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Ajouter Sommet");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setResizable(false);
-            stage.setScene(new Scene(root1));
-            stage.show();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+    public void clickAjouterSommet() throws IOException {
+        new AjoutSommetController(graphe);
     }
 
     @FXML
-    public void clickAjouterArete() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AjoutArete.fxml"));
-            pop_up_window.setTitle("Ajouter Arête");
-            pop_up_window.setScene(new Scene((Parent)fxmlLoader.load()));
-            pop_up_window.show();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+    public void clickAjouterArete() throws IOException {
+        new AjoutAreteController(graphe);
+    }
+    @FXML
+    public void clickTailleGraphe(MouseEvent mouseEvent) throws IOException {
+        new TailleGrapheController(graphe);
+    }
+
+    /**
+     *
+     * @param event
+     */
+    @FXML public void clickCouleurGraphe(MouseEvent event) throws IOException {
+        CouleurGrapheController c = new CouleurGrapheController(graphe);
+    }
+
+    protected void fermerPopup(Button button) {
+        popUpWindow.close();
     }
 
     @FXML public void clickSupprimer() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/SupprSommer.fxml"));
-            pop_up_window.setTitle("Confirmer suppression");
-            pop_up_window.setScene(new Scene((Parent)fxmlLoader.load()));
-            pop_up_window.show();
-        } catch(Exception e) {
-            e.printStackTrace();
+        if (graphe != null) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/SupprSommer.fxml"));
+                popUpWindow.setTitle("Confirmer suppression");
+                popUpWindow.setScene(new Scene((Parent) fxmlLoader.load()));
+                popUpWindow.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
+
     /**
      * Fonction traitant le ToggleButton permettant l'affichage ou non des sommets du graphe.
      */
@@ -272,37 +300,18 @@ public class FXMLController {
     /**
      *
      */
-    @FXML public void clickCouleurFond(ActionEvent event) {
+    @FXML private ColorPicker couleurFond;
+    @FXML public void clickCouleurFond(MouseEvent event) throws IOException {
+        couleurFond.setOnAction(new EventHandler() {
+            public void handle(Event t) {
+                Color c = couleurFond.getValue();
+                vbox.setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
 
-    }
-    /**
-     *
-     */
-    @FXML public void clickCouleurGraphe(ActionEvent event) {
-
-    }
-
-    /**
-     *
-     */
-    @FXML public void clickCouleurElement(ActionEvent event) {
-
+            }
+        });
     }
 
-    /**
-     *
-     */
-    @FXML public void clickOptionGraphe() {
-        try {
-            pop_up_window.setTitle("Options Graphe");
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/TailleGraphe.fxml"));
-            pop_up_window.setScene(new Scene((Parent)fxmlLoader.load()));
-            pop_up_window.show();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+    public void setVbox(VBox vbox) {
+        this.vbox = vbox;
     }
-
-
-
 }

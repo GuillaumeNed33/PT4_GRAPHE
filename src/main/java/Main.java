@@ -1,6 +1,7 @@
-
+import Controller.FXMLController;
 import Model.Forme_Sommet;
-import View.*;
+import View.Arete;
+import View.Sommet;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

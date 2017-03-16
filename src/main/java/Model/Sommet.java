@@ -156,16 +156,16 @@ public class Sommet {
 
     public void setForme(String forme) {
 
-        if (forme.equals("circle") || forme.equals("ellipse")) {
+        if (forme.equals("circle") ||forme.equals("Cercle") || forme.equals("ellipse")) {
             this.forme = Forme_Sommet.Cercle;
         }
-        else if (forme.equals("rectangle") || forme.equals("square")) {
+        else if (forme.equals("Rectangle") || forme.equals("square")) {
             this.forme = Forme_Sommet.Rectangle;
         }
-        else if (forme.equals("triangle")) {
+        else if (forme.equals("Triangle")) {
             this.forme = Forme_Sommet.Triangle;
         }
-        else if (forme.equals("losange")) {
+        else if (forme.equals("Losange") || forme.equals("diamond")) {
             this.forme = Forme_Sommet.Losange;
         }
         else { // Par défaut

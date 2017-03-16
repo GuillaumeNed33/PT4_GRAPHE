@@ -8,9 +8,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 
-
-
-
 public class Sommet extends Pane {
     static public float RAYON_SOMMET = 5.0f;
     private Color color;

@@ -15,15 +15,10 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
 
         /** GESTION DES NODES **/
+        Graphe g = new Graphe();
         VBox root = new VBox();
         TabPane menu = FXMLLoader.load(getClass().getResource("/fxml/MainMenu.fxml"));
-        Sommet s = new Sommet("id", Forme_Sommet.Cercle, 100,100);
-        Sommet s1 = new Sommet("moche", Forme_Sommet.Rectangle, 300,620);
-        Arete a = new Arete(s,s1);
-        Pane test = new Pane();
-        test.getChildren().addAll(s,a,s1);
-        root.getChildren().addAll(menu, test);
-
+        root.getChildren().addAll(menu,g.getScrollPane());
 
         /** PARAMETRAGE DE LA FENETRE **/
         primaryStage.setTitle("Gestionnaire de graphe");

@@ -45,7 +45,7 @@ public class ModifierAreteController extends FXMLController {
             List<String> AreteStr = new ArrayList<String>();
 
             for (Arete a : graphe.getAretes()) {
-                AreteStr.add("id : " + a.getId() + " ( tag : " + a.getTag() + ")");
+                AreteStr.add("tag : " + a.getTag() + " (id : " + a.getId() + " )");
             }
 
             ListProperty<String> listProperty = new SimpleListProperty<String>();

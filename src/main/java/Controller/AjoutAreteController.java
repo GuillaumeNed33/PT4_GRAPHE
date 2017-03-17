@@ -46,7 +46,7 @@ public class AjoutAreteController extends FXMLController {
             List<String> sommetsStr = new ArrayList<String>();
 
             for (Sommet sommet : graphe.getSommets()) {
-                sommetsStr.add("id : " + sommet.getId() + " ( tag : " + sommet.getTag() + ")");
+                sommetsStr.add("tag : " + sommet.getTag() + " ( id : " + sommet.getId() + ")");
             }
 
             ListProperty<String> listProperty = new SimpleListProperty<String>();

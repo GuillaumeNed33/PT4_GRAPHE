@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.Graphe;
+import Model.Sommet;
 import com.sun.glass.ui.Size;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

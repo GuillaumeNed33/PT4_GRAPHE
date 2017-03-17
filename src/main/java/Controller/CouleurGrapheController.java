@@ -12,9 +12,7 @@ import javafx.scene.control.Label;
 
 import java.io.IOException;
 
-/**
- * Created by audreylentilhac on 15/03/2017.
- */
+
 public class CouleurGrapheController extends FXMLController {
 
     public CouleurGrapheController(Graphe graphe) throws IOException {

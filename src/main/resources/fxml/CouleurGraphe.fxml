@@ -45,7 +45,7 @@
          </GridPane.margin>
       </CheckBox>
       <CheckBox fx:id="checkAretes" mnemonicParsing="false" text="Arêtes" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-      <Button fx:id="annulerCouleurGraphe" mnemonicParsing="false" onAction="#fermerPopUpCouleurGraphe" text="Annuler" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <Button mnemonicParsing="false" onAction="#fermerPopUpCouleurGraphe" text="Annuler" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets left="20.0" />
          </GridPane.margin>
@@ -55,7 +55,7 @@
             <Insets left="10.0" />
          </GridPane.margin>
       </Label>
-      <Button fx:id="OKCouleurGraphe" mnemonicParsing="false" onAction="#colorierGraphe" text="OK" textAlignment="CENTER" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+      <Button mnemonicParsing="false" onAction="#colorierGraphe" text="OK" textAlignment="CENTER" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets right="30.0" />
          </GridPane.margin>

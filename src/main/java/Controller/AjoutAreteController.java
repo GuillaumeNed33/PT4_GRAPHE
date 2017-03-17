@@ -19,9 +19,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by audreylentilhac on 14/03/2017.
- */
 public class AjoutAreteController extends FXMLController {
 
     private String sommetEntreSelectionne, sommetSortieSelectionne;
@@ -46,7 +43,7 @@ public class AjoutAreteController extends FXMLController {
             List<String> sommetsStr = new ArrayList<String>();
 
             for (Sommet sommet : graphe.getSommets()) {
-                sommetsStr.add("tag : " + sommet.getTag() + " ( id : " + sommet.getId() + ")");
+                sommetsStr.add("tag : " + sommet.getTag() + " (id : " + sommet.getId() + " )");
             }
 
             ListProperty<String> listProperty = new SimpleListProperty<String>();
@@ -81,24 +78,23 @@ public class AjoutAreteController extends FXMLController {
 
         if (sommetEntreSelectionne != null && sommetSortieSelectionne != null) {
 
-            int idSommetEntre = Integer.parseInt(sommetEntreSelectionne.split(" ")[2]);
-            int idSommetSortie = Integer.parseInt(sommetSortieSelectionne.split(" ")[2]);
-
+            int idSommetEntre = Integer.parseInt(sommetEntreSelectionne.split(" ")[5]);
+            int idSommetSortie = Integer.parseInt(sommetSortieSelectionne.split(" ")[5]);
 
             if (idSommetEntre != -1 && idSommetSortie != 1 && !graphe.ajouterArete(graphe.trouverSommetParID(idSommetEntre), graphe.trouverSommetParID(idSommetSortie))) {
                 erreurAjoutArete.setText("Erreur - Arete existante ou 2 \nsommets identiques sélectionnés.");
             }
-            else
-                fermerAjoutArete();
+            else {
+                popUpWindow.close();
+            }
         }
         else {
             erreurAjoutArete.setText("Erreur - Sélectionnez 2 sommets.");
         }
     }
-    @FXML
-    private
-    Button boutonAnnulerAjoutArete;
+
+
     @FXML public void fermerAjoutArete() {
-        fermerPopup(boutonAnnulerAjoutArete);
+        popUpWindow.close();
     }
 }

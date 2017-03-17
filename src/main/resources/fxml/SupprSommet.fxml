@@ -15,12 +15,12 @@
       </Label>
       <HBox alignment="CENTER">
          <children>
-            <Button fx:id="boutonSupprSommetSelectionne" contentDisplay="CENTER" mnemonicParsing="false" onAction="#suppressionSommetSelectionne" text="Confirmer">
+            <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#suppressionSommetSelectionne" text="Confirmer">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="annulerSommetSelectionne" mnemonicParsing="false" onAction="#fermerSupprimerSommetSelectionne" text="Annuler">
+            <Button mnemonicParsing="false" onAction="#fermerSupprimerSommetSelectionne" text="Annuler">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>

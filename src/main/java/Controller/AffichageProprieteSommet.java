@@ -3,21 +3,13 @@ package Controller;
 
 import Model.Graphe;
 import Model.Sommet;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.paint.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-import javax.swing.text.TabableView;
-import java.awt.*;
 import java.io.IOException;
 
 public class AffichageProprieteSommet extends FXMLController {

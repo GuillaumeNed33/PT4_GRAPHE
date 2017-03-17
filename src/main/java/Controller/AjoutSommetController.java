@@ -17,9 +17,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by audreylentilhac on 14/03/2017.
- */
+
 public class AjoutSommetController extends FXMLController {
 
     @FXML
@@ -180,8 +178,7 @@ public class AjoutSommetController extends FXMLController {
         return null;
     }
 
-    @FXML private Button annulerCreerSommet;
     @FXML public void fermerCreerSommet() {
-        fermerPopup(annulerCreerSommet);
+        popUpWindow.close();
     }
 }

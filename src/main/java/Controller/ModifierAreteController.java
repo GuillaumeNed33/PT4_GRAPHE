@@ -51,7 +51,6 @@ public class ModifierAreteController extends FXMLController {
             ListProperty<String> listProperty = new SimpleListProperty<String>();
             listProperty.set(FXCollections.observableArrayList(AreteStr));
 
-
             listViewSAretes.itemsProperty().bind(listProperty);
 
             listViewSAretes.getSelectionModel().selectedItemProperty()
@@ -73,14 +72,13 @@ public class ModifierAreteController extends FXMLController {
             if (idArete != -1 ) {
                 /*** MODIF ***/
             }
-            else
-                fermerModifyArete();
+            else {
+                popUpWindow.close();
+            }
         }
     }
-    @FXML
-    private
-    Button boutonAnnulerModifyArete;
+
     @FXML public void fermerModifyArete() {
-        fermerPopup(boutonAnnulerModifyArete);
+        popUpWindow.close();
     }
 }

@@ -22,8 +22,6 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 
-import static javafx.scene.input.ContextMenuEvent.CONTEXT_MENU_REQUESTED;
-
 public class FXMLController extends VBox{
 
     protected Parent Pop_up_view;
@@ -244,7 +242,7 @@ public class FXMLController extends VBox{
 
     @FXML public void clickModifyArete() throws IOException {
         //TODO modif aretes
-        new ModifyAreteController(graphe);
+        new ModifierAreteController(graphe);
     }
 
 
@@ -289,11 +287,7 @@ public class FXMLController extends VBox{
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/EtiquetteSommet.fxml"));
-                    Parent root1 = fxmlLoader.load();
-                    Stage stage = new Stage();
-                    stage.setScene(new Scene(root1));
-                    stage.show();
+                    new ModifierTagSommet(graphe, sommetSelectionne);
                 } catch(Exception e) {
                     e.printStackTrace();
                 }

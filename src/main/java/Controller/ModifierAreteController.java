@@ -23,13 +23,13 @@ import java.util.List;
 /**
  * Created by audreylentilhac on 14/03/2017.
  */
-public class ModifyAreteController extends FXMLController {
+public class ModifierAreteController extends FXMLController {
 
     private String AreteSelectionne;
     @FXML
     private ListView<String> listViewSAretes;
 
-    ModifyAreteController(Graphe graphe) throws IOException {
+    ModifierAreteController(Graphe graphe) throws IOException {
         super();
         this.graphe = graphe;
         if (this.graphe != null) {

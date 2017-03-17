@@ -251,9 +251,9 @@ public class FXMLController extends VBox{
     private ContextMenu contextMenu = new ContextMenu();
     private MenuItem proprieteSommet = new MenuItem("Tableau de propriétés du sommet");
     private MenuItem supprimerSommet = new MenuItem("Supprimer le sommet");
-    private MenuItem etiquetteSommet = new MenuItem("Etiquette du sommet");
-    private MenuItem copierEtiquetteSommet = new MenuItem("Copier l'étiquette du sommet");
-    private MenuItem collerEtquetteSommet = new MenuItem("Coller l'étiquette au sommet");
+    private MenuItem etiquetteSommet = new MenuItem("Tag du sommet");
+    private MenuItem copierEtiquetteSommet = new MenuItem("Copier le tag du sommet");
+    private MenuItem collerEtquetteSommet = new MenuItem("Coller le tag au sommet");
 
     /**
      * Fonction d'insertion des options du contextMenu
@@ -267,12 +267,8 @@ public class FXMLController extends VBox{
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/ProprietesSommetTab.fxml"));
-                    Parent root1 = fxmlLoader.load();
-                    Stage stage = new Stage();
-                    stage.setScene(new Scene(root1));
-                    stage.show();
-                } catch(Exception e) {
+                    new AffichageProprieteSommet(graphe, sommetSelectionne);
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -307,14 +303,16 @@ public class FXMLController extends VBox{
         copierEtiquetteSommet.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //TODO Il faut pouvoir récupérer un sommet
+                tagSommetSelectionne = sommetSelectionne.getTag() + "test";
             }
         });
 
         collerEtquetteSommet.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //TODO Il faut pouvoir récupérer un sommet
+                if (tagSommetSelectionne != null) {
+                    sommetSelectionne.setTag(tagSommetSelectionne);
+                }
             }
         });
 
@@ -340,11 +338,10 @@ public class FXMLController extends VBox{
                     int cpt = 0;
                     //Sommet tmp = null; // VRAI LIGNE, A GARDER // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
                     sommetSelectionne = graphe.getSommets().get(0);
-                    tagSommetSelectionne = graphe.getSommets().get(0).getTag();
 
                         /*while(!trouve && cpt<graphe.getSommets().size()) { // DETECTION CLIC DROIT SUR SOMMET (On ne veut pas clic droit n'importe où).
                             sommetSelectionne = graphe.getSommets().get(cpt);
-                            tagSommetSelectionne = graphe.getSommets().get(cpt).getTag();
+
                             if(event.getSceneX() >= sommetSelectionne.getX()-sommetSelectionne.getTailleForme().width &&
                                     event.getSceneX() <= sommetSelectionne.getX() + sommetSelectionne.getTailleForme().width &&
                                     event.getSceneY() >= sommetSelectionne.getY() - sommetSelectionne.getTailleForme().height &&

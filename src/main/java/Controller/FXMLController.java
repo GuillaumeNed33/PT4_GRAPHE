@@ -2,11 +2,6 @@ package Controller;
 
 import Model.Graphe;
 import Model.Sommet;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -17,7 +12,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.ContextMenuEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -27,8 +21,8 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
+import static javafx.scene.input.ContextMenuEvent.CONTEXT_MENU_REQUESTED;
 
 public class FXMLController extends VBox{
 
@@ -336,15 +330,17 @@ public class FXMLController extends VBox{
         pane.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
             @Override
             public void handle(ContextMenuEvent event) {
-                if (event.getSource() == MouseButton.SECONDARY){
-                    if (graphe!=null){
 
-                        setContextMenu();
-                        boolean trouve = false;
-                        int cpt = 0;
-                        Sommet tmp = null;
+                if (graphe!=null){
 
-                        while(!trouve && cpt<graphe.getSommets().size()) { // DETECTION CLIC DROIT SUR SOMMET (On ne veut pas clic droit n'importe ou).
+                    setContextMenu();
+                    //boolean trouve = false; // VRAI LIGNE, A GARDER
+                    boolean trouve = true; // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
+                    int cpt = 0;
+                    //Sommet tmp = null; // VRAI LIGNE, A GARDER // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
+                    Sommet tmp = graphe.getSommets().get(0);
+
+                        /*while(!trouve && cpt<graphe.getSommets().size()) { // DETECTION CLIC DROIT SUR SOMMET (On ne veut pas clic droit n'importe où).
                             tmp = graphe.getSommets().get(cpt);
                             if(event.getSceneX() >= tmp.getX()-tmp.getTailleForme().width &&
                                     event.getSceneX() <= tmp.getX()+tmp.getTailleForme().width &&
@@ -352,17 +348,22 @@ public class FXMLController extends VBox{
                                     event.getSceneY() <= tmp.getY()+tmp.getTailleForme().height){
                                 trouve = true;
                             }
-                        }
+                        }*/
 
 
-                        if(trouve) { //Si c'est sur un sommet, affichage du contextMenu.
-                            contextMenu.show(vbox, event.getScreenX(), event.getScreenY());
-                            event.consume();
-                        }
+                    if(trouve) { //Si c'est sur un sommet, affichage du contextMenu.
+                        contextMenu.show(vbox, event.getScreenX(), event.getScreenY());
+                        event.consume();
                     }
-                }else{
-                    contextMenu.hide();
                 }
+            }
+        });
+
+        pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+
+                contextMenu.hide();
             }
         });
     }

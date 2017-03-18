@@ -21,17 +21,24 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 
-public class FXMLController extends VBox{
+public class FXMLController extends VBox {
 
     protected Parent Pop_up_view;
     protected Stage popUpWindow;
-    protected Graphe graphe;
+    public View.Graphe grapheView;
+    protected Model.Graphe grapheModel;
     private Stage primaryStage;
     private VBox vbox;
+
 
     public FXMLController() throws IOException {
 
         initPopup();
+        grapheView = new View.Graphe();
+    }
+
+    public void setGrapheView(View.Graphe g) {
+        grapheView = g;
     }
 
     public void initPopup() {
@@ -41,7 +48,7 @@ public class FXMLController extends VBox{
     }
 
     protected void afficherPopup() {
-        if (graphe != null) {
+        if (grapheModel != null) {
             popUpWindow.show();
         }
     }
@@ -127,19 +134,21 @@ public class FXMLController extends VBox{
         FileChooser fileChooser = createFileChooser("Importer");
         File file = fileChooser.showOpenDialog(null);
         if (file != null){
-            this.graphe = new Graphe(file.getAbsolutePath(), 600);
+            grapheModel = new Graphe(file.getAbsolutePath(), 600);
+            grapheView.chargerGraphe(grapheModel);
         }
+
     }
 
     /**
      * Fonction ouvrant une fenetre (FileChooser) permettant l'exportation d'un fichier dans le logiciel.
      */
     @FXML public void clickFichierExporter() {
-        if (graphe != null) {
+        if (grapheModel != null) {
             FileChooser fileChooser = createFileChooser("Exporter");
             File file = fileChooser.showSaveDialog(null);
             if (file != null) {
-                this.graphe.sauvegarderGraphe(file.getAbsolutePath());
+                grapheModel.sauvegarderGraphe(file.getAbsolutePath());
             }
         }
     }
@@ -158,21 +167,21 @@ public class FXMLController extends VBox{
      * Fonction ouvrant une fenetre (FileChooser) permettant l'enregistrement d'un fichier dans le logiciel.
      */
     @FXML public void clickFichierEnregistrer() {
-        this.graphe.sauvegarderGraphe(null);
+        grapheModel.sauvegarderGraphe(null);
     }
 
     /**
      * Fonction permettant d'appliquer une distribution aléatoire des positions des sommets du graphe
      */
     @FXML public void clickRepresentationAleatoire() {
-        this.graphe.setAlgorithmeRepresentation('a',600);
+        grapheModel.setAlgorithmeRepresentation('a',600);
     }
 
     /**
      * Fonction permettant d'appliquer une distribution circulaire des positions des sommets du graphe
      */
     @FXML public void clickRepresentationCirculaire() {
-        this.graphe.setAlgorithmeRepresentation('c',600);
+        grapheModel.setAlgorithmeRepresentation('c',600);
     }
 
     /**
@@ -180,7 +189,7 @@ public class FXMLController extends VBox{
      */
     @FXML
     public void clickRepresentationForces() {
-        this.graphe.setAlgorithmeRepresentation('f',600);
+        grapheModel.setAlgorithmeRepresentation('f',600);
     }
 
     /**
@@ -188,15 +197,15 @@ public class FXMLController extends VBox{
      */
     @FXML
     public void clickIndicageAleatoire(){
-        if (graphe != null) {
-            this.graphe.setIndiceAleatoire();
+        if (grapheModel != null) {
+            this.grapheModel.setIndiceAleatoire();
         }
     }
 
     @FXML
     public void clickIndicageDegré() {
-        if (graphe != null) {
-            this.graphe.setIndiceDegre();
+        if (grapheModel != null) {
+            this.grapheModel.setIndiceDegre();
         }
     }
 
@@ -217,16 +226,16 @@ public class FXMLController extends VBox{
     }
     @FXML
     public void clickAjouterSommet() throws IOException {
-        new AjoutSommetController(graphe);
+        new AjoutSommetController(grapheModel);
     }
 
     @FXML
     public void clickAjouterArete() throws IOException {
-        new AjoutAreteController(graphe);
+        new AjoutAreteController(grapheModel);
     }
     @FXML
     public void clickTailleGraphe(MouseEvent mouseEvent) throws IOException {
-        new TailleGrapheController(graphe);
+        new TailleGrapheController(grapheModel);
     }
 
     /**
@@ -234,7 +243,7 @@ public class FXMLController extends VBox{
      * @param event
      */
     @FXML public void clickCouleurGraphe(MouseEvent event) throws IOException {
-        CouleurGrapheController c = new CouleurGrapheController(graphe);
+        CouleurGrapheController c = new CouleurGrapheController(grapheModel);
     }
 
     protected void fermerPopup(Button button) {
@@ -242,7 +251,7 @@ public class FXMLController extends VBox{
     }
 
     @FXML public void clickSupprimer() {
-        if (graphe != null) {
+        if (grapheModel != null) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/SupprSommer.fxml"));
                 popUpWindow.setTitle("Confirmer suppression");

@@ -27,8 +27,8 @@ public class AjoutSommetController extends FXMLController {
     private ComboBox comboBoxForme;
     AjoutSommetController(Graphe graphe) throws IOException {
         super();
-        this.graphe = graphe;
-        if (this.graphe != null) {
+        this.grapheModel = graphe;
+        if (this.grapheModel != null) {
             FXMLLoader fxmlLoaderPopUp = new FXMLLoader(getClass().getResource("/fxml/AjoutSommet.fxml"));
             popUpWindow.setTitle("Ajouter Sommet");
             if (popUpWindow.getScene() == null) {

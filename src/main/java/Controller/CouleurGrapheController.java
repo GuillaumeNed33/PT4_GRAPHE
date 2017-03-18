@@ -19,7 +19,7 @@ public class CouleurGrapheController extends FXMLController {
 
     public CouleurGrapheController(Graphe graphe) throws IOException {
         super();
-        this.graphe = graphe;
+        this.grapheModel = graphe;
         if (graphe != null) {
             FXMLLoader fxmlLoaderPopUp = new FXMLLoader(getClass().getResource("/fxml/CouleurGraphe.fxml"));
             popUpWindow.setTitle("Couleur du graphe");
@@ -38,11 +38,11 @@ public class CouleurGrapheController extends FXMLController {
     @FXML
     public void colorierGraphe(){
         if (checkAretes.isSelected()) {
-            graphe.changerCouleurAretes(miniCouleur.getValue(), maxiCouleur.getValue());
+            grapheModel.changerCouleurAretes(miniCouleur.getValue(), maxiCouleur.getValue());
             fermerPopup(OKCouleurGraphe);
         }
-        if (checkSommets.isSelected() && graphe.indiceFixe()) {
-            graphe.changerCouleurSommets(miniCouleur.getValue(), maxiCouleur.getValue());
+        if (checkSommets.isSelected() && grapheModel.indiceFixe()) {
+            grapheModel.changerCouleurSommets(miniCouleur.getValue(), maxiCouleur.getValue());
             fermerPopup(OKCouleurGraphe);
         }
         else {

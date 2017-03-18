@@ -27,6 +27,13 @@ public class ZoomableScrollPane extends ScrollPane {
         zoomGroup.setOnScroll(new ZoomHandler());
     }
 
+    public void updateScrollPane(Node content) {
+        this.content = content;
+        setContent(content);
+        System.out.println("UPDATE");
+
+    }
+
     public double getScaleValue() {
         return scaleValue;
     }

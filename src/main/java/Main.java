@@ -1,6 +1,7 @@
 import Controller.FXMLController;
 import Model.Forme_Sommet;
 import View.Arete;
+import View.Graphe;
 import View.Sommet;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +17,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
 
         /** GESTION DES NODES **/
-        Graphe g = new Graphe();
+        View.Graphe g = new Graphe();
         VBox root = new VBox();
         TabPane menu = FXMLLoader.load(getClass().getResource("/fxml/MainMenu.fxml"));
         root.getChildren().addAll(menu,g.getScrollPane());

@@ -33,8 +33,8 @@ public class AjoutAreteController extends FXMLController {
 
     AjoutAreteController(Graphe graphe) throws IOException {
         super();
-        this.graphe = graphe;
-        if (this.graphe != null) {
+        this.grapheModel = graphe;
+        if (this.grapheModel != null) {
             FXMLLoader fxmlLoaderPopUp = new FXMLLoader(getClass().getResource("/fxml/AjoutArete.fxml"));
             popUpWindow.setTitle("Ajouter Arête");
             if (popUpWindow.getScene() == null) {
@@ -85,7 +85,7 @@ public class AjoutAreteController extends FXMLController {
             int idSommetSortie = Integer.parseInt(sommetSortieSelectionne.split(" ")[2]);
 
 
-            if (idSommetEntre != -1 && idSommetSortie != 1 && !graphe.ajouterArete(graphe.trouverSommetParID(idSommetEntre), graphe.trouverSommetParID(idSommetSortie))) {
+            if (idSommetEntre != -1 && idSommetSortie != 1 && !grapheModel.ajouterArete(grapheModel.trouverSommetParID(idSommetEntre), grapheModel.trouverSommetParID(idSommetSortie))) {
                 erreurAjoutArete.setText("Erreur - Arete existante ou 2 \nsommets identiques sélectionnés.");
             }
             else

@@ -18,8 +18,8 @@ public class TailleGrapheController extends FXMLController {
 
     TailleGrapheController(Graphe graphe) throws IOException {
         super();
-        this.graphe = graphe;
-        if (this.graphe != null) {
+        this.grapheModel = graphe;
+        if (this.grapheModel != null) {
        FXMLLoader fxmlLoaderPopUp = new FXMLLoader(getClass().getResource("/fxml/TailleGraphe.fxml"));
             popUpWindow.setTitle("Taille du graphe");
             if (popUpWindow.getScene() == null) {
@@ -53,7 +53,7 @@ public class TailleGrapheController extends FXMLController {
 
             if ((minSommet < maxSommet && minArete < maxArete) &&
                     (minSommet >= 1 && maxSommet > 1 && minArete >= 1 && maxArete > 1)) {
-                this.graphe.changerTailleGraphe(maxSommet, minSommet, maxArete, minArete);
+                this.grapheModel.changerTailleGraphe(maxSommet, minSommet, maxArete, minArete);
                 fermerPopup(okTailleGraphe);
             } else {
                 erreurMessageId.setText("Erreur - Valeurs incorrectes \n(max > min, min >= 1 et max >1).");

@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 /**
  * Created by audreylentilhac on 02/02/2017.
  */
-public class Sommet {
+public class Sommet extends ComposantGraphe{
 
     /**
      * Représente le prochain id à utiliser.
@@ -15,19 +15,9 @@ public class Sommet {
     private static int idActuel = 0;
 
     /**
-     * Représente l'id du sommet.
-     */
-    private int id;
-
-    /**
      * Représente l'id contenu dans le fichier.
      */
     private int idImportation;
-
-    /**
-     * Représente le tag du sommet.
-     */
-    private String tag;
 
     /**
      * Représente la coordonnée du sommet en x dans la fenêtre d'affichage.
@@ -45,32 +35,14 @@ public class Sommet {
      private  Forme_Sommet forme;
 
     /**
-     * Représente la taille d'un sommet.
-     */
-    private Size tailleForme;
-
-    /**
-     * Représente la couleur d'un sommet.
-     */
-    private Color couleurSommet;
-
-    /**
-     * Reprséente l'indice du sommet
-     */
-    private int indice;
-
-    /**
      * Constructeur paramétré de la classe Sommet.
      * @param nom Représente le nom du sommet.
      */
     public Sommet(String nom) {
-        this.id = idActuel++;
-        this.tag = nom;
+        super(idActuel++, 0, nom, Color.BLACK, new Size(10,10));
         this.x = 0;
         this.y = 0;
         this.forme = Forme_Sommet.Cercle;
-        this.tailleForme = new Size(10,10);
-        this.couleurSommet = Color.web("000000");
     }
 
     /**
@@ -81,48 +53,27 @@ public class Sommet {
      * @param y Représente la coordonnée en y du sommet.
      */
     public Sommet(String tag, float x, float y) {
-        this.id = idActuel++;
-        this.tag = tag;
+        super(idActuel++, 0, tag, Color.BLACK, new Size(10,10));
         this.x = x;
         this.y = y;
         forme = Forme_Sommet.Cercle;
-        tailleForme = new Size(10 ,10);
-        couleurSommet = Color.web("000000");
     }
 
 
     public Sommet(int idImportation) {
-        this.id = idActuel++;
+        super(idActuel++, 0, "", Color.BLACK, new Size(10,10));
         this.idImportation = idImportation;
-        this.tag = "";
         this.x = 0;
         this.y = 0;
         this.forme = Forme_Sommet.Cercle;
-        this.tailleForme = new Size(10,10);
-        this.couleurSommet = Color.web("000000");
     }
 
 
     // Accesseur et Mutateurs
 
-    public int getId() {
-
-        return id;
-    }
-
     public int getIdImportation() {
 
         return idImportation;
-    }
-
-    public String getTag() {
-
-        return tag;
-    }
-
-    public void setTag(String tag) {
-
-        this.tag = tag;
     }
 
     public float getX() {
@@ -172,24 +123,4 @@ public class Sommet {
             this.forme = Forme_Sommet.Cercle;
         }
     }
-
-    public Size getTailleForme() {
-        return tailleForme;
-    }
-
-    public void setTailleForme(Size tailleForme) {
-        this.tailleForme = tailleForme;
-    }
-
-    public Color getCouleurSommet() {
-        return couleurSommet;
-    }
-
-    public void setCouleurSommet(Color couleurSommet) {
-        this.couleurSommet = couleurSommet;
-    }
-
-    public int getIndice() { return indice; }
-
-    public void setIndice(int indice) { this.indice = indice; }
 }

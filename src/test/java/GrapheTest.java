@@ -254,7 +254,7 @@ public class GrapheTest {
 
         g.changerCouleurArete(g.getAretes().get(0), Color.BLACK,Color.BLACK);
 
-        Assert.assertEquals(g.getAretes().get(0).getCouleurArete(),Color.BLACK);
+        Assert.assertEquals(g.getAretes().get(0).getCouleur(),Color.BLACK);
     }
 
     @Test
@@ -294,10 +294,10 @@ public class GrapheTest {
         g.ajouterArete(s,s4);
         g.ajouterArete(s2,s3);
 
-        g.getAretes().get(0).setPoids(1);
-        g.getAretes().get(1).setPoids(4);
-        g.getAretes().get(2).setPoids(7);
-        g.getAretes().get(3).setPoids(12);
+        g.getAretes().get(0).setIndice(1);
+        g.getAretes().get(1).setIndice(4);
+        g.getAretes().get(2).setIndice(7);
+        g.getAretes().get(3).setIndice(12);
 
         Assert.assertEquals(g.indiceMaxArete(),12,0);
         Assert.assertEquals(g.indiceMinArete(),1,0);

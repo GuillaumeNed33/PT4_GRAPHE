@@ -34,12 +34,12 @@
       <Label fx:id="erreurAjoutArete" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="34.0" textFill="#ee0000" />
       <HBox alignment="CENTER" prefHeight="0.0" prefWidth="205.0">
          <children>
-            <Button fx:id="boutonOKAjoutArete" mnemonicParsing="false" onAction="#ajouterArete" prefHeight="27.0" prefWidth="73.0" text="OK">
+            <Button mnemonicParsing="false" onAction="#ajouterArete" prefHeight="27.0" prefWidth="73.0" text="OK">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="boutonAnnulerAjoutArete" mnemonicParsing="false" onAction="#fermerAjoutArete" prefHeight="27.0" prefWidth="100.0" text="Annuler">
+            <Button mnemonicParsing="false" onAction="#fermerAjoutArete" prefHeight="27.0" prefWidth="100.0" text="Annuler">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>

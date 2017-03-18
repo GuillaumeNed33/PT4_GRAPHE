@@ -10,7 +10,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<fx:root prefHeight="272.0" prefWidth="295.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+
+<fx:root prefHeight="210.0" prefWidth="435.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
 
 <!--<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="300.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">-->
    <children>
@@ -51,12 +52,12 @@
       <Label fx:id="erreurMessageId" textFill="#ee0000" />
       <HBox alignment="TOP_RIGHT">
          <children>
-            <Button fx:id="okTailleGraphe" mnemonicParsing="false" onAction="#changementTailleGraphe" text="OK">
+            <Button mnemonicParsing="false" onAction="#changementTailleGraphe" text="OK">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="boutonAnnuler" mnemonicParsing="false" onAction="#fermerPopupChangementTaille" text="Annuler">
+            <Button mnemonicParsing="false" onAction="#fermerPopupChangementTaille" text="Annuler">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>

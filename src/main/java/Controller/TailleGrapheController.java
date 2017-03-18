@@ -11,9 +11,6 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
-/**
- * Created by audreylentilhac on 14/03/2017.
- */
 public class TailleGrapheController extends FXMLController {
 
     TailleGrapheController(Graphe graphe) throws IOException {
@@ -54,7 +51,7 @@ public class TailleGrapheController extends FXMLController {
             if ((minSommet < maxSommet && minArete < maxArete) &&
                     (minSommet >= 1 && maxSommet > 1 && minArete >= 1 && maxArete > 1)) {
                 this.grapheModel.changerTailleGraphe(maxSommet, minSommet, maxArete, minArete);
-                fermerPopup(okTailleGraphe);
+                popUpWindow.close();
             } else {
                 erreurMessageId.setText("Erreur - Valeurs incorrectes \n(max > min, min >= 1 et max >1).");
             }
@@ -63,10 +60,7 @@ public class TailleGrapheController extends FXMLController {
         }
     }
 
-    @FXML
-    private
-    Button boutonAnnuler;
     @FXML public void fermerPopupChangementTaille() {
-        fermerPopup(boutonAnnuler);
+        popUpWindow.close();
     }
 }

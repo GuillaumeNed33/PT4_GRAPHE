@@ -16,10 +16,10 @@ public class SommetTest {
         assertEquals(sommet.getTag(),"s1");
 
         Color couleur = Color.web("000000");
-        assertEquals(sommet.getCouleurSommet(), couleur);
+        assertEquals(sommet.getCouleur(), couleur);
 
         String size = new Size(10,10).toString();
-        assertEquals(sommet.getTailleForme().toString(),size);
+        assertEquals(sommet.getTaille().toString(),size);
     }
 
     @Test
@@ -35,11 +35,11 @@ public class SommetTest {
     public void testSetCouleur() {
         Sommet sommet= new Sommet("s1",10,10);
         Color couleur = Color.web("000000");
-        assertEquals(sommet.getCouleurSommet(), couleur);
+        assertEquals(sommet.getCouleur(), couleur);
 
         couleur = Color.web("010101");
-        sommet.setCouleurSommet(couleur);
-        assertEquals(sommet.getCouleurSommet(),couleur);
+        sommet.setCouleur(couleur);
+        assertEquals(sommet.getCouleur(),couleur);
     }
 
     @Test
@@ -74,13 +74,13 @@ public class SommetTest {
     @Test
     public void testTaille() {
         Sommet sommet = new Sommet("UnSommet");
-        assertEquals(sommet.getTailleForme().height,10,0);
-        assertEquals(sommet.getTailleForme().width,10,0);
+        assertEquals(sommet.getTaille().height,10,0);
+        assertEquals(sommet.getTaille().width,10,0);
 
         Size size = new Size(15,15);
-        sommet.setTailleForme(size);
+        sommet.setTaille(size);
 
-        assertEquals(sommet.getTailleForme().height,15,0);
-        assertEquals(sommet.getTailleForme().width,15,0);
+        assertEquals(sommet.getTaille().height,15,0);
+        assertEquals(sommet.getTaille().width,15,0);
     }
 }

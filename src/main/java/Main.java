@@ -1,7 +1,6 @@
 import Controller.FXMLController;
 import Model.Forme_Sommet;
 import View.Arete;
-import View.Graphe;
 import View.Sommet;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -27,8 +26,6 @@ public class Main extends Application {
         primaryStage.setMaximized(true);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-
-
     }
     public static void main(String[] args) {
         launch(args);

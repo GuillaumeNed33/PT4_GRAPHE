@@ -6,23 +6,13 @@ import javafx.scene.paint.Color;
 /**
  * Created by audreylentilhac on 03/02/2017.
  */
-public class Arete {
+public class Arete extends ComposantGraphe {
 
     /**
      * Représente le prochain id à utiliser.
      * il est static donc commun à l'ensemble des objets de la classe.
      */
     private static int idActuel = 0;
-
-    /**
-     * Représente l'id de l'arete.
-     */
-    private int id;
-
-    /**
-     * Représente le tag de l'arete.
-     */
-    private String tag;
 
     /**
      * Représente le premier sommet auquel l'arete est liée.
@@ -34,25 +24,12 @@ public class Arete {
      */
     private Sommet sortie;
 
-    /**
-     * Représente la couleur de l'arete.
-     */
-    private Color couleurArete;
 
     /**
      * Représente la couleur de l'arete en string.
      */
     private String couleurAreteStr;
 
-    /**
-     * Représente le poids d'un arête
-     */
-    private int poids;
-
-    /**
-     * Représente l'épaisseur de l'arete.
-     */
-    private Size epaisseur;
 
     /**
      * Une arete ne peut se construire que grâce à 2 sommets.
@@ -61,13 +38,10 @@ public class Arete {
      * @param sortie Ce sommet représente le second sommet au quel l'arrete est liée.
      */
     public Arete(Sommet entree, Sommet sortie){
+        super(++idActuel, 1, "", Color.BLACK, new Size(1, 1));
         this.entree = entree;
         this.sortie = sortie;
-        id = ++idActuel;
-        this.tag = "";
-        couleurArete = Color.web("000000");
         couleurAreteStr = "Black";
-        this.poids = 1;
     }
 
     /**
@@ -77,13 +51,10 @@ public class Arete {
      * @param poids valeur entière représentant le poids de l'arête
      */
     public Arete(Sommet entree, Sommet sortie, int poids){
+        super(++idActuel, poids, "", Color.BLACK, new Size(1,1));
         this.entree = entree;
         this.sortie = sortie;
-        id = ++idActuel;
-        this.tag = "";
-        couleurArete = Color.web("000000");
         couleurAreteStr = "Black";
-        this.poids = poids;
     }
 
     /**
@@ -93,33 +64,14 @@ public class Arete {
      * @param tag String représentant le nom de l'arête
      */
     public Arete(Sommet entree, Sommet sortie, String tag){
+        super(++idActuel, 1, tag, Color.BLACK, new Size(1,1));
         this.entree = entree;
         this.sortie = sortie;
-        id = ++idActuel;
-        this.tag = tag;
-        couleurArete = Color.web("000000");
         couleurAreteStr = "Black";
-        this.poids = 1;
     }
 
 
     // Accesseur et Mutateurs
-
-    public int getId() { return id; }
-
-    public void setId(int id) {this.id = id;}
-
-    public String getTag() {return tag;}
-
-    public void setTag(String tag) {this.tag = tag;}
-
-    public Color getCouleurArete() {
-        return couleurArete;
-    }
-
-    public void setCouleurArete(Color couleurArete) {
-        this.couleurArete = couleurArete;
-    }
 
     public String getCouleurAreteStr() {
         return couleurAreteStr;
@@ -129,18 +81,6 @@ public class Arete {
         this.couleurAreteStr = couleurAreteStr;
     }
 
-    public int getPoids() { return poids; }
-
-    public void setPoids(int poids) { this.poids = poids; }
-
-    public Size getEpaisseur() {
-        return epaisseur;
-    }
-
-    public void setEpaisseur(Size epaisseur) {
-        this.epaisseur = epaisseur;
-    }
-    
     public Sommet getEntree() {
         return entree;
     }

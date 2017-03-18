@@ -33,12 +33,12 @@ public class AreteTest {
         Color couleurArete = javafx.scene.paint.Color.web("000000");
 
         Arete arete= new Arete(depart,arrivee);
-        assertEquals(arete.getCouleurArete(), couleurArete);
+        assertEquals(arete.getCouleur(), couleurArete);
 
         Color couleur2 = javafx.scene.paint.Color.web("555555");
 
-        arete.setCouleurArete(couleur2);
-        assertEquals(arete.getCouleurArete(),couleur2);
+        arete.setCouleur(couleur2);
+        assertEquals(arete.getCouleur(),couleur2);
     }
 
     @Test
@@ -49,13 +49,13 @@ public class AreteTest {
         int poids = 13;
 
         Arete areteBis = new Arete(depart,arrivee,3);
-        assertEquals(areteBis.getPoids(),3);
+        assertEquals(areteBis.getIndice(),3);
 
         Arete arete = new Arete(depart,arrivee);
-        assertEquals(arete.getPoids(),1);
+        assertEquals(arete.getIndice(),1);
 
-        arete.setPoids(poids);
-        assertEquals(arete.getPoids(),poids);
+        arete.setIndice(poids);
+        assertEquals(arete.getIndice(),poids);
 
     }
 
@@ -68,13 +68,13 @@ public class AreteTest {
         Size size = new Size(0,0);
         Arete arete = new Arete(depart,arrivee);
 
-        arete.setEpaisseur(size);
-        assertEquals(arete.getEpaisseur(),size);
+        arete.setTaille(size);
+        assertEquals(arete.getTaille(),size);
 
         Size size1 = new Size(3,3);
-        arete.setEpaisseur(size1);
+        arete.setTaille(size1);
 
-        assertEquals(arete.getEpaisseur(),size1);
+        assertEquals(arete.getTaille(),size1);
     }
 
     @Test

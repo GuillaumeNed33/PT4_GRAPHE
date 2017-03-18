@@ -63,11 +63,11 @@ public class ModifierSommet extends FXMLController {
         }
         if (tailleSommet != null && coordSommet != null && indiceSommet != -1
                 && coordSommet.getKey() < popUpWindow.getMaxWidth() && coordSommet.getValue() < popUpWindow.getMaxHeight()) {
-            sommetSelectionne.setTailleForme(tailleSommet);
+            sommetSelectionne.setTaille(tailleSommet);
             sommetSelectionne.setIndice(indiceSommet);
             sommetSelectionne.setX(coordSommet.getKey());
             sommetSelectionne.setY(coordSommet.getValue());
-            sommetSelectionne.setCouleurSommet(couleurSommet.getValue());
+            sommetSelectionne.setCouleur(couleurSommet.getValue());
             sommetSelectionne.setForme(formeSommet.getValue().toString());
             popUpWindow.close();
         }

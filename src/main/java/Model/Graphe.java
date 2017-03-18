@@ -474,7 +474,7 @@ public class Graphe {
             if (!extremites.isEmpty() && !aretes.isEmpty()) {
                 for(Arete arete : aretes) {
                     fichierSortie.println("\t\"node" + extremites.get(arete).getKey().getId() + "\" ->  \"node" + extremites.get(arete).getKey().getId() + "\" " +
-                            "[ color=" + arete.getCouleurArete().toString());
+                            "[ color=" + arete.getCouleur().toString());
 
                     if (!arete.getTag().equals("")) {
                         fichierSortie.print(" label=\"" + arete.getTag() + "\" ];");
@@ -952,9 +952,9 @@ public class Graphe {
      */
     public int indiceMaxArete(){
         int i = aretes.size();
-        int max = aretes.get(0).getPoids();
+        int max = aretes.get(0).getIndice();
         while(--i >= 0) {
-            max = (aretes.get(i).getPoids() > max) ? aretes.get(i).getPoids() : max;
+            max = (aretes.get(i).getIndice() > max) ? aretes.get(i).getIndice() : max;
         }
         return max;
     }
@@ -965,9 +965,9 @@ public class Graphe {
      */
     public int indiceMinArete(){
         int i = aretes.size();
-        int min = aretes.get(0).getPoids();
+        int min = aretes.get(0).getIndice();
         while(--i >= 0) {
-            min = (aretes.get(i).getPoids() < min) ? aretes.get(i).getPoids() : min;
+            min = (aretes.get(i).getIndice() < min) ? aretes.get(i).getIndice() : min;
         }
         return min;
     }
@@ -999,7 +999,7 @@ public class Graphe {
             double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMaxSommet(), indiceMinSommet());
             double vert = intensite(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxSommet(), indiceMinSommet());
             double bleu = intensite(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxSommet(), indiceMinSommet());
-            sommet.setCouleurSommet(new Color(rouge, vert, bleu, 1.));
+            sommet.setCouleur(new Color(rouge, vert, bleu, 1.));
         }
     }
 
@@ -1025,11 +1025,11 @@ public class Graphe {
      */
     public void changerCouleurArete (Arete arete, Color cmin, Color cmax){
         if (indiceFixe()) {
-            int valeur = arete.getPoids();
+            int valeur = arete.getIndice();
             double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMaxArete(), indiceMinArete());
             double vert = intensite(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxArete(), indiceMinArete());
             double bleu = intensite(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxArete(), indiceMinArete());
-            arete.setCouleurArete(new Color(rouge, vert, bleu, 1.));
+            arete.setCouleur(new Color(rouge, vert, bleu, 1.));
         }
     }
 
@@ -1059,17 +1059,17 @@ public class Graphe {
         if (indiceFixe()) {
             int valeur = s.getIndice();
             int largeur = (int) intensite(valeur, maxSommet, minSommet, indiceMaxSommet(), indiceMinSommet());
-            Size taille = new Size(largeur, s.getTailleForme().height);
-            s.setTailleForme(taille);
+            Size taille = new Size(largeur, s.getTaille().height);
+            s.setTaille(taille);
         }
     }
 
     public void changerTailleArete(Arete a, float maxArete, float minArete){
         if (indiceFixe()) {
-            int valeur = a.getPoids();
+            int valeur = a.getIndice();
             int largeur = (int) intensite(valeur, maxArete, minArete, indiceMaxArete(), indiceMinArete());
-            Size taille = new Size(largeur, a.getEpaisseur().height);
-            a.setEpaisseur(taille);
+            Size taille = new Size(largeur, a.getTaille().height);
+            a.setTaille(taille);
         }
     }
 

@@ -33,15 +33,15 @@ public class AffichageProprieteSommet extends FXMLController {
                 popUpWindow.setScene(new Scene((Parent) fxmlLoaderPopUp.load()));
             }
 
-            visualisationCouleur.setFill(sommetSelectionne.getCouleurSommet());
+            visualisationCouleur.setFill(sommetSelectionne.getCouleur());
 
             idSommetSelectionne.setText(Integer.toString(sommetSelectionne.getId()));
             tagSommetSelectionne.setText(sommetSelectionne.getTag());
-            tailleSommetSelectionne.setText("(" + sommetSelectionne.getTailleForme().width + ", " +
-            sommetSelectionne.getTailleForme().height + ")");
+            tailleSommetSelectionne.setText("(" + sommetSelectionne.getTaille().width + ", " +
+            sommetSelectionne.getTaille().height + ")");
             positionSommetSelectionne.setText("(" + sommetSelectionne.getY() + ", " +
                     sommetSelectionne.getY() + ")");
-            couleurSommetSelectionne.setText(sommetSelectionne.getCouleurSommet().toString());
+            couleurSommetSelectionne.setText(sommetSelectionne.getCouleur().toString());
             formeSommetSelectionne.setText(sommetSelectionne.getForme().toString());
 
 

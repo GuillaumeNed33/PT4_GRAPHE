@@ -67,7 +67,7 @@ public class AjoutSommetController extends FXMLController {
             String forme = comboBoxForme.getValue().toString();
 
 
-            sommet.setCouleurSommet(couleur);
+            sommet.setCouleur(couleur);
             sommet.setForme(forme);
 
             if (!graphe.ajouterSommet(sommet, new Size((int)popUpWindow.getMaxWidth(), (int)popUpWindow.getMaxHeight()))) {

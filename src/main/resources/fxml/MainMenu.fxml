@@ -59,7 +59,7 @@
                   <MenuItem mnemonicParsing="false" onAction="#clickRepresentationForces" text="Modèle De Forces" />
               </items>
             </MenuButton>
-                <Button mnemonicParsing="false" text="Arête" />
+                <Button mnemonicParsing="false" text="Arête"  onMouseClicked="#clickModifyArete"/>
             </HBox>
         </AnchorPane>
     </Tab>

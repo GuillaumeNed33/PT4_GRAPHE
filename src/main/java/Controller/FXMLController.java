@@ -125,21 +125,6 @@ public class FXMLController extends VBox{
     }
 
     @FXML
-    public void clickToggleRepresentation(){
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/ModeleRepresentation.fxml"));
-            Parent root1 = fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Choix du modèle de la représentation");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setResizable(false);
-            stage.setScene(new Scene(root1));
-            stage.show();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-    @FXML
     public void clickAjouterSommet() throws IOException {
         new AjoutSommetController(graphe);
     }
@@ -248,6 +233,7 @@ public class FXMLController extends VBox{
 
     private ContextMenu contextMenu = new ContextMenu();
     private MenuItem proprieteSommet = new MenuItem("Tableau de propriétés du sommet");
+    private MenuItem modifierSommet = new MenuItem("Modifier le sommet");
     private MenuItem supprimerSommet = new MenuItem("Supprimer le sommet");
     private MenuItem etiquetteSommet = new MenuItem("Tag du sommet");
     private MenuItem copierEtiquetteSommet = new MenuItem("Copier le tag du sommet");
@@ -259,7 +245,7 @@ public class FXMLController extends VBox{
     public void setContextMenu() {
 
         contextMenu = new ContextMenu();
-        contextMenu.getItems().addAll(proprieteSommet,etiquetteSommet,supprimerSommet,copierEtiquetteSommet,collerEtquetteSommet);
+        contextMenu.getItems().addAll(proprieteSommet, modifierSommet, etiquetteSommet,supprimerSommet,copierEtiquetteSommet,collerEtquetteSommet);
 
         proprieteSommet.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -271,7 +257,16 @@ public class FXMLController extends VBox{
                 }
             }
         });
-
+        modifierSommet.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    new ModifierSommet(graphe, sommetSelectionne);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         supprimerSommet.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

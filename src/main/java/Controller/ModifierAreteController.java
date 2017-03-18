@@ -2,7 +2,6 @@ package Controller;
 
 import Model.Arete;
 import Model.Graphe;
-import Model.Sommet;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.value.ChangeListener;
@@ -12,8 +11,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
 import java.io.IOException;
@@ -33,7 +30,7 @@ public class ModifierAreteController extends FXMLController {
         super();
         this.graphe = graphe;
         if (this.graphe != null) {
-            FXMLLoader fxmlLoaderPopUp = new FXMLLoader(getClass().getResource("/fxml/ModifyArete.fxml"));
+            FXMLLoader fxmlLoaderPopUp = new FXMLLoader(getClass().getResource("/fxml/ModifierArete.fxml"));
             popUpWindow.setTitle("Modifier Arête");
             if (popUpWindow.getScene() == null) {
                 fxmlLoaderPopUp.setRoot(this);
@@ -73,7 +70,7 @@ public class ModifierAreteController extends FXMLController {
                 /*** MODIF ***/
             }
             else {
-                popUpWindow.close();
+                fermerModifyArete();
             }
         }
     }

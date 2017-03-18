@@ -247,7 +247,7 @@ public class Graphe {
                     if ((aretes.get(cptArete).getEntree().getId() == idSommetSource &&
                             aretes.get(cptArete).getSortie().getId() == idSommetDestination) || (
                             aretes.get(cptArete).getEntree().getId() == idSommetDestination &&
-                            aretes.get(cptArete).getSortie().getId() == idSommetSource)) {
+                                    aretes.get(cptArete).getSortie().getId() == idSommetSource)) {
                         doublonArete = true;
                     }
                 }
@@ -333,24 +333,6 @@ public class Graphe {
                             else
                                 i++;
                         }
-
-                        if(tmpIdNode != 999) {
-
-                            if (key.getAttrName().equals("color")) {
-
-                            }
-                        }
-
-                        else {
-                            if (key.getAttrName().equals("weight")) {
-
-                            }
-                        }
-
-
-                    }
-                    else {
-
                     }
                 }
                 else if (ligne.contains("<key")) {
@@ -380,7 +362,8 @@ public class Graphe {
                     while(i < keyGML.size() && !find) {
                         if(keyGML.get(i).getId().equals(tmpkeyID)) {
                             find = true;
-                            keyGML.get(i).setAttrType(value);                        }
+                            keyGML.get(i).setAttrType(value);
+                        }
                         else
                             i++;
                     }
@@ -402,12 +385,6 @@ public class Graphe {
 
                     String [] recupId = ligne.split("id=\"");
                     String id = recupId[1].split("\"")[0];
-                   /* if (br.readLine().contains("<data")) {
-                        String keyId = ligne.split("key=\"")[1].split("\"")[0];
-                        String value = ligne.split(">")[1].split("</")[0];
-                    }
-                    */
-
                 }
 
                 else if (ligne.contains("<node ")) {
@@ -415,7 +392,6 @@ public class Graphe {
                     String [] recupId = ligne.split("id=\"");
                     String id = recupId[1].split("\"")[0];
                     Size tailleFenetre = new Size(10,10);
-
                     if (ligne.contains("style")) {
                         String style = ligne.split("style=\"")[1].split("\"")[0];
                     }
@@ -424,7 +400,7 @@ public class Graphe {
                     tmpIdNode = s.getIdImportation();
                 }
 
-                else if (ligne.contains("<edge ")) {
+                else if (ligne.contains("<edge ")){
                     tmpIdNode = -999;
                     boolean directedArete;
                     if(ligne.contains("directed=\"true\""))
@@ -1017,7 +993,7 @@ public class Graphe {
      * @param cmin Représente le min intervalle de couleur.
      * @param cmax Représente la max intervalle de couleur.
      */
-      public void changerCouleurSommet (Sommet sommet, Color cmin, Color cmax){
+    public void changerCouleurSommet (Sommet sommet, Color cmin, Color cmax){
         if (indiceFixe()) {
             int valeur = sommet.getIndice();
             double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMaxSommet(), indiceMinSommet());

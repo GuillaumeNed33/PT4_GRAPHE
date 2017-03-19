@@ -23,12 +23,9 @@ import java.io.File;
 import java.io.IOException;
 
 public class FXMLController extends VBox {
-
-    protected Parent Pop_up_view;
     protected Stage popUpWindow;
     public View.Graphe grapheView;
     protected Model.Graphe grapheModel;
-    private Stage primaryStage;
     private VBox vbox;
     private Pane pane;
 

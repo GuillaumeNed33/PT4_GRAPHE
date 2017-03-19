@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -17,7 +18,8 @@ public class Main extends Application {
         VBox root = new VBox();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainMenu.fxml"));
         TabPane menu = loader.load();
-        root.getChildren().addAll(menu,g.getScrollPane());
+        Pane pane = new Pane();
+        root.getChildren().addAll(menu,g.getScrollPane(), pane);
 
 
         /** PARAMETRAGE DE LA FENETRE **/
@@ -28,6 +30,7 @@ public class Main extends Application {
         primaryStage.show();
         FXMLController controller = (FXMLController)loader.getController();
         controller.setVbox(root);
+        controller.setPane(pane);
     }
     public static void main(String[] args) {
         launch(args);

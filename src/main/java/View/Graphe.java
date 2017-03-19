@@ -1,6 +1,5 @@
 package View;
 
-import Model.Forme_Sommet;
 import javafx.scene.Group;
 import javafx.util.Pair;
 
@@ -32,7 +31,6 @@ public class Graphe {
         for (Map.Entry<Model.Arete, Pair<Model.Sommet, Model.Sommet>> e : graphe.getM_extremites().entrySet()) {
             Sommet s1 = null;
             Sommet s2 = null;
-            System.out.println("null");
             s1 = new Sommet(Integer.toString(e.getValue().getKey().getId()),
                     e.getValue().getKey().getForme(),
                     e.getValue().getKey().getX(),

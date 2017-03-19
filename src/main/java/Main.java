@@ -1,12 +1,8 @@
-import Controller.FXMLController;
-import Model.Forme_Sommet;
-import View.Arete;
-import View.Sommet;
+import View.Graphe;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 

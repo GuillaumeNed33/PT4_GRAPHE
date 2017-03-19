@@ -70,7 +70,7 @@ public class AjoutSommetController extends FXMLController {
             sommet.setCouleur(couleur);
             sommet.setForme(forme);
 
-            if (!graphe.ajouterSommet(sommet, new Size((int)popUpWindow.getMaxWidth(), (int)popUpWindow.getMaxHeight()))) {
+            if (!grapheModel.ajouterSommet(sommet, new Size((int)popUpWindow.getMaxWidth(), (int)popUpWindow.getMaxHeight()))) {
                 erreurAjoutSommet.setText("Erreur - Sommet existant en cette coordonnée.");
             }
             else {

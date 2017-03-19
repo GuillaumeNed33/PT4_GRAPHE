@@ -34,7 +34,6 @@ public class FXMLController extends VBox {
 
 
     public FXMLController() throws IOException {
-
         initPopup();
         grapheView = new View.Graphe();
     }
@@ -234,7 +233,7 @@ public class FXMLController extends VBox {
 
     @FXML public void clickModifyArete() throws IOException {
         //TODO modif aretes
-        new ModifierAreteController(graphe);
+        new ModifierAreteController(grapheModel);
     }
 
 
@@ -258,7 +257,7 @@ public class FXMLController extends VBox {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    new AffichageProprieteSommet(graphe, sommetSelectionne);
+                    new AffichageProprieteSommet(grapheModel, sommetSelectionne);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -268,7 +267,7 @@ public class FXMLController extends VBox {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    new ModifierSommet(graphe, sommetSelectionne);
+                    new ModifierSommet(grapheModel, sommetSelectionne);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -278,7 +277,7 @@ public class FXMLController extends VBox {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    new SuppressionSommet(graphe, sommetSelectionne);
+                    new SuppressionSommet(grapheModel, sommetSelectionne);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -289,7 +288,7 @@ public class FXMLController extends VBox {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    new ModifierTagSommet(graphe, sommetSelectionne);
+                    new ModifierTagSommet(grapheModel, sommetSelectionne);
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -326,14 +325,14 @@ public class FXMLController extends VBox {
             @Override
             public void handle(ContextMenuEvent event) {
 
-                if (graphe!=null){
+                if (grapheModel!=null){
 
                     setContextMenu();
                     //boolean trouve = false; // VRAI LIGNE, A GARDER
                     boolean trouve = true; // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
                     int cpt = 0;
                     //Sommet tmp = null; // VRAI LIGNE, A GARDER // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
-                    sommetSelectionne = graphe.getSommets().get(0);
+                    sommetSelectionne = grapheModel.getSommets().get(0);
 
                         /*while(!trouve && cpt<graphe.getSommets().size()) { // DETECTION CLIC DROIT SUR SOMMET (On ne veut pas clic droit n'importe où).
                             sommetSelectionne = graphe.getSommets().get(cpt);
@@ -367,7 +366,7 @@ public class FXMLController extends VBox {
 
 
     @FXML public void suppressionSommetSelectionne() {
-        graphe.supprimerSommet(sommetSelectionne);
+        grapheModel.supprimerSommet(sommetSelectionne);
         sommetSelectionne = null;
     }
 

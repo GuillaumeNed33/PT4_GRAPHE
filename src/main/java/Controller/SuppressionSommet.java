@@ -16,7 +16,7 @@ public class SuppressionSommet extends FXMLController {
 
     public SuppressionSommet(Graphe graphe, Sommet sommetSelectionne) throws IOException {
         super();
-        this.graphe = graphe;
+        this.grapheModel = graphe;
         this.sommetSelectionne = sommetSelectionne;
         if (graphe != null) {
             FXMLLoader fxmlLoaderPopUp = new FXMLLoader(getClass().getResource("/fxml/SupprSommet.fxml"));
@@ -33,7 +33,7 @@ public class SuppressionSommet extends FXMLController {
 
     @FXML
     public void suppressionSommetSelectionne() {
-        graphe.supprimerSommet(sommetSelectionne);
+        grapheModel.supprimerSommet(sommetSelectionne);
         sommetSelectionne = null;
         popUpWindow.close();
     }

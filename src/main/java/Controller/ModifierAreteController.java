@@ -28,8 +28,8 @@ public class ModifierAreteController extends FXMLController {
 
     ModifierAreteController(Graphe graphe) throws IOException {
         super();
-        this.graphe = graphe;
-        if (this.graphe != null) {
+        this.grapheModel = graphe;
+        if (this.grapheModel != null) {
             FXMLLoader fxmlLoaderPopUp = new FXMLLoader(getClass().getResource("/fxml/ModifierArete.fxml"));
             popUpWindow.setTitle("Modifier Arête");
             if (popUpWindow.getScene() == null) {

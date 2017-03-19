@@ -18,7 +18,7 @@ public class ModifierTagSommet extends FXMLController {
     private TextField nouveauTag;
     public ModifierTagSommet(Graphe graphe, Sommet sommetSelectionne) throws IOException {
         super();
-        this.graphe = graphe;
+        this.grapheModel = graphe;
         this.sommetSelectionne = sommetSelectionne;
 
         if (graphe != null) {

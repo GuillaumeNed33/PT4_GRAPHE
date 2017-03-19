@@ -22,7 +22,7 @@ public class AffichageProprieteSommet extends FXMLController {
     private Circle visualisationCouleur;
     public AffichageProprieteSommet(Graphe graphe, Sommet sommetSelectionne) throws IOException {
         super();
-        this.graphe = graphe;
+        this.grapheModel = graphe;
         this.sommetSelectionne = sommetSelectionne;
         if (graphe != null) {
             FXMLLoader fxmlLoaderPopUp = new FXMLLoader(getClass().getResource("/fxml/ProprietesSommetTab.fxml"));

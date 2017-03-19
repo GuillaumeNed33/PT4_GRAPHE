@@ -35,7 +35,7 @@ public class ModifierSommet extends FXMLController {
     public ModifierSommet(Graphe graphe, Sommet sommetSelectionne) throws IOException {
         super();
         sommetControl= new SommetController();
-        this.graphe = graphe;
+        this.grapheModel = graphe;
         this.sommetSelectionne = sommetSelectionne;
         if (graphe != null) {
             FXMLLoader fxmlLoaderPopUp = new FXMLLoader(getClass().getResource("/fxml/ModifierSommet.fxml"));

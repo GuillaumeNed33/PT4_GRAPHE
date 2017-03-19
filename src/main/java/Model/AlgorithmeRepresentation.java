@@ -45,11 +45,13 @@ public class AlgorithmeRepresentation {
      * Permet une distribution circulaire des sommets.
      */
     public void distributionCirculaire(int largeurEcran){
+        float indice = 0;
         for (Sommet sommet : graphe.getSommets()) {
-            float rayon = random.nextFloat() * graphe.getTaille().width;
-            double angle = random.nextDouble() * 2 * Math.PI;
-            sommet.setX((float)(((largeurEcran + rayon * Math.cos(angle))/2)+(2*Math.PI/ graphe.getSommets().size())));
-            sommet.setY((float)(((largeurEcran + rayon * Math.sin(angle))/2)+(2*Math.PI/ graphe.getSommets().size())));
+            float rayon = (float)1/2 * (float)largeurEcran;
+            double angle = 2. * Math.PI / (float)graphe.getSommets().size();
+            sommet.setX((float)(largeurEcran + rayon * Math.cos(angle*indice)));
+            sommet.setY((float)(largeurEcran/2 + rayon * Math.sin(angle*indice)));
+            indice ++;
         }
     }
 

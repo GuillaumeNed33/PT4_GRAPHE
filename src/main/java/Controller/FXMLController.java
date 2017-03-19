@@ -8,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -27,8 +28,11 @@ public class FXMLController extends VBox {
     public View.Graphe grapheView;
     protected Model.Graphe grapheModel;
     private VBox vbox;
-    private Pane pane;
+    private Group pane;
 
+    public VBox getVbox() {
+        return vbox;
+    }
 
     public FXMLController() throws IOException {
         initPopup();
@@ -55,6 +59,8 @@ public class FXMLController extends VBox {
         if (file != null){
             grapheModel = new Graphe(file.getAbsolutePath(), 600);
             grapheView.chargerGraphe(grapheModel);
+            getVbox().getChildren().addAll(grapheView.getCanvas());
+            setPane(grapheView.getCanvas());
         }
     }
 
@@ -316,7 +322,7 @@ public class FXMLController extends VBox {
      */
     private Sommet sommetSelectionne;
     private String tagSommetSelectionne;
-    public void setPane(Pane pane){
+    public void setPane(Group pane){
         this.pane = pane;
         pane.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
             @Override

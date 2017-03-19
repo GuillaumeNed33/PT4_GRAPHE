@@ -84,7 +84,7 @@ public class Graphe {
         else if (fichier.matches(".+.graphml$")) {
             chargerGrapheGRAPHML(fichier);
         }
-        setAlgorithmeRepresentation('a', largeurEcran);
+        setAlgorithmeRepresentation('c', largeurEcran);
     }
 
     /**

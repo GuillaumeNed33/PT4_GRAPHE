@@ -1,3 +1,4 @@
+import Controller.FXMLController;
 import View.Graphe;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,14 +15,19 @@ public class Main extends Application {
         /** GESTION DES NODES **/
         View.Graphe g = new Graphe();
         VBox root = new VBox();
-        TabPane menu = FXMLLoader.load(getClass().getResource("/fxml/MainMenu.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainMenu.fxml"));
+        TabPane menu = loader.load();
         root.getChildren().addAll(menu,g.getScrollPane());
+
 
         /** PARAMETRAGE DE LA FENETRE **/
         primaryStage.setTitle("Gestionnaire de graphe");
         primaryStage.setMaximized(true);
-        primaryStage.setScene(new Scene(root));
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
         primaryStage.show();
+        FXMLController controller = (FXMLController)loader.getController();
+        controller.setVbox(root);
     }
     public static void main(String[] args) {
         launch(args);

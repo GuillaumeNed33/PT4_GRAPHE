@@ -33,10 +33,10 @@ public class AlgorithmeRepresentation {
     /**
      *  Permet une distribution uniforme rectangulaire des sommets.
      */
-    public void distributionAleatoire(int largeurEcran){
+    public void distributionAleatoire(int largeurEcran, int hauteurEcran){
         for (Sommet sommet : graphe.getSommets()) {
             sommet.setX((random.nextFloat()*largeurEcran)+MARGE);
-            sommet.setY((random.nextFloat()*largeurEcran)+MARGE);
+            sommet.setY((random.nextFloat()*hauteurEcran)+MARGE);
         }
 
     }
@@ -44,13 +44,13 @@ public class AlgorithmeRepresentation {
     /**
      * Permet une distribution circulaire des sommets.
      */
-    public void distributionCirculaire(int largeurEcran){
+    public void distributionCirculaire(int largeurEcran, int hauteurEcran){
         float indice = 0;
         for (Sommet sommet : graphe.getSommets()) {
-            float rayon = (float)1/2 * (float)largeurEcran;
+            float rayon = (float)1/2 * (float)hauteurEcran;
             double angle = 2. * Math.PI / (float)graphe.getSommets().size();
-            sommet.setX((float)(largeurEcran + rayon * Math.cos(angle*indice)));
-            sommet.setY((float)(largeurEcran/2 + rayon * Math.sin(angle*indice)));
+            sommet.setX((float)(largeurEcran/2. + rayon * Math.cos(angle*indice)));
+            sommet.setY((float)(rayon + rayon * Math.sin(angle*indice)));
             indice ++;
         }
     }
@@ -58,8 +58,8 @@ public class AlgorithmeRepresentation {
     /**
      * Permet une distribution par modele de Forces.
      */
-    public void distributionModeleForces(int largeurEcran){
-        distributionAleatoire(largeurEcran);
+    public void distributionModeleForces(int largeurEcran, int hauteurEcran){
+        distributionAleatoire(largeurEcran, hauteurEcran);
         for (Sommet sommet : graphe.getSommets()) {
             float forceTotale = forceAttraction(sommet) + forceRepulsion(sommet);
             sommet.setX(sommet.getX() + forceTotale);

@@ -59,15 +59,33 @@ public class FXMLController extends VBox {
      * Fonction ouvrant une fenetre (FileChooser) permettant l'importation d'un fichier dans le logiciel.
      */
     @FXML public void clickFichierImporter() {
-        FileChooser fileChooser = createFileChooser("Importer");
-        fileChooser.setInitialDirectory(new File("./ressources/"));
-        File file = fileChooser.showOpenDialog(null);
-        if (file != null){
-            grapheView = new View.Graphe();
-            grapheModel = new Graphe(file.getAbsolutePath(), 1200, 600);
-            grapheView.chargerGraphe(grapheModel);
-            getVbox().getChildren().addAll(grapheView.getScrollPane());
-            setPane(grapheView.getCanvas());
+        if (grapheView == null) {
+            FileChooser fileChooser = createFileChooser("Importer");
+            fileChooser.setInitialDirectory(new File("./ressources/"));
+            File file = fileChooser.showOpenDialog(null);
+            if (file != null){
+                grapheView = new View.Graphe();
+                grapheModel = new Graphe(file.getAbsolutePath(), 1200, 600);
+                grapheView.chargerGraphe(grapheModel);
+                getVbox().getChildren().addAll(grapheView.getScrollPane());
+                setPane(grapheView.getCanvas());
+            }
+        }
+        else {
+            FileChooser fileChooser = createFileChooser("Importer");
+            fileChooser.setInitialDirectory(new File("./ressources/"));
+            File file = fileChooser.showOpenDialog(null);
+            if (file != null) {
+                grapheModel = null;
+                grapheModel = new Graphe(file.getAbsolutePath(), 1200,600);
+                grapheView = null;
+                grapheView = new View.Graphe();
+                grapheView.chargerGraphe(grapheModel);
+                getVbox().getChildren().remove(1);
+                getVbox().getChildren().addAll(grapheView.getScrollPane());
+                setPane(grapheView.getCanvas());
+                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Graphe;
 import Model.Sommet;
+import View.Arete;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -183,10 +184,16 @@ public class FXMLController extends VBox {
      */
     @FXML public void clickToggleSommet(ActionEvent event) {
         if(((ToggleButton)event.getSource()).isSelected()) {
-            //TODO affichage Sommet
+            for(View.Sommet s : grapheView.getSommets()) {
+                s.getVue().setVisible(false);
+                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+            }
 
         } else {
-            //TODO suppression de l'affichage sommet
+            for(View.Sommet s : grapheView.getSommets()) {
+                s.getVue().setVisible(true);
+                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+            }
         }
     }
     /**
@@ -194,9 +201,15 @@ public class FXMLController extends VBox {
      */
     @FXML public void clickToggleArete(ActionEvent event) {
         if(((ToggleButton)event.getSource()).isSelected()) {
-            //TODO affichage Arete
+            for(Arete a : grapheView.getAretes()) {
+                a.setVisible(false);
+                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+            }
         } else {
-            //TODO suppression de l'affichage arete
+            for(Arete a : grapheView.getAretes()) {
+                a.setVisible(true);
+                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+            }
         }
     }
     /**
@@ -204,9 +217,15 @@ public class FXMLController extends VBox {
      */
     @FXML public void clickToggleEtiquette(ActionEvent event) {
         if(((ToggleButton)event.getSource()).isSelected()) {
-            //TODO affichage etiquette
+            for(View.Sommet s : grapheView.getSommets()) {
+                s.getLb().setVisible(false);
+                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+            }
         } else {
-            //TODO suppression de l'affichage etiquette
+            for(View.Sommet s : grapheView.getSommets()) {
+                s.getLb().setVisible(true);
+                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+            }
         }
     }
     /**

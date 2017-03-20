@@ -41,4 +41,11 @@ public class Sommet extends Pane {
         getChildren().addAll(vue, lb);
 
     }
+
+    public Label getLb() {
+        return lb;
+    }
+    public Node getVue() {
+        return vue;
+    }
 }

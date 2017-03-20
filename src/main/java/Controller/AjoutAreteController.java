@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Arete;
 import Model.Graphe;
 import Model.Sommet;
 import javafx.beans.property.ListProperty;
@@ -58,6 +59,7 @@ public class AjoutAreteController extends FXMLController {
                         public void changed(ObservableValue<? extends String> ov,
                                             String old_val, String new_val) {
                             sommetEntreSelectionne = new_val;
+
                         }
                     });
 
@@ -68,6 +70,14 @@ public class AjoutAreteController extends FXMLController {
                             sommetSortieSelectionne = new_val;
                         }
                     });
+            //Ces fonctions marchent si on utilise les bons paramètres dans les ajouts d'arete
+            /*grapheModel.ajouterArete(
+                    sommetEntreSelectionne,
+                    sommetSortieSelectionne);
+            grapheView.getAretes().add(graphe.getAretes().size(),new Arete(
+                    sommetEntreSelectionne,
+                    sommetSortieSelectionne));
+            grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());*/
         }
     }
 

@@ -36,7 +36,6 @@ public class FXMLController extends VBox {
 
     public FXMLController() throws IOException {
         initPopup();
-        grapheView = new View.Graphe();
     }
 
     public void setGrapheView(View.Graphe g) {
@@ -57,7 +56,8 @@ public class FXMLController extends VBox {
         FileChooser fileChooser = createFileChooser("Importer");
         File file = fileChooser.showOpenDialog(null);
         if (file != null){
-            grapheModel = new Graphe(file.getAbsolutePath(), 600);
+            grapheView = new View.Graphe();
+            grapheModel = new Graphe(file.getAbsolutePath(), 1200, 600);
             grapheView.chargerGraphe(grapheModel);
             getVbox().getChildren().addAll(grapheView.getCanvas());
             setPane(grapheView.getCanvas());
@@ -98,14 +98,14 @@ public class FXMLController extends VBox {
      * Fonction permettant d'appliquer une distribution aléatoire des positions des sommets du graphe
      */
     @FXML public void clickRepresentationAleatoire() {
-        grapheModel.setAlgorithmeRepresentation('a',600);
+        grapheModel.setAlgorithmeRepresentation('a',1200, 600);
     }
 
     /**
      * Fonction permettant d'appliquer une distribution circulaire des positions des sommets du graphe
      */
     @FXML public void clickRepresentationCirculaire() {
-        grapheModel.setAlgorithmeRepresentation('c',600);
+        grapheModel.setAlgorithmeRepresentation('c',1200, 600);
     }
 
     /**
@@ -113,7 +113,7 @@ public class FXMLController extends VBox {
      */
     @FXML
     public void clickRepresentationForces() {
-        grapheModel.setAlgorithmeRepresentation('f',600);
+        grapheModel.setAlgorithmeRepresentation('f',1200, 600);
     }
 
     /**

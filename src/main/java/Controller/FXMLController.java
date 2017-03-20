@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 public class FXMLController extends VBox {
     protected Stage popUpWindow;
@@ -58,6 +59,7 @@ public class FXMLController extends VBox {
      */
     @FXML public void clickFichierImporter() {
         FileChooser fileChooser = createFileChooser("Importer");
+        fileChooser.setInitialDirectory(new File("./ressources/"));
         File file = fileChooser.showOpenDialog(null);
         if (file != null){
             grapheView = new View.Graphe();

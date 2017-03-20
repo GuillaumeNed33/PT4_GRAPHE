@@ -1068,8 +1068,7 @@ public class Graphe {
         if (indiceFixe()) {
             int valeur = a.getIndice();
             int largeur = (int) intensite(valeur, maxArete, minArete, indiceMaxArete(), indiceMinArete());
-            Size taille = new Size(largeur, a.getTaille().height);
-            a.setTaille(taille);
+            a.setEpaisseur(largeur);
         }
     }
 

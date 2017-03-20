@@ -1,6 +1,5 @@
 package Model;
 
-import com.sun.glass.ui.Size;
 import javafx.scene.paint.Color;
 
 /**
@@ -24,6 +23,11 @@ public class Arete extends ComposantGraphe {
      */
     private Sommet sortie;
 
+    /**
+     * Représente l'épaisseur d'un sommet
+     */
+    private int epaisseur;
+
 
     /**
      * Représente la couleur de l'arete en string.
@@ -38,9 +42,10 @@ public class Arete extends ComposantGraphe {
      * @param sortie Ce sommet représente le second sommet au quel l'arrete est liée.
      */
     public Arete(Sommet entree, Sommet sortie){
-        super(++idActuel, 1, "", Color.BLACK, new Size(1, 1));
+        super(++idActuel, 1, "", Color.BLACK);
         this.entree = entree;
         this.sortie = sortie;
+        this.epaisseur = 1;
         couleurAreteStr = "Black";
     }
 
@@ -51,9 +56,10 @@ public class Arete extends ComposantGraphe {
      * @param poids valeur entière représentant le poids de l'arête
      */
     public Arete(Sommet entree, Sommet sortie, int poids){
-        super(++idActuel, poids, "", Color.BLACK, new Size(1,1));
+        super(++idActuel, poids, "", Color.BLACK);
         this.entree = entree;
         this.sortie = sortie;
+        this.epaisseur = 1;
         couleurAreteStr = "Black";
     }
 
@@ -64,9 +70,10 @@ public class Arete extends ComposantGraphe {
      * @param tag String représentant le nom de l'arête
      */
     public Arete(Sommet entree, Sommet sortie, String tag){
-        super(++idActuel, 1, tag, Color.BLACK, new Size(1,1));
+        super(++idActuel, 1, tag, Color.BLACK);
         this.entree = entree;
         this.sortie = sortie;
+        this.epaisseur = 1;
         couleurAreteStr = "Black";
     }
 
@@ -96,4 +103,8 @@ public class Arete extends ComposantGraphe {
     public void setSortie(Sommet sortie) {
         this.sortie = sortie;
     }
+
+    public int getEpaisseur() {return epaisseur;}
+
+    public void setEpaisseur(int epaisseur) {this.epaisseur = epaisseur;}
 }

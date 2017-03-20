@@ -71,7 +71,7 @@ public class ModifierAreteController extends FXMLController {
                             AreteSelectionne = new_val;
                             couleurChoice.setValue(selected.getCouleur());
                             aretePoids.setText(Integer.toString(selected.getIndice()));
-                            areteSize.setText(selected.getTaille().toString());
+                            areteSize.setText(Integer.toString(selected.getEpaisseur()));
                         }
                     });
         }
@@ -84,7 +84,7 @@ public class ModifierAreteController extends FXMLController {
                 while (!foundSommet && i<grapheModel.getAretes().size()) {
                     if (grapheModel.getAretes().get(i).getId() == selected.getId()) {
                         grapheModel.getAretes().get(i).setCouleur(couleurChoice.getValue());
-                        grapheModel.getAretes().get(i).setTaille(new Size(Integer.parseInt(areteSize.getText().split(",")[0].split("\\(")[1]), Integer.parseInt(areteSize.getText().split(", ")[1].split("\\)")[0])));
+                        grapheModel.getAretes().get(i).setEpaisseur(Integer.parseInt(areteSize.getText()));
                         grapheModel.getAretes().get(i).setIndice(Integer.parseInt(aretePoids.getText()));
                         foundSommet=true;
                     }

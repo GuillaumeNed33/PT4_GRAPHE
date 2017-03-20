@@ -28,11 +28,11 @@ public class Graphe {
         for (Map.Entry<Model.Arete, Pair<Model.Sommet, Model.Sommet>> e : graphe.getM_extremites().entrySet()) {
             Sommet s1 = null;
             Sommet s2 = null;
-            s1 = new Sommet(Integer.toString(e.getValue().getKey().getId()),
+            s1 = new Sommet(e.getValue().getKey().getTag(),
                     e.getValue().getKey().getForme(),
                     e.getValue().getKey().getX(),
                     e.getValue().getKey().getY());
-            s2 = new Sommet(Integer.toString(e.getValue().getValue().getId()),
+            s2 = new Sommet(e.getValue().getValue().getTag(),
                     e.getValue().getValue().getForme(),
                     e.getValue().getValue().getX(),
                     e.getValue().getValue().getY());
@@ -45,7 +45,7 @@ public class Graphe {
         for (Model.Sommet sommet : graphe.getSommets())
         {
             Sommet sommet1 = new Sommet(
-                    Integer.toString(sommet.getId()),
+                    sommet.getTag(),
                     sommet.getForme(),
                     sommet.getX(),
                     sommet.getY() );

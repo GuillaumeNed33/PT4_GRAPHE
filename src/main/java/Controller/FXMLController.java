@@ -229,6 +229,7 @@ public class FXMLController extends VBox {
             public void handle(Event t) {
                 Color c = couleurFond.getValue();
                 vbox.setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
+                //grapheView.getScrollPane().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
 
             }
         });

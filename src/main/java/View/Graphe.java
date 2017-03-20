@@ -1,6 +1,6 @@
 package View;
 
-import javafx.scene.Group;
+import javafx.scene.layout.Pane;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -11,12 +11,12 @@ import java.util.Map;
  * Created by Thomas on 13/03/2017.
  */
 public class Graphe {
-    private Group canvas;
+    private Pane canvas;
     private ZoomableScrollPane scrollPane;
     private List<Sommet> sommets;
     private List<Arete> aretes;
     public Graphe() {
-        canvas = new Group();
+        canvas = new Pane();
         scrollPane = new ZoomableScrollPane(canvas);
         sommets = new ArrayList<Sommet>();
         aretes = new ArrayList<Arete>();
@@ -58,7 +58,7 @@ public class Graphe {
         scrollPane.updateScrollPane(canvas);
     }
 
-    public Group getCanvas() {
+    public Pane getCanvas() {
         return canvas;
     }
 

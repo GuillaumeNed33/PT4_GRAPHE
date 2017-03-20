@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root maxWidth="1.7976931348623157E308" prefHeight="272.0" prefWidth="295.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxWidth="1.7976931348623157E308" prefHeight="272.0" prefWidth="295.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" text="Liste des aretes" textAlignment="CENTER" />
       <ListView fx:id="listViewSAretes" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" prefWidth="175.0">
@@ -18,7 +18,7 @@
          </VBox.margin></ListView>
       <HBox prefWidth="200.0">
          <children>
-            <ColorPicker prefWidth="100.0">
+            <ColorPicker fx:id="couleurChoice" prefWidth="100.0">
                <HBox.margin>
                   <Insets right="20.0" />
                </HBox.margin>
@@ -28,7 +28,7 @@
                   <Insets top="5.0" />
                </HBox.margin>
             </Label>
-            <TextField prefWidth="100.0" />
+            <TextField fx:id="areteSize" prefWidth="100.0" />
          </children></HBox>
       <HBox prefHeight="20.0" prefWidth="200.0">
          <children>
@@ -37,7 +37,7 @@
                   <Insets right="20.0" top="3.0" />
                </HBox.margin>
             </Label>
-            <TextField />
+            <TextField fx:id="aretePoids" />
          </children>
          <VBox.margin>
             <Insets top="5.0" />
@@ -50,7 +50,7 @@
       </Label>
       <HBox alignment="CENTER" prefHeight="0.0" prefWidth="205.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#ModifyArete" prefHeight="27.0" prefWidth="73.0" text="OK">
+            <Button mnemonicParsing="false" onAction="#modifyArete" prefHeight="27.0" prefWidth="73.0" text="OK">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>

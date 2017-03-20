@@ -736,7 +736,7 @@ public class Graphe {
      */
     public void supprimerSommet(Sommet sommet){
 
-        if(!sommet.equals(null)) {
+        if(sommet != null) {
 
             if (incidentes.containsKey(sommet)) {
 

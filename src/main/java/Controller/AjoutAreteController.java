@@ -91,7 +91,7 @@ public class AjoutAreteController extends FXMLController {
             int idSommetEntre = Integer.parseInt(sommetEntreSelectionne.split(" ")[5]);
             int idSommetSortie = Integer.parseInt(sommetSortieSelectionne.split(" ")[5]);
 
-            if (idSommetEntre != -1 && idSommetSortie != 1 && !grapheModel.ajouterArete(grapheModel.trouverSommetParID(idSommetEntre), grapheModel.trouverSommetParID(idSommetSortie))) {
+            if (!grapheModel.ajouterArete(grapheModel.trouverSommetParID(idSommetEntre), grapheModel.trouverSommetParID(idSommetSortie))) {
                 erreurAjoutArete.setText("Erreur - Arete existante ou 2 \nsommets identiques sélectionnés.");
             }
             else {

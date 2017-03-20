@@ -9,17 +9,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -27,14 +23,13 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 public class FXMLController extends VBox {
     protected Stage popUpWindow;
     public View.Graphe grapheView;
     protected Model.Graphe grapheModel;
     private VBox vbox;
-    private Group pane;
+    private Pane pane;
 
     public VBox getVbox() {
         return vbox;
@@ -267,9 +262,7 @@ public class FXMLController extends VBox {
         couleurFond.setOnAction(new EventHandler() {
             public void handle(Event t) {
                 Color c = couleurFond.getValue();
-                vbox.setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
-                //grapheView.getScrollPane().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
-
+                grapheView.getCanvas().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
             }
         });
     }
@@ -366,7 +359,7 @@ public class FXMLController extends VBox {
      */
     private Sommet sommetSelectionne;
     private String tagSommetSelectionne;
-    public void setPane(Group pane){
+    public void setPane(Pane pane){
         this.pane = pane;
         pane.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
             @Override

@@ -1,6 +1,5 @@
 import Model.Arete;
 import Model.Sommet;
-import com.sun.glass.ui.Size;
 import javafx.scene.paint.Color;
 import org.junit.Test;
 
@@ -65,16 +64,14 @@ public class AreteTest {
         Sommet depart = new Sommet("s1",1,1);
         Sommet arrivee = new Sommet("s2",2,2);
 
-        Size size = new Size(0,0);
         Arete arete = new Arete(depart,arrivee);
 
-        arete.setTaille(size);
-        assertEquals(arete.getTaille(),size);
+        arete.setEpaisseur(0);
+        assertEquals(arete.getEpaisseur(), 0);
 
-        Size size1 = new Size(3,3);
-        arete.setTaille(size1);
+        arete.setEpaisseur(3);
 
-        assertEquals(arete.getTaille(),size1);
+        assertEquals(arete.getEpaisseur(),3);
     }
 
     @Test

@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Graphe;
 import Model.Sommet;
+import View.Arete;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -13,8 +14,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -22,6 +27,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 public class FXMLController extends VBox {
     protected Stage popUpWindow;
@@ -36,7 +42,6 @@ public class FXMLController extends VBox {
 
     public FXMLController() throws IOException {
         initPopup();
-        grapheView = new View.Graphe();
     }
 
     public void setGrapheView(View.Graphe g) {
@@ -55,11 +60,13 @@ public class FXMLController extends VBox {
      */
     @FXML public void clickFichierImporter() {
         FileChooser fileChooser = createFileChooser("Importer");
+        fileChooser.setInitialDirectory(new File("./ressources/"));
         File file = fileChooser.showOpenDialog(null);
         if (file != null){
-            grapheModel = new Graphe(file.getAbsolutePath(), 600);
+            grapheView = new View.Graphe();
+            grapheModel = new Graphe(file.getAbsolutePath(), 1200, 600);
             grapheView.chargerGraphe(grapheModel);
-            getVbox().getChildren().addAll(grapheView.getCanvas());
+            getVbox().getChildren().addAll(grapheView.getScrollPane());
             setPane(grapheView.getCanvas());
         }
     }
@@ -98,14 +105,14 @@ public class FXMLController extends VBox {
      * Fonction permettant d'appliquer une distribution aléatoire des positions des sommets du graphe
      */
     @FXML public void clickRepresentationAleatoire() {
-        grapheModel.setAlgorithmeRepresentation('a',600);
+        grapheModel.setAlgorithmeRepresentation('a',1200, 600);
     }
 
     /**
      * Fonction permettant d'appliquer une distribution circulaire des positions des sommets du graphe
      */
     @FXML public void clickRepresentationCirculaire() {
-        grapheModel.setAlgorithmeRepresentation('c',600);
+        grapheModel.setAlgorithmeRepresentation('c',1200, 600);
     }
 
     /**
@@ -113,7 +120,7 @@ public class FXMLController extends VBox {
      */
     @FXML
     public void clickRepresentationForces() {
-        grapheModel.setAlgorithmeRepresentation('f',600);
+        grapheModel.setAlgorithmeRepresentation('f',1200, 600);
     }
 
     /**
@@ -177,10 +184,16 @@ public class FXMLController extends VBox {
      */
     @FXML public void clickToggleSommet(ActionEvent event) {
         if(((ToggleButton)event.getSource()).isSelected()) {
-            //TODO affichage Sommet
+            for(View.Sommet s : grapheView.getSommets()) {
+                s.getVue().setVisible(false);
+                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+            }
 
         } else {
-            //TODO suppression de l'affichage sommet
+            for(View.Sommet s : grapheView.getSommets()) {
+                s.getVue().setVisible(true);
+                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+            }
         }
     }
     /**
@@ -188,9 +201,15 @@ public class FXMLController extends VBox {
      */
     @FXML public void clickToggleArete(ActionEvent event) {
         if(((ToggleButton)event.getSource()).isSelected()) {
-            //TODO affichage Arete
+            for(Arete a : grapheView.getAretes()) {
+                a.setVisible(false);
+                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+            }
         } else {
-            //TODO suppression de l'affichage arete
+            for(Arete a : grapheView.getAretes()) {
+                a.setVisible(true);
+                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+            }
         }
     }
     /**
@@ -198,9 +217,15 @@ public class FXMLController extends VBox {
      */
     @FXML public void clickToggleEtiquette(ActionEvent event) {
         if(((ToggleButton)event.getSource()).isSelected()) {
-            //TODO affichage etiquette
+            for(View.Sommet s : grapheView.getSommets()) {
+                s.getLb().setVisible(false);
+                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+            }
         } else {
-            //TODO suppression de l'affichage etiquette
+            for(View.Sommet s : grapheView.getSommets()) {
+                s.getLb().setVisible(true);
+                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+            }
         }
     }
     /**
@@ -225,6 +250,7 @@ public class FXMLController extends VBox {
             public void handle(Event t) {
                 Color c = couleurFond.getValue();
                 vbox.setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
+                //grapheView.getScrollPane().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
 
             }
         });
@@ -361,8 +387,44 @@ public class FXMLController extends VBox {
         pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                sommetSelectionne = null;
-                contextMenu.hide();
+                if(event.getButton().equals(MouseButton.PRIMARY)){
+                    if(event.getClickCount() == 2){
+                        if (grapheModel!=null){
+
+                            setContextMenu();
+                            //boolean trouve = false; // VRAI LIGNE, A GARDER
+                            boolean trouve = true; // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
+                            int cpt = 0;
+                            //Sommet tmp = null; // VRAI LIGNE, A GARDER // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
+                            sommetSelectionne = grapheModel.getSommets().get(0);
+
+                        /*while(!trouve && cpt<graphe.getSommets().size()) { // DETECTION CLIC DROIT SUR SOMMET (On ne veut pas clic droit n'importe où).
+                            sommetSelectionne = graphe.getSommets().get(cpt);
+
+                            if(event.getSceneX() >= sommetSelectionne.getX()-sommetSelectionne.getTailleForme().width &&
+                                    event.getSceneX() <= sommetSelectionne.getX() + sommetSelectionne.getTailleForme().width &&
+                                    event.getSceneY() >= sommetSelectionne.getY() - sommetSelectionne.getTailleForme().height &&
+                                    event.getSceneY() <= sommetSelectionne.getY() + sommetSelectionne.getTailleForme().height){
+                                trouve = true;
+                            }
+
+                            ++cpt;
+                        }*/
+
+                            if(trouve) { //Si c'est sur un sommet, affichage du contextMenu.
+                                contextMenu.show(vbox, event.getScreenX(), event.getScreenY());
+                                event.consume();
+                            }
+                        }
+                    }
+                    else {
+                        sommetSelectionne = null;
+                        contextMenu.hide();
+                    }
+                } else {
+                    sommetSelectionne = null;
+                    contextMenu.hide();
+                }
             }
         });
     }

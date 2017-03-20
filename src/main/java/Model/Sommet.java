@@ -35,13 +35,19 @@ public class Sommet extends ComposantGraphe{
      private  Forme_Sommet forme;
 
     /**
+     * Représente la taille d'un sommet
+     */
+    private Size taille;
+
+    /**
      * Constructeur paramétré de la classe Sommet.
      * @param nom Représente le nom du sommet.
      */
     public Sommet(String nom) {
-        super(idActuel++, 0, nom, Color.BLACK, new Size(10,10));
+        super(idActuel++, 0, nom, Color.BLACK);
         this.x = 0;
         this.y = 0;
+        this.taille = new Size(10,10);
         this.forme = Forme_Sommet.Cercle;
     }
 
@@ -53,18 +59,20 @@ public class Sommet extends ComposantGraphe{
      * @param y Représente la coordonnée en y du sommet.
      */
     public Sommet(String tag, float x, float y) {
-        super(idActuel++, 0, tag, Color.BLACK, new Size(10,10));
+        super(idActuel++, 0, tag, Color.BLACK);
         this.x = x;
         this.y = y;
+        this.taille = new Size(10,10);
         forme = Forme_Sommet.Cercle;
     }
 
 
     public Sommet(int idImportation) {
-        super(idActuel++, 0, "", Color.BLACK, new Size(10,10));
+        super(idActuel++, 0, "", Color.BLACK);
         this.idImportation = idImportation;
         this.x = 0;
         this.y = 0;
+        this.taille = new Size(10,10);
         this.forme = Forme_Sommet.Cercle;
     }
 
@@ -122,5 +130,13 @@ public class Sommet extends ComposantGraphe{
         else { // Par défaut
             this.forme = Forme_Sommet.Cercle;
         }
+    }
+
+    public Size getTaille() {
+        return taille;
+    }
+
+    public void setTaille(Size taille) {
+        this.taille = taille;
     }
 }

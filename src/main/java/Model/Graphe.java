@@ -70,7 +70,7 @@ public class Graphe {
      * @param fichier chemin d'accès du fichier du graphe
      * @param largeurEcran valeur entière représentant la largeur de la fenêtre d'affichage
      */
-    public Graphe (String fichier, int largeurEcran) {
+    public Graphe (String fichier, int largeurEcran, int hauteurEcran) {
         nom = "";
         taille = new Size(10,10);
         sommets = new ArrayList<Sommet>();
@@ -84,7 +84,7 @@ public class Graphe {
         else if (fichier.matches(".+.graphml$")) {
             chargerGrapheGRAPHML(fichier);
         }
-        setAlgorithmeRepresentation('c', largeurEcran);
+        setAlgorithmeRepresentation('c', largeurEcran, hauteurEcran);
     }
 
     /**
@@ -1068,8 +1068,7 @@ public class Graphe {
         if (indiceFixe()) {
             int valeur = a.getIndice();
             int largeur = (int) intensite(valeur, maxArete, minArete, indiceMaxArete(), indiceMinArete());
-            Size taille = new Size(largeur, a.getTaille().height);
-            a.setTaille(taille);
+            a.setEpaisseur(largeur);
         }
     }
 
@@ -1099,18 +1098,18 @@ public class Graphe {
      * @param algorithme
      * @param largeurEcran
      */
-    public void setAlgorithmeRepresentation(char algorithme, int largeurEcran){
+    public void setAlgorithmeRepresentation(char algorithme, int largeurEcran, int hauteurEcran){
         switch (algorithme){
             case 'a' :{
-                algorithmeRepresentation.distributionAleatoire(largeurEcran);
+                algorithmeRepresentation.distributionAleatoire(largeurEcran, hauteurEcran);
                 break;
             }
             case 'c': {
-                algorithmeRepresentation.distributionCirculaire(largeurEcran);
+                algorithmeRepresentation.distributionCirculaire(largeurEcran, hauteurEcran);
                 break;
             }
             case 'f': {
-                algorithmeRepresentation.distributionModeleForces(largeurEcran);
+                algorithmeRepresentation.distributionModeleForces(largeurEcran, hauteurEcran);
                 break;
             }
             default:

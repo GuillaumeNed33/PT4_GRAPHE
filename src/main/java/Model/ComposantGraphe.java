@@ -1,6 +1,5 @@
 package Model;
 
-import com.sun.glass.ui.Size;
 import javafx.scene.paint.Color;
 
 /**
@@ -31,14 +30,6 @@ public class ComposantGraphe {
         this.couleur = couleur;
     }
 
-    public Size getTaille() {
-        return taille;
-    }
-
-    public void setTaille(Size taille) {
-        this.taille = taille;
-    }
-
     public String getTag() {
         return nom;
     }
@@ -50,14 +41,12 @@ public class ComposantGraphe {
     protected int identifiant;
     protected int indice;
     protected Color couleur;
-    protected Size taille;
     protected String nom;
 
-    ComposantGraphe(int id, int i, String tag,Color c, Size t){
+    ComposantGraphe(int id, int i, String tag,Color c){
         this.identifiant = id;
         this.indice = i;
         this.nom = tag;
         this.couleur = c;
-        this.taille = t;
     }
 }

@@ -25,17 +25,14 @@ public class Graphe {
     }
 
     public void chargerGraphe(Model.Graphe graphe) {
-//        for(Model.Sommet s : graphe.getSommets()) {
-//            sommets.add(new Sommet(Integer.toString(s.getId()),s.getForme(),s.getX(),s.getY()));
-//        }
         for (Map.Entry<Model.Arete, Pair<Model.Sommet, Model.Sommet>> e : graphe.getM_extremites().entrySet()) {
             Sommet s1 = null;
             Sommet s2 = null;
-            s1 = new Sommet(Integer.toString(e.getValue().getKey().getId()),
+            s1 = new Sommet(e.getValue().getKey().getTag(),
                     e.getValue().getKey().getForme(),
                     e.getValue().getKey().getX(),
                     e.getValue().getKey().getY());
-            s2 = new Sommet(Integer.toString(e.getValue().getValue().getId()),
+            s2 = new Sommet(e.getValue().getValue().getTag(),
                     e.getValue().getValue().getForme(),
                     e.getValue().getValue().getX(),
                     e.getValue().getValue().getY());
@@ -44,6 +41,17 @@ public class Graphe {
 
             aretes.add(new Arete(s1,s2));
 
+        }
+        for (Model.Sommet sommet : graphe.getSommets())
+        {
+            Sommet sommet1 = new Sommet(
+                    sommet.getTag(),
+                    sommet.getForme(),
+                    sommet.getX(),
+                    sommet.getY() );
+            if (!sommets.contains(sommet1)) {
+                sommets.add(sommets.size(),sommet1);
+            }
         }
         canvas.getChildren().addAll(sommets);
         canvas.getChildren().addAll(aretes);

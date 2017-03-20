@@ -25,9 +25,6 @@ public class Graphe {
     }
 
     public void chargerGraphe(Model.Graphe graphe) {
-//        for(Model.Sommet s : graphe.getSommets()) {
-//            sommets.add(new Sommet(Integer.toString(s.getId()),s.getForme(),s.getX(),s.getY()));
-//        }
         for (Map.Entry<Model.Arete, Pair<Model.Sommet, Model.Sommet>> e : graphe.getM_extremites().entrySet()) {
             Sommet s1 = null;
             Sommet s2 = null;
@@ -44,6 +41,17 @@ public class Graphe {
 
             aretes.add(new Arete(s1,s2));
 
+        }
+        for (Model.Sommet sommet : graphe.getSommets())
+        {
+            Sommet sommet1 = new Sommet(
+                    Integer.toString(sommet.getId()),
+                    sommet.getForme(),
+                    sommet.getX(),
+                    sommet.getY() );
+            if (!sommets.contains(sommet1)) {
+                sommets.add(sommets.size(),sommet1);
+            }
         }
         canvas.getChildren().addAll(sommets);
         canvas.getChildren().addAll(aretes);

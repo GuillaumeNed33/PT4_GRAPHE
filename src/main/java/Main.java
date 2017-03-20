@@ -17,7 +17,7 @@ public class Main extends Application {
         VBox root = new VBox();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainMenu.fxml"));
         TabPane menu = loader.load();
-        root.getChildren().addAll(menu,g.getScrollPane());
+        root.getChildren().addAll(menu);
 
 
         /** PARAMETRAGE DE LA FENETRE **/

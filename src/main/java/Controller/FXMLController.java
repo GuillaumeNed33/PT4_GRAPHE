@@ -12,7 +12,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -26,10 +25,9 @@ import java.io.IOException;
 
 public class FXMLController extends VBox {
     protected Stage popUpWindow;
-    public View.Graphe grapheView;
+    protected View.Graphe grapheView;
     protected Model.Graphe grapheModel;
     private VBox vbox;
-    private Pane pane;
 
     public VBox getVbox() {
         return vbox;
@@ -43,7 +41,7 @@ public class FXMLController extends VBox {
         grapheView = g;
     }
 
-    public void initPopup() {
+    private void initPopup() {
         popUpWindow = new Stage();
         popUpWindow.initModality(Modality.APPLICATION_MODAL);
         popUpWindow.setResizable(false);
@@ -360,40 +358,6 @@ public class FXMLController extends VBox {
     private Sommet sommetSelectionne;
     private String tagSommetSelectionne;
     public void setPane(Pane pane){
-        this.pane = pane;
-        pane.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
-            @Override
-            public void handle(ContextMenuEvent event) {
-
-                if (grapheModel!=null){
-
-                    setContextMenu();
-                    //boolean trouve = false; // VRAI LIGNE, A GARDER
-                    boolean trouve = true; // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
-                    int cpt = 0;
-                    //Sommet tmp = null; // VRAI LIGNE, A GARDER // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
-                    sommetSelectionne = grapheModel.getSommets().get(0);
-
-                        /*while(!trouve && cpt<graphe.getSommets().size()) { // DETECTION CLIC DROIT SUR SOMMET (On ne veut pas clic droit n'importe où).
-                            sommetSelectionne = graphe.getSommets().get(cpt);
-
-                            if(event.getSceneX() >= sommetSelectionne.getX()-sommetSelectionne.getTailleForme().width &&
-                                    event.getSceneX() <= sommetSelectionne.getX() + sommetSelectionne.getTailleForme().width &&
-                                    event.getSceneY() >= sommetSelectionne.getY() - sommetSelectionne.getTailleForme().height &&
-                                    event.getSceneY() <= sommetSelectionne.getY() + sommetSelectionne.getTailleForme().height){
-                                trouve = true;
-                            }
-
-                            ++cpt;
-                        }*/
-
-                    if(trouve) { //Si c'est sur un sommet, affichage du contextMenu.
-                        contextMenu.show(vbox, event.getScreenX(), event.getScreenY());
-                        event.consume();
-                    }
-                }
-            }
-        });
 
         pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override

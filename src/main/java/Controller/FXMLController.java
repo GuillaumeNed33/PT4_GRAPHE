@@ -4,7 +4,6 @@ import Model.Graphe;
 import Model.Sommet;
 import View.Arete;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -257,10 +256,13 @@ public class FXMLController extends VBox {
      */
     @FXML private ColorPicker couleurFond;
     @FXML public void clickCouleurFond(MouseEvent event) throws IOException {
-        couleurFond.setOnAction(new EventHandler() {
-            public void handle(Event t) {
+        couleurFond.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
                 Color c = couleurFond.getValue();
-                grapheView.getCanvas().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
+                if (grapheView != null) {
+                    grapheView.getCanvas().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
+                }
             }
         });
     }

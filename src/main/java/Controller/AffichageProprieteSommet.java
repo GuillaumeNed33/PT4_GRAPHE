@@ -39,7 +39,7 @@ public class AffichageProprieteSommet extends FXMLController {
             tagSommetSelectionne.setText(sommetSelectionne.getTag());
             tailleSommetSelectionne.setText("(" + sommetSelectionne.getTaille().width + ", " +
             sommetSelectionne.getTaille().height + ")");
-            positionSommetSelectionne.setText("(" + sommetSelectionne.getY() + ", " +
+            positionSommetSelectionne.setText("(" + sommetSelectionne.getX() + ", " +
                     sommetSelectionne.getY() + ")");
             couleurSommetSelectionne.setText(sommetSelectionne.getCouleur().toString());
             formeSommetSelectionne.setText(sommetSelectionne.getForme().toString());

@@ -42,19 +42,18 @@ public class Graphe {
             aretes.add(new Arete(s1,s2));
 
         }
-        for (Model.Sommet sommet : graphe.getSommets())
-        {
+        for (Model.Sommet sommet : graphe.getSommets()) {
             Sommet sommet1 = new Sommet(
                     sommet.getTag(),
                     sommet.getForme(),
                     sommet.getX(),
-                    sommet.getY() );
+                    sommet.getY());
             if (!sommets.contains(sommet1)) {
-                sommets.add(sommets.size(),sommet1);
+                sommets.add(sommets.size(), sommet1);
             }
         }
-        canvas.getChildren().addAll(sommets);
         canvas.getChildren().addAll(aretes);
+        canvas.getChildren().addAll(sommets);
         scrollPane.updateScrollPane(canvas);
     }
 

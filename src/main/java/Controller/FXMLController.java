@@ -367,24 +367,29 @@ public class FXMLController extends VBox {
                         if (grapheModel!=null){
 
                             setContextMenu();
-                            //boolean trouve = false; // VRAI LIGNE, A GARDER
-                            boolean trouve = true; // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
+                            boolean trouve = false; // VRAI LIGNE, A GARDER
+                            //boolean trouve = true; // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
                             int cpt = 0;
-                            //Sommet tmp = null; // VRAI LIGNE, A GARDER // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
-                            sommetSelectionne = grapheModel.getSommets().get(0);
+                            sommetSelectionne = null; // VRAI LIGNE, A GARDER // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
+                            //sommetSelectionne = grapheModel.getSommets().get(0);
 
-                        /*while(!trouve && cpt<graphe.getSommets().size()) { // DETECTION CLIC DROIT SUR SOMMET (On ne veut pas clic droit n'importe où).
-                            sommetSelectionne = graphe.getSommets().get(cpt);
+                            while(!trouve && cpt<grapheModel.getSommets().size()) { // DETECTION CLIC DROIT SUR SOMMET (On ne veut pas clic droit n'importe où).
+                                sommetSelectionne = grapheModel.getSommets().get(cpt);
 
-                            if(event.getSceneX() >= sommetSelectionne.getX()-sommetSelectionne.getTailleForme().width &&
-                                    event.getSceneX() <= sommetSelectionne.getX() + sommetSelectionne.getTailleForme().width &&
-                                    event.getSceneY() >= sommetSelectionne.getY() - sommetSelectionne.getTailleForme().height &&
-                                    event.getSceneY() <= sommetSelectionne.getY() + sommetSelectionne.getTailleForme().height){
-                                trouve = true;
+                                float startX = sommetSelectionne.getX();
+                                float endX = sommetSelectionne.getX() + sommetSelectionne.getTaille().width;
+                                float startY = sommetSelectionne.getY();
+                                float endY = sommetSelectionne.getY() + sommetSelectionne.getTaille().height;
+
+                                if(event.getX() >= sommetSelectionne.getX() &&
+                                        event.getX() <= sommetSelectionne.getX() + sommetSelectionne.getTaille().width &&
+                                        event.getY() >= sommetSelectionne.getY() &&
+                                        event.getY() <= sommetSelectionne.getY() + sommetSelectionne.getTaille().height){
+                                    trouve = true;
+                                }
+
+                                ++cpt;
                             }
-
-                            ++cpt;
-                        }*/
 
                             if(trouve) { //Si c'est sur un sommet, affichage du contextMenu.
                                 contextMenu.show(vbox, event.getScreenX(), event.getScreenY());
@@ -393,15 +398,18 @@ public class FXMLController extends VBox {
                         }
                     }
                     else {
-                        sommetSelectionne = null;
-                        contextMenu.hide();
+                        enleverMenuContextuel();
                     }
                 } else {
-                    sommetSelectionne = null;
-                    contextMenu.hide();
+                    enleverMenuContextuel();
                 }
             }
         });
+    }
+
+    private void enleverMenuContextuel() {
+        sommetSelectionne = null;
+        contextMenu.hide();
     }
 
 

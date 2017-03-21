@@ -240,7 +240,7 @@ public class Graphe {
         boolean doublonArete = false;
         if (!aretes.isEmpty()) {
             int cptArete = 0;
-            while (cptArete < aretes.size()) {
+            while (cptArete < aretes.size() && !doublonArete) {
                 if (parId) {
                     if ((aretes.get(cptArete).getEntree().getIdImportation() == idSommetSource &&
                             aretes.get(cptArete).getSortie().getIdImportation() == idSommetDestination) || (
@@ -825,7 +825,7 @@ public class Graphe {
      */
     private boolean verificationPossibiliteAjoutArete(Sommet sommet_1, Sommet sommet_2) {
 
-        return !((sommet_1 == null || sommet_2 == null) || sommet_1.equals(sommet_2)) || verificationDoublonAreteParId(false, sommet_1.getId(), sommet_2.getId());
+        return !((sommet_1 == null || sommet_2 == null) || sommet_1.equals(sommet_2) || verificationDoublonAreteParId(false, sommet_1.getId(), sommet_2.getId()));
     }
 
     /**

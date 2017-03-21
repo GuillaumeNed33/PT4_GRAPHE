@@ -12,9 +12,6 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by audreylentilhac on 06/02/2017.
- */
 
 /**Pattern
  *  Classe Graphe
@@ -23,47 +20,53 @@ public class Graphe {
     /**
      * Représente le nom du graphe.
      */
-    public String nom;
+    private String nom;
 
     /**
      * Représente la taille du graphe.
      */
-    public Size taille;
+    private Size taille;
 
     /**
      * Représente l'ensemble des sommets dans le graphe.
      */
-    public ArrayList<Sommet> sommets;
+    private ArrayList<Sommet> sommets;
 
     /**
      * Représente l'ensemble des arete dans le graphe.
      */
-    public ArrayList<Arete> aretes;
+    private ArrayList<Arete> aretes;
 
     /**
      * Représente une map liant pour chaque sommet sa liste d'aretes.
      */
-    public HashMap<Sommet, ArrayList<Arete> > incidentes;
+    private HashMap<Sommet, ArrayList<Arete> > incidentes;
 
     /**
      * Représente une map liant pour chaque arete sa paire de sommets.
      */
-    public HashMap<Arete, Pair<Sommet,Sommet>> extremites;    // conteneur liant pour chaque arete sa paire de sommets
+    private HashMap<Arete, Pair<Sommet,Sommet>> extremites;    // conteneur liant pour chaque arete sa paire de sommets
 
     /**
      * Représente l'ensemble des clefs de style (definies dans les fichier .graphml).
      */
-    public ArrayList<KeyStyleGRAPHML> keyGML;
+    private ArrayList<KeyStyleGRAPHML> keyGML;
 
     /**
      *  Représente une valeur aléatoire.
      */
-    public static Random rand = new Random();
+    private static Random rand = new Random();
 
     /**
-     * Représente l'algorithme de représentation du graphe
+     * Représente l'algorithme de représentation du graphe.
      */
-    public AlgorithmeRepresentation algorithmeRepresentation;
+    private AlgorithmeRepresentation algorithmeRepresentation;
+
+    /**
+     * Représente le chemin du grapge.
+     */
+    private String cheminGraphe;
+
 
     /**
      * Constructeur de la classe Graphe lisant un fichier .DOT ou .GRAPHML.
@@ -78,10 +81,12 @@ public class Graphe {
         incidentes = new HashMap<Sommet, ArrayList<Arete>>();
         extremites = new HashMap<Arete, Pair<Sommet, Sommet>>();
         algorithmeRepresentation = new AlgorithmeRepresentation(this);
-        if (fichier.matches(".+.gv$")) {
+        cheminGraphe = fichier;
+
+        if (cheminGraphe.matches(".+.gv$")) {
             chargerGrapheGV(fichier);
         }
-        else if (fichier.matches(".+.graphml$")) {
+        else if (cheminGraphe.matches(".+.graphml$")) {
             chargerGrapheGRAPHML(fichier);
         }
         setAlgorithmeRepresentation('c', largeurEcran, hauteurEcran);
@@ -175,7 +180,7 @@ public class Graphe {
                 sommet.setTag(label);
             }
 
-            pattern = Pattern.compile("shape=+.+[a-z]"); // forme du sommet
+            pattern = Pattern.compile("shape=+[A-Z a-z]+\\ "); // forme du sommet
             matcher = pattern.matcher(ligne); // On le cherche dans la ligne
 
             if (matcher.find()) {
@@ -202,13 +207,14 @@ public class Graphe {
             arete.setTag(tag);
         }
 
-        pattern = Pattern.compile("color=+.+[a-z]"); // forme du sommet
+        /*pattern = Pattern.compile("color=+.+[a-z]"); // couleur de l'arête
         matcher = pattern.matcher(ligne); // On le cherche dans la ligne
 
         if (matcher.find()) {
+
             String couleur = matcher.group().split("=")[1];
             arete.setCouleurAreteStr(couleur);
-        }
+        }*/
     }
 
     private void creationAreteImportation(String ligne) {
@@ -436,10 +442,15 @@ public class Graphe {
      * @return Retourne vrai si la sauvegarde c'est bien passé ou faux dans le cas contraire.
      */
     public boolean sauvegarderGraphe (String chemin_sauvegarde) {
-        if (chemin_sauvegarde.contains(".gv")) {
-            return sauvegarderGrapheDot(chemin_sauvegarde);
+
+        if (chemin_sauvegarde == null) {
+            chemin_sauvegarde = cheminGraphe;
         }
-        else if (chemin_sauvegarde.contains(".graphml")) {
+
+        if (chemin_sauvegarde.matches(".+.gv$")) {
+            return sauvegarderGrapheGv(chemin_sauvegarde);
+        }
+        else if (chemin_sauvegarde.matches(".+.gv$")) {
             return sauvegarderGrapheGraphml(chemin_sauvegarde);
         }
 
@@ -448,11 +459,11 @@ public class Graphe {
 
 
     /**
-     * Permet de sauvegarder un graphe au format .dot.
-     * @param chemin_sauvegarde Représente le chemin où sera sauvegardé le fichier au format .dot.
+     * Permet de sauvegarder un graphe au format .gv.
+     * @param chemin_sauvegarde Représente le chemin où sera sauvegardé le fichier au format .gv.
      * @return Retourne vrai si la sauvegarde c'est bien passé ou faux dans le cas contraire.
      */
-    private boolean sauvegarderGrapheDot (String chemin_sauvegarde) {
+    private boolean sauvegarderGrapheGv(String chemin_sauvegarde) {
 
         try {
             FileWriter fileWriter = new FileWriter (chemin_sauvegarde);
@@ -467,21 +478,22 @@ public class Graphe {
             if (!sommets.isEmpty()) {
 
                 for (Sommet sommet : sommets) {
-                    fichierSortie.println("\t\"node" + sommet.getId() + "\" [ label=\"" + sommet.getTag() + "\" shape=\"" + sommet.getForme() + "\" ];");
+                    fichierSortie.println("\t\"node" + sommet.getId() + "\" [ label=\"" + sommet.getTag() + "\" shape=" + sommet.getForme() + " ];");
                 }
             }
 
             if (!extremites.isEmpty() && !aretes.isEmpty()) {
                 for(Arete arete : aretes) {
-                    fichierSortie.println("\t\"node" + extremites.get(arete).getKey().getId() + "\" ->  \"node" + extremites.get(arete).getKey().getId() + "\" " +
-                            "[ color=" + arete.getCouleur().toString());
 
+                    String temp = "\t\"node" + extremites.get(arete).getKey().getId() + "\" ->  \"node" + extremites.get(arete).getValue().getId() + "\" [ ";
                     if (!arete.getTag().equals("")) {
-                        fichierSortie.print(" label=\"" + arete.getTag() + "\" ];");
+                        temp += " label=\"" + arete.getTag() + "\" ];";
                     }
                     else {
-                        fichierSortie.print(" ];");
+                        temp += " ];";
                     }
+
+                    fichierSortie.println(temp);
 
                 }
             }
@@ -717,7 +729,7 @@ public class Graphe {
      * @return Retourne vrai si le déplacement c'est bien effectué ou faux dans le cas contraire.
      */
     public boolean deplacerSommet(Sommet sommet, float nouvelle_coord_x, float nouvelle_coord_y, Size tailleFenetre) {
-        if (!sommet.equals(null) && verificationCoordonneesValide(nouvelle_coord_x, nouvelle_coord_y, tailleFenetre)) {
+        if (sommet != null && verificationCoordonneesValide(nouvelle_coord_x, nouvelle_coord_y, tailleFenetre)) {
             sommet.setX(nouvelle_coord_x);
             sommet.setY(nouvelle_coord_y);
         }
@@ -813,7 +825,7 @@ public class Graphe {
      */
     private boolean verificationPossibiliteAjoutArete(Sommet sommet_1, Sommet sommet_2) {
 
-        return !(sommet_1.equals(sommet_2) || (sommet_1.equals(null) || sommet_2.equals(null)) || verificationDoublonAreteParId(false, sommet_1.getId(), sommet_2.getId()));
+        return !((sommet_1 == null || sommet_2 == null) || sommet_1.equals(sommet_2)) || verificationDoublonAreteParId(false, sommet_1.getId(), sommet_2.getId());
     }
 
     /**
@@ -863,7 +875,7 @@ public class Graphe {
      */
     public void supprimerArete(Arete arete) {
 
-        if(!arete.equals(null)) {
+        if(arete != null) {
 
             incidentes.get(extremites.get(arete).getKey()).remove(arete); // Représente le premier sommet de la Pair dans la HashMap m_extremites
             incidentes.get(extremites.get(arete).getValue()).remove(arete); // Représente le second sommet de la Pair dans la HashMap m_extremites

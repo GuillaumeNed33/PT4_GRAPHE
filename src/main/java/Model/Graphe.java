@@ -487,7 +487,7 @@ public class Graphe {
 
                     String temp = "\t\"node" + extremites.get(arete).getKey().getId() + "\" ->  \"node" + extremites.get(arete).getValue().getId() + "\" [ ";
                     if (!arete.getTag().equals("")) {
-                        temp += " label=\"" + arete.getTag() + "\" ];";
+                        temp += "label=\"" + arete.getTag() + "\" ];";
                     }
                     else {
                         temp += " ];";

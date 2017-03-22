@@ -101,6 +101,23 @@ public class Graphe {
         }
     }
 
+    public void supprimerArete(Model.Arete areteASuppr) {
+
+        boolean trouve = false;
+        int cptArete = 0;
+
+        while (cptArete < aretes.size() && ! trouve) {
+            if (areteASuppr.getId() == aretes.get(cptArete).getIdGraphe()) {
+                canvas.getChildren().remove(aretes.get(cptArete));
+                aretes.remove(cptArete);
+                trouve = true;
+            }
+            else {
+                ++cptArete;
+            }
+        }
+    }
+
     public Pane getCanvas() {
         return canvas;
     }

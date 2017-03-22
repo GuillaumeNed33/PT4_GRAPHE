@@ -8,10 +8,13 @@ import javafx.scene.shape.Line;
  *
  */
 public class Arete extends Group {
+    private static int idActuel = 0;
+    private int id;
     private Sommet source;
     private Sommet destination;
     private Line ligne;
     public Arete(Sommet src, Sommet dest) {
+        this.id = idActuel++;
         this.source = src;
         this.destination = dest;
         ligne = new Line();
@@ -35,5 +38,9 @@ public class Arete extends Group {
 
     public Sommet getDestination() {
         return destination;
+    }
+
+    public int getIdGraphe() {
+        return id;
     }
 }

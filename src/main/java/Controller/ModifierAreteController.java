@@ -54,8 +54,10 @@ public class ModifierAreteController extends FXMLController {
 
             List<String> AreteStr = new ArrayList<String>();
 
-            for (Arete a : grapheModel.getAretes()) {
-                AreteStr.add("tag : " + a.getTag() + " (id : " + a.getId() + " )");
+            for (Arete arete : grapheModel.getAretes()) {
+                AreteStr.add("tag : " + arete.getTag() + " (id : " + arete.getId() + " ), " +
+                        "source = " + arete.getEntree().getTag() + " (id : " + arete.getEntree().getId() + " ), " +
+                        "destination = " + arete.getSortie().getTag() + " (id : " + arete.getSortie().getId() + " ) ");
             }
 
             ListProperty<String> listProperty = new SimpleListProperty<String>();
@@ -101,13 +103,15 @@ public class ModifierAreteController extends FXMLController {
                             grapheModel.getAretes().get(i).setCouleur(couleurChoice.getValue());
                             grapheModel.getAretes().get(i).setEpaisseur(Integer.parseInt(areteSize.getText()));
                             grapheModel.getAretes().get(i).setIndice(Integer.parseInt(aretePoids.getText()));
+
+                            grapheView.getAretes().get(i).setCouleur(couleurChoice.getValue());
+                            grapheView.getAretes().get(i).setEpaisseur(Integer.parseInt(areteSize.getText()));
+                            grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
                             foundSommet = true;
                         } else {
                             i++;
                         }
                     }
-
-                    grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
                     popUpWindow.close();
                 }
                 else {
@@ -127,6 +131,7 @@ public class ModifierAreteController extends FXMLController {
         if (selected != null) {
             grapheModel.supprimerArete(selected);
             grapheView.supprimerArete(selected);
+            grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
             popUpWindow.close();
         }
     }

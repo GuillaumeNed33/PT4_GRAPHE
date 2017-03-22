@@ -90,7 +90,7 @@ public class AjoutAreteController extends FXMLController {
             }
             else {
                 Arete arete = new View.Arete(grapheView.rechercheSommetParId(idSommetEntre), grapheView.rechercheSommetParId(idSommetSortie));
-                grapheView.getAretes().add(grapheView.getAretes().size(), arete);
+                grapheView.getAretes().add(arete);
                 grapheView.getCanvas().getChildren().add(arete);
                 grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
                 popUpWindow.close();

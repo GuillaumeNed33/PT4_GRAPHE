@@ -1,6 +1,7 @@
 package View;
 
 import Model.Forme_Sommet;
+import com.sun.glass.ui.Size;
 import javafx.scene.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -11,6 +12,10 @@ import javafx.scene.shape.Rectangle;
 
 public class Sommet extends Pane {
     static float RAYON_SOMMET = 5.0f;
+
+    private double coord_x;
+    private double coord_y;
+    private Size taille;
     private Color color;
     private Forme_Sommet fs;
     private int id;
@@ -19,29 +24,58 @@ public class Sommet extends Pane {
     private Label lb;
 
     public Sommet(int id, String tag, Forme_Sommet fs, double x, double y) {
+        this.taille = new Size(5, 5);
         this.id = id;
         this.tag = tag;
         this.fs = fs;
         this.color = Color.BLACK;
+        this.coord_x = x;
+        this.coord_y = y;
         this.lb = new Label(tag);
         switch(fs) {
             case Cercle:
-                vue = new Circle(RAYON_SOMMET,color);
+                vue = new Circle(taille.width ,color);
                 break;
             case Losange:
                 vue = new Polygon();
                 break;
             case Rectangle:
-                vue = new Rectangle(RAYON_SOMMET*2,RAYON_SOMMET*2,color);
+                vue = new Rectangle(taille.width*2,taille.height*2,color);
                 break;
             case Triangle:
-                vue = new Polygon(RAYON_SOMMET,0,RAYON_SOMMET*2,RAYON_SOMMET*2,0,RAYON_SOMMET*2);
+                vue = new Polygon(taille.width,0,taille.width*2,taille.width*2,0,taille.width*2); //ToDo A VERIFIER IMPORTANT
                 break;
         }
-        lb.relocate(x+RAYON_SOMMET,y+RAYON_SOMMET);
-        vue.relocate(x,y);
+        lb.relocate(x + taille.width * 2,y + taille.height);
+        vue.relocate(x, y);
         getChildren().addAll(vue, lb);
+    }
 
+    public void setTaille(Size taille) {
+        this.taille = taille;
+
+        int indexVue = getChildren().indexOf(vue);
+        getChildren().remove(indexVue);
+
+        switch(fs) {
+            case Cercle:
+                vue = new Circle(taille.width ,color);
+                break;
+            case Losange:
+                vue = new Polygon();
+                break;
+            case Rectangle:
+                vue = new Rectangle(taille.width*2,taille.height*2,color);
+                break;
+            case Triangle:
+                vue = new Polygon(taille.width,0,taille.width*2,taille.width*2,0,taille.width*2); //ToDo A VERIFIER IMPORTANT
+                break;
+        }
+
+        lb.relocate(coord_x + taille.width * 2,coord_y + taille.height);
+        vue.relocate(coord_x, coord_y);
+
+        getChildren().add(vue);
     }
 
     public Label getLb() {
@@ -56,6 +90,7 @@ public class Sommet extends Pane {
     public Color getColor() {
         return color;
     }
+
      public void setColor(Color c){
         this.color = c;
      }

@@ -15,7 +15,7 @@ public class Sommet extends Pane {
 
     private double coord_x;
     private double coord_y;
-    private Size taille;
+    private static Size taille;
     private Color color;
     private Forme_Sommet fs;
     private int id;
@@ -49,6 +49,10 @@ public class Sommet extends Pane {
         lb.relocate(x + taille.width * 2,y + taille.height);
         vue.relocate(x, y);
         getChildren().addAll(vue, lb);
+    }
+
+    public static Size getTaille() {
+        return taille;
     }
 
     public void setTaille(Size taille) {

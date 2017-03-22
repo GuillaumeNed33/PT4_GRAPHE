@@ -199,7 +199,7 @@ public class FXMLController extends VBox {
 
     @FXML
     public void clickAjouterArete() throws IOException {
-        new AjoutAreteController(grapheModel);
+        new AjoutAreteController(grapheModel, grapheView);
     }
     @FXML
     public void clickTailleGraphe(MouseEvent mouseEvent) throws IOException {

@@ -45,6 +45,15 @@ public class FXMLController extends VBox {
         popUpWindow.setResizable(false);
     }
 
+    protected void refreshGrapheView() {
+        grapheView = new View.Graphe();
+        grapheView.chargerGraphe(grapheModel);
+        getVbox().getChildren().remove(1);
+        getVbox().getChildren().addAll(grapheView.getScrollPane());
+        setPane(grapheView.getCanvas());
+        grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+    }
+
 
     /**
      * Fonction ouvrant une fenetre (FileChooser) permettant l'importation d'un fichier dans le logiciel.
@@ -114,14 +123,17 @@ public class FXMLController extends VBox {
      * Fonction permettant d'appliquer une distribution aléatoire des positions des sommets du graphe
      */
     @FXML public void clickRepresentationAleatoire() {
-        grapheModel.setAlgorithmeRepresentation('a',1200, 600);
+        grapheModel.setAlgorithmeRepresentation('a',(int)grapheView.getScrollPane().getWidth(),(int)grapheView.getScrollPane().getHeight());
+        refreshGrapheView();
+
     }
 
     /**
      * Fonction permettant d'appliquer une distribution circulaire des positions des sommets du graphe
      */
     @FXML public void clickRepresentationCirculaire() {
-        grapheModel.setAlgorithmeRepresentation('c',1200, 600);
+        grapheModel.setAlgorithmeRepresentation('c',(int)grapheView.getScrollPane().getWidth(),(int)grapheView.getScrollPane().getHeight());
+        refreshGrapheView();
     }
 
     /**
@@ -129,7 +141,8 @@ public class FXMLController extends VBox {
      */
     @FXML
     public void clickRepresentationForces() {
-        grapheModel.setAlgorithmeRepresentation('f',1200, 600);
+        grapheModel.setAlgorithmeRepresentation('f',(int)grapheView.getScrollPane().getWidth(),(int)grapheView.getScrollPane().getHeight());
+        refreshGrapheView();
     }
 
     /**
@@ -266,7 +279,7 @@ public class FXMLController extends VBox {
             public void handle(ActionEvent event) {
                 Color c = couleurFond.getValue();
                 if (grapheView != null) {
-                    grapheView.getCanvas().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
+                    grapheView.getScrollPane().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
                 }
             }
         });
@@ -358,13 +371,9 @@ public class FXMLController extends VBox {
 
     }
 
-    /**
-     * Récupère le Pane du Main et gère le contextMenu lors d'un clic droit.
-     * @param pane
-     */
-    protected Sommet sommetSelectionneModel;
-    protected View.Sommet sommetSelectionneView;
-    private String tagSommetSelectionne;
+    Sommet sommetSelectionneModel;
+    View.Sommet sommetSelectionneView;
+    String tagSommetSelectionne;
     public void setPane(Pane pane){
 
         pane.setOnMouseClicked(new EventHandler<MouseEvent>() {

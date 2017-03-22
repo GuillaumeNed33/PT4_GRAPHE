@@ -1,5 +1,6 @@
 package View;
 
+import javafx.scene.layout.Border;
 import javafx.scene.layout.Pane;
 import javafx.util.Pair;
 
@@ -18,10 +19,9 @@ public class Graphe {
     public Graphe() {
         canvas = new Pane();
         scrollPane = new ZoomableScrollPane(canvas);
+        scrollPane.setBorder(Border.EMPTY);
         sommets = new ArrayList<Sommet>();
         aretes = new ArrayList<Arete>();
-        scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(true);
     }
 
     public void chargerGraphe(Model.Graphe graphe) {

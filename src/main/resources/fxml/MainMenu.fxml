@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ColorPicker?>
@@ -15,71 +19,102 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<TabPane maxHeight="Infinity" maxWidth="Infinity" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.FXMLController">
-    <Tab text="Fichier">
-        <AnchorPane maxHeight="-Infinity" styleClass="tab_panel">
-            <HBox>
-                <padding>
-                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-                </padding>
-                <Button mnemonicParsing="false" onMouseClicked="#clickFichierImporter" text="Importer" />
-                <Button mnemonicParsing="false" onMouseClicked="#clickFichierExporter" text="Exporter" />
-                <Button mnemonicParsing="false" onMouseClicked="#clickFichierEnregistrer" text="Enregistrer" />
-            </HBox>
-        </AnchorPane>
-    </Tab>
-    <Tab text="Affichage">
-        <AnchorPane maxHeight="-Infinity" styleClass="tab_panel">
-            <HBox>
-                <Button mnemonicParsing="false" onMouseClicked="#clickZoomMinus" text="-" />
-                <Button mnemonicParsing="false" onMouseClicked="#clickZoomPlus" text="+" />
-                <Separator orientation="VERTICAL" />
-                <ToggleButton mnemonicParsing="false" onAction="#clickToggleSommet" text="Sommets" />
-                <ToggleButton mnemonicParsing="false" onAction="#clickToggleArete" text="Arêtes" />
-                <ToggleButton mnemonicParsing="false" onAction="#clickToggleEtiquette" text="Étiquettes" />
-                <Button mnemonicParsing="false" onMouseClicked="#clickCouleurGraphe" text="Couleur du graphe" />
-                <Label alignment="BOTTOM_CENTER" prefHeight="22.0" prefWidth="131.0">Couleur du fond :</Label>
-                <ColorPicker fx:id="couleurFond" onMouseClicked="#clickCouleurFond">
-               <HBox.margin>
-                  <Insets left="10.0" />
-               </HBox.margin></ColorPicker>
-            </HBox>
-        </AnchorPane>
-    </Tab>
-    <Tab text="Modifier">
-        <AnchorPane maxHeight="-Infinity" styleClass="tab_panel">
-            <HBox>
-            <MenuButton mnemonicParsing="false" text="Modèles">
-              <items>
-                <MenuItem mnemonicParsing="false" onAction="#clickRepresentationAleatoire" text="Aléatoire" />
-                <MenuItem mnemonicParsing="false" onAction="#clickRepresentationCirculaire" text="Circulaire" />
-                  <MenuItem mnemonicParsing="false" onAction="#clickRepresentationForces" text="Modèle De Forces" />
-              </items>
-            </MenuButton>
-                <Button mnemonicParsing="false" onMouseClicked="#clickModifyArete" text="Arête" />
-            </HBox>
-        </AnchorPane>
-    </Tab>
-    <Tab text="Édition">
-        <AnchorPane maxHeight="-Infinity" styleClass="tab_panel">
-            <HBox>
-                <Button mnemonicParsing="false" onMouseClicked="#clickTailleGraphe" text="Taille du graphe" />
-                <MenuButton mnemonicParsing="false" text="Ajout">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#clickAjouterArete" text="Arête" />
-                        <MenuItem mnemonicParsing="false" onAction="#clickAjouterSommet" text="Sommet" />
-                    </items>
-                </MenuButton>
-                <MenuButton mnemonicParsing="false" text="Indice">
-                    <items>
-                        <RadioMenuItem mnemonicParsing="false" onAction="#clickIndicageAleatoire" text="Aléatoire">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="IndicageRadioButtonGroup" />
-                     </toggleGroup></RadioMenuItem>
-                        <RadioMenuItem mnemonicParsing="false" onAction="#clickIndicageDegré" text="Degrès" toggleGroup="$IndicageRadioButtonGroup" />
-                    </items>
-                </MenuButton>
-            </HBox>
-        </AnchorPane>
-    </Tab>
+<TabPane maxHeight="Infinity" maxWidth="Infinity" prefHeight="70.0" prefWidth="820.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.FXMLController">
+   <tabs>
+       <Tab text="Fichier">
+          <content>
+              <AnchorPane maxHeight="-Infinity" styleClass="tab_panel">
+                 <children>
+                     <HBox>
+                         <padding>
+                             <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                         </padding>
+                        <children>
+                            <Button mnemonicParsing="false" onMouseClicked="#clickFichierImporter" text="Importer" />
+                            <Button mnemonicParsing="false" onMouseClicked="#clickFichierExporter" text="Exporter" />
+                            <Button mnemonicParsing="false" onMouseClicked="#clickFichierEnregistrer" text="Enregistrer" />
+                        </children>
+                     </HBox>
+                 </children>
+              </AnchorPane>
+          </content>
+       </Tab>
+       <Tab text="Affichage">
+          <content>
+              <AnchorPane maxHeight="-Infinity" styleClass="tab_panel">
+                 <children>
+                     <HBox>
+                        <children>
+                            <Button mnemonicParsing="false" onMouseClicked="#clickZoomMinus" text="-" />
+                            <Button mnemonicParsing="false" onMouseClicked="#clickZoomPlus" text="+" />
+                            <Separator orientation="VERTICAL" />
+                            <ToggleButton mnemonicParsing="false" onAction="#clickToggleSommet" text="Sommets" />
+                            <ToggleButton mnemonicParsing="false" onAction="#clickToggleArete" text="Arêtes" />
+                            <ToggleButton mnemonicParsing="false" onAction="#clickToggleEtiquette" text="Étiquettes" />
+                            <Button mnemonicParsing="false" onMouseClicked="#clickCouleurGraphe" text="Couleur du graphe" />
+                            <Label alignment="CENTER" text="Couleur du fond :">
+                           <HBox.margin>
+                              <Insets top="5.0" />
+                           </HBox.margin></Label>
+                            <ColorPicker fx:id="couleurFond" onMouseClicked="#clickCouleurFond" prefWidth="100.0">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </ColorPicker>
+                        </children>
+                     </HBox>
+                 </children>
+              </AnchorPane>
+          </content>
+       </Tab>
+       <Tab text="Modifier">
+          <content>
+              <AnchorPane maxHeight="-Infinity" styleClass="tab_panel">
+                 <children>
+                     <HBox>
+                        <children>
+                        <MenuButton mnemonicParsing="false" text="Modèles">
+                          <items>
+                            <MenuItem mnemonicParsing="false" onAction="#clickRepresentationAleatoire" text="Aléatoire" />
+                            <MenuItem mnemonicParsing="false" onAction="#clickRepresentationCirculaire" text="Circulaire" />
+                              <MenuItem mnemonicParsing="false" onAction="#clickRepresentationForces" text="Modèle De Forces" />
+                          </items>
+                        </MenuButton>
+                            <Button mnemonicParsing="false" onMouseClicked="#clickModifyArete" text="Arête" />
+                        </children>
+                     </HBox>
+                 </children>
+              </AnchorPane>
+          </content>
+       </Tab>
+       <Tab text="Édition">
+          <content>
+              <AnchorPane maxHeight="-Infinity" styleClass="tab_panel">
+                 <children>
+                     <HBox>
+                        <children>
+                            <Button mnemonicParsing="false" onMouseClicked="#clickTailleGraphe" text="Taille du graphe" />
+                            <MenuButton mnemonicParsing="false" text="Ajout">
+                                <items>
+                                    <MenuItem mnemonicParsing="false" onAction="#clickAjouterArete" text="Arête" />
+                                    <MenuItem mnemonicParsing="false" onAction="#clickAjouterSommet" text="Sommet" />
+                                </items>
+                            </MenuButton>
+                            <MenuButton mnemonicParsing="false" text="Indice">
+                                <items>
+                                    <RadioMenuItem mnemonicParsing="false" onAction="#clickIndicageAleatoire" text="Aléatoire">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="IndicageRadioButtonGroup" />
+                                 </toggleGroup>
+                              </RadioMenuItem>
+                                    <RadioMenuItem mnemonicParsing="false" onAction="#clickIndicageDegré" text="Degrès" toggleGroup="$IndicageRadioButtonGroup" />
+                                </items>
+                            </MenuButton>
+                        </children>
+                     </HBox>
+                 </children>
+              </AnchorPane>
+          </content>
+       </Tab>
+   </tabs>
 </TabPane>

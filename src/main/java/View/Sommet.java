@@ -52,4 +52,21 @@ public class Sommet extends Pane {
     }
 
     public int getIdGraphe() {return id;}
+
+    public void setColor(Color c) {
+        switch(fs) {
+            case Cercle:
+                ((Circle)vue).setFill(c);
+                break;
+            case Losange:
+                ((Polygon)vue).setFill(c);
+                break;
+            case Rectangle:
+                ((Rectangle)vue).setFill(c);
+                break;
+            case Triangle:
+                ((Polygon)vue).setFill(c);
+                break;
+        }
+    }
 }

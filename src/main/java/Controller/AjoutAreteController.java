@@ -1,8 +1,8 @@
 package Controller;
 
-import Model.Arete;
 import Model.Graphe;
 import Model.Sommet;
+import View.Arete;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.value.ChangeListener;
@@ -12,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
@@ -29,9 +28,10 @@ public class AjoutAreteController extends FXMLController {
     @FXML
     private ListView<String> listViewSommetsS;
 
-    AjoutAreteController(Graphe graphe) throws IOException {
+    AjoutAreteController(Graphe graphe, View.Graphe grapheView) throws IOException {
         super();
         this.grapheModel = graphe;
+        this.grapheView = grapheView;
         if (this.grapheModel != null) {
             FXMLLoader fxmlLoaderPopUp = new FXMLLoader(getClass().getResource("/fxml/AjoutArete.fxml"));
             popUpWindow.setTitle("Ajouter Arête");
@@ -89,9 +89,9 @@ public class AjoutAreteController extends FXMLController {
                 erreurAjoutArete.setText("Erreur - Arete existante ou 2 \nsommets identiques sélectionnés.");
             }
             else {
-                grapheView.getAretes().add(grapheView.getAretes().size(),new View.Arete(
-                        grapheView.rechercheSommetParId(idSommetEntre),
-                        grapheView.rechercheSommetParId(idSommetSortie)));
+                Arete arete = new View.Arete(grapheView.rechercheSommetParId(idSommetEntre), grapheView.rechercheSommetParId(idSommetSortie));
+                grapheView.getAretes().add(grapheView.getAretes().size(), arete);
+                grapheView.getCanvas().getChildren().add(arete);
                 grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
                 popUpWindow.close();
             }

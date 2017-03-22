@@ -75,7 +75,7 @@ public class AjoutSommetController extends FXMLController {
             }
             else {
                 popUpWindow.close();
-                grapheView.getSommets().add(new View.Sommet(tag, Forme_Sommet.getFormeByText(forme),sommet.getX(), sommet.getY()));
+                grapheView.getSommets().add(new View.Sommet(sommet.getId(), tag, Forme_Sommet.getFormeByText(forme),sommet.getX(), sommet.getY()));
                 grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
             }
         }

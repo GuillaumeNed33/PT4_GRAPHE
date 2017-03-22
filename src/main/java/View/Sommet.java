@@ -13,15 +13,17 @@ public class Sommet extends Pane {
     static public float RAYON_SOMMET = 5.0f;
     private Color color;
     private Forme_Sommet fs;
-    private String id;
+    private int id;
+    private String tag;
     private Node vue;
     private Label lb;
 
-    public Sommet(String id, Forme_Sommet fs, double x, double y) {
+    public Sommet(int id, String tag, Forme_Sommet fs, double x, double y) {
         this.id = id;
+        this.tag = tag;
         this.fs = fs;
-        this.color = Color.BLUE;
-        this.lb = new Label(id);
+        this.color = Color.BLACK;
+        this.lb = new Label(tag);
         switch(fs) {
             case Cercle:
                 vue = new Circle(RAYON_SOMMET,color);
@@ -48,4 +50,6 @@ public class Sommet extends Pane {
     public Node getVue() {
         return vue;
     }
+
+    public int getIdGraphe() {return id;}
 }

@@ -2,7 +2,7 @@ package Controller;
 
 import Model.Graphe;
 import Model.Sommet;
-import View.Arete;
+import View.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,7 +18,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -169,7 +168,7 @@ public class FXMLController extends VBox {
      * @param event
      */
     @FXML public void clickCouleurGraphe(MouseEvent event) throws IOException {
-        CouleurGrapheController c = new CouleurGrapheController(grapheModel);
+        new CouleurGrapheController(grapheModel);
     }
 
     protected void fermerPopup(Button button) {
@@ -297,7 +296,7 @@ public class FXMLController extends VBox {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    new AffichageProprieteSommet(grapheModel, sommetSelectionne);
+                    new AffichageProprieteSommet(grapheModel, sommetSelectionneModel);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -307,7 +306,7 @@ public class FXMLController extends VBox {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    new ModifierSommet(grapheModel, sommetSelectionne);
+                    new ModifierSommet(grapheModel, sommetSelectionneModel);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -317,7 +316,7 @@ public class FXMLController extends VBox {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    new SuppressionSommet(grapheModel, sommetSelectionne);
+                    new SuppressionSommet(grapheModel, sommetSelectionneModel, sommetSelectionneView, grapheView);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -328,7 +327,7 @@ public class FXMLController extends VBox {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    new ModifierTagSommet(grapheModel, sommetSelectionne);
+                    new ModifierTagSommet(grapheModel, sommetSelectionneModel);
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -338,7 +337,7 @@ public class FXMLController extends VBox {
         copierEtiquetteSommet.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                tagSommetSelectionne = sommetSelectionne.getTag() + "test";
+                tagSommetSelectionne = sommetSelectionneModel.getTag() + "test";
             }
         });
 
@@ -346,7 +345,7 @@ public class FXMLController extends VBox {
             @Override
             public void handle(ActionEvent event) {
                 if (tagSommetSelectionne != null) {
-                    sommetSelectionne.setTag(tagSommetSelectionne);
+                    sommetSelectionneModel.setTag(tagSommetSelectionne);
                 }
             }
         });
@@ -357,7 +356,8 @@ public class FXMLController extends VBox {
      * Récupère le Pane du Main et gère le contextMenu lors d'un clic droit.
      * @param pane
      */
-    private Sommet sommetSelectionne;
+    protected Sommet sommetSelectionneModel;
+    protected View.Sommet sommetSelectionneView;
     private String tagSommetSelectionne;
     public void setPane(Pane pane){
 
@@ -372,21 +372,17 @@ public class FXMLController extends VBox {
                             boolean trouve = false; // VRAI LIGNE, A GARDER
                             //boolean trouve = true; // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
                             int cpt = 0;
-                            sommetSelectionne = null; // VRAI LIGNE, A GARDER // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
-                            //sommetSelectionne = grapheModel.getSommets().get(0);
+                            sommetSelectionneModel = null; // VRAI LIGNE, A GARDER // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
+                            //sommetSelectionneModel = grapheModel.getSommets().get(0);
 
                             while(!trouve && cpt<grapheModel.getSommets().size()) { // DETECTION CLIC DROIT SUR SOMMET (On ne veut pas clic droit n'importe où).
-                                sommetSelectionne = grapheModel.getSommets().get(cpt);
+                                sommetSelectionneModel = grapheModel.getSommets().get(cpt);
+                                sommetSelectionneView = grapheView.getSommets().get(cpt);
 
-                                float startX = sommetSelectionne.getX();
-                                float endX = sommetSelectionne.getX() + sommetSelectionne.getTaille().width;
-                                float startY = sommetSelectionne.getY();
-                                float endY = sommetSelectionne.getY() + sommetSelectionne.getTaille().height;
-
-                                if(event.getX() >= sommetSelectionne.getX() &&
-                                        event.getX() <= sommetSelectionne.getX() + sommetSelectionne.getTaille().width &&
-                                        event.getY() >= sommetSelectionne.getY() &&
-                                        event.getY() <= sommetSelectionne.getY() + sommetSelectionne.getTaille().height){
+                                if(event.getX() >= sommetSelectionneModel.getX() &&
+                                        event.getX() <= sommetSelectionneModel.getX() + sommetSelectionneModel.getTaille().width &&
+                                        event.getY() >= sommetSelectionneModel.getY() &&
+                                        event.getY() <= sommetSelectionneModel.getY() + sommetSelectionneModel.getTaille().height){
                                     trouve = true;
                                 }
 
@@ -410,14 +406,14 @@ public class FXMLController extends VBox {
     }
 
     private void enleverMenuContextuel() {
-        sommetSelectionne = null;
+        sommetSelectionneModel = null;
         contextMenu.hide();
     }
 
 
     @FXML public void suppressionSommetSelectionne() {
-        grapheModel.supprimerSommet(sommetSelectionne);
-        sommetSelectionne = null;
+        grapheModel.supprimerSommet(sommetSelectionneModel);
+        sommetSelectionneModel = null;
     }
 
 }

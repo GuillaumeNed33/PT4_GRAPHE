@@ -12,12 +12,14 @@ import java.io.IOException;
 
 public class SuppressionSommet extends FXMLController {
 
-    private Sommet sommetSelectionne;
 
-    public SuppressionSommet(Graphe graphe, Sommet sommetSelectionne) throws IOException {
+    public SuppressionSommet(Graphe graphe, Sommet sommetSelectionneModel, View.Sommet sommetSelectionneView, View.Graphe grapheView) throws IOException {
         super();
         this.grapheModel = graphe;
-        this.sommetSelectionne = sommetSelectionne;
+        this.grapheView = grapheView;
+        this.sommetSelectionneModel = sommetSelectionneModel;
+        this.sommetSelectionneView = sommetSelectionneView;
+
         if (graphe != null) {
             FXMLLoader fxmlLoaderPopUp = new FXMLLoader(getClass().getResource("/fxml/SupprSommet.fxml"));
             popUpWindow.setTitle("Confirmer suppression");
@@ -33,8 +35,11 @@ public class SuppressionSommet extends FXMLController {
 
     @FXML
     public void suppressionSommetSelectionne() {
-        grapheModel.supprimerSommet(sommetSelectionne);
-        sommetSelectionne = null;
+        grapheModel.supprimerSommet(sommetSelectionneModel);
+        grapheView.getSommets().remove(sommetSelectionneView);
+        grapheView.getCanvas().getChildren().remove(sommetSelectionneView);
+        grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+        sommetSelectionneModel = null;
         popUpWindow.close();
     }
 

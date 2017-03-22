@@ -62,7 +62,7 @@ public class Graphe {
         scrollPane.updateScrollPane(canvas);
     }
 
-    private Sommet rechercheSommetParId(int id_recherche) {
+    public Sommet rechercheSommetParId(int id_recherche) {
 
         boolean trouve = false;
         int cptSommet = 0;

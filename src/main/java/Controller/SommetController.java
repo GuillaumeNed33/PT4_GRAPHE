@@ -90,7 +90,7 @@ public class SommetController {
                     ++cptDetrompeur;
                 }
                 else {
-                    messageErreur.setText("Erreur - Seul les valeurs décimales sont acceptées pour la position.");
+                    messageErreur.setText("Erreur - Seules les valeurs décimales sont acceptées pour la position.");
                     cptDetrompeur = -1; // Sortie de la boucle
                 }
 

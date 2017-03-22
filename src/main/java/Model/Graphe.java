@@ -577,7 +577,7 @@ public class Graphe {
         return res;
     }
 
-    private Sommet trouverSommetParTag(String source) {
+    public Sommet trouverSommetParTag(String source) {
         boolean trouve = false;
         int cpt = 0;
         Sommet res = null;

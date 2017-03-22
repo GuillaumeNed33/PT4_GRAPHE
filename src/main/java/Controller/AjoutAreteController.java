@@ -70,14 +70,8 @@ public class AjoutAreteController extends FXMLController {
                             sommetSortieSelectionne = new_val;
                         }
                     });
-            //Ces fonctions marchent si on utilise les bons paramètres dans les ajouts d'arete
-            /*grapheModel.ajouterArete(
-                    sommetEntreSelectionne,
-                    sommetSortieSelectionne);
-            grapheView.getAretes().add(graphe.getAretes().size(),new Arete(
-                    sommetEntreSelectionne,
-                    sommetSortieSelectionne));
-            grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());*/
+
+
         }
     }
 
@@ -95,6 +89,10 @@ public class AjoutAreteController extends FXMLController {
                 erreurAjoutArete.setText("Erreur - Arete existante ou 2 \nsommets identiques sélectionnés.");
             }
             else {
+                grapheView.getAretes().add(grapheView.getAretes().size(),new View.Arete(
+                        grapheView.rechercheSommetParId(idSommetEntre),
+                        grapheView.rechercheSommetParId(idSommetSortie)));
+                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
                 popUpWindow.close();
             }
         }

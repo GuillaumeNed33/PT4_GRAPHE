@@ -24,4 +24,12 @@ public class Arete extends Group {
 
         getChildren().add(ligne);
     }
+
+    public Sommet getSource() {
+        return source;
+    }
+
+    public Sommet getDestination() {
+        return destination;
+    }
 }

@@ -79,6 +79,28 @@ public class Graphe {
         return sommets.get(cptSommet);
     }
 
+    public void suppressionSommet(Sommet sommetASuppr) {
+        sommets.remove(sommetASuppr);
+        canvas.getChildren().remove(sommetASuppr);
+    }
+
+    public void suppressionAreteEnFonctionDuSommetSuppr(Sommet sommetASuppr) {
+        ArrayList<Integer> indexAreteASuppr = new ArrayList<Integer>();
+        int indexArete = 0;
+        for (Arete arete : aretes) {
+            if (arete.getSource() == sommetASuppr || arete.getDestination() == sommetASuppr) {
+                indexAreteASuppr.add(indexArete);
+            }
+
+            ++indexArete;
+        }
+
+        for (Integer index : indexAreteASuppr) {
+            canvas.getChildren().remove(aretes.get(index));
+            aretes.remove(index);
+        }
+    }
+
     public Pane getCanvas() {
         return canvas;
     }

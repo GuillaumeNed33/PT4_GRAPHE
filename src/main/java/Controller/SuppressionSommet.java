@@ -36,8 +36,8 @@ public class SuppressionSommet extends FXMLController {
     @FXML
     public void suppressionSommetSelectionne() {
         grapheModel.supprimerSommet(sommetSelectionneModel);
-        grapheView.getSommets().remove(sommetSelectionneView);
-        grapheView.getCanvas().getChildren().remove(sommetSelectionneView);
+        grapheView.suppressionSommet(sommetSelectionneView);
+        grapheView.suppressionAreteEnFonctionDuSommetSuppr(sommetSelectionneView);
         grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
         sommetSelectionneModel = null;
         popUpWindow.close();

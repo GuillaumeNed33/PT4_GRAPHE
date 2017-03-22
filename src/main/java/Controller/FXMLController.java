@@ -192,16 +192,18 @@ public class FXMLController extends VBox {
      * Fonction traitant le ToggleButton permettant l'affichage ou non des sommets du graphe.
      */
     @FXML public void clickToggleSommet(ActionEvent event) {
-        if(((ToggleButton)event.getSource()).isSelected()) {
-            for(View.Sommet s : grapheView.getSommets()) {
-                s.getVue().setVisible(false);
-                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
-            }
+        if(grapheView != null) {
+            if (((ToggleButton) event.getSource()).isSelected()) {
+                for (View.Sommet s : grapheView.getSommets()) {
+                    s.getVue().setVisible(false);
+                    grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+                }
 
-        } else {
-            for(View.Sommet s : grapheView.getSommets()) {
-                s.getVue().setVisible(true);
-                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+            } else {
+                for (View.Sommet s : grapheView.getSommets()) {
+                    s.getVue().setVisible(true);
+                    grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+                }
             }
         }
     }
@@ -209,15 +211,17 @@ public class FXMLController extends VBox {
      * Fonction traitant le ToggleButton permettant l'affichage ou non des aretes du graphe.
      */
     @FXML public void clickToggleArete(ActionEvent event) {
-        if(((ToggleButton)event.getSource()).isSelected()) {
-            for(Arete a : grapheView.getAretes()) {
-                a.setVisible(false);
-                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
-            }
-        } else {
-            for(Arete a : grapheView.getAretes()) {
-                a.setVisible(true);
-                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+        if(grapheView != null) {
+            if (((ToggleButton) event.getSource()).isSelected()) {
+                for (Arete a : grapheView.getAretes()) {
+                    a.setVisible(false);
+                    grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+                }
+            } else {
+                for (Arete a : grapheView.getAretes()) {
+                    a.setVisible(true);
+                    grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+                }
             }
         }
     }
@@ -225,15 +229,17 @@ public class FXMLController extends VBox {
      * Fonction traitant le ToggleButton permettant l'affichage ou non des etiquettes du graphe.
      */
     @FXML public void clickToggleEtiquette(ActionEvent event) {
-        if(((ToggleButton)event.getSource()).isSelected()) {
-            for(View.Sommet s : grapheView.getSommets()) {
-                s.getLb().setVisible(false);
-                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
-            }
-        } else {
-            for(View.Sommet s : grapheView.getSommets()) {
-                s.getLb().setVisible(true);
-                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+        if(grapheView != null) {
+            if (((ToggleButton) event.getSource()).isSelected()) {
+                for (View.Sommet s : grapheView.getSommets()) {
+                    s.getLb().setVisible(false);
+                    grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+                }
+            } else {
+                for (View.Sommet s : grapheView.getSommets()) {
+                    s.getLb().setVisible(true);
+                    grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+                }
             }
         }
     }

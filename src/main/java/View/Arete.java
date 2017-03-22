@@ -25,6 +25,10 @@ public class Arete extends Group {
         getChildren().add(ligne);
     }
 
+    public Line getLigne() {
+        return ligne;
+    }
+
     public Sommet getSource() {
         return source;
     }

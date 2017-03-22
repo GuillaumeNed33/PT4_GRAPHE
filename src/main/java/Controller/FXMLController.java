@@ -417,24 +417,7 @@ public class FXMLController extends VBox {
                         if (grapheModel!=null){
 
                             setContextMenu();
-                            boolean trouve = false; // VRAI LIGNE, A GARDER
-                            //boolean trouve = true; // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
-                            int cpt = 0;
-                            sommetSelectionneModel = null; // VRAI LIGNE, A GARDER // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
-
-                            while(!trouve && cpt<grapheModel.getSommets().size()) { // DETECTION CLIC DROIT SUR SOMMET (On ne veut pas clic droit n'importe où).
-                                sommetSelectionneModel = grapheModel.getSommets().get(cpt);
-                                sommetSelectionneView = grapheView.getSommets().get(cpt);
-
-                                if(event.getX() >= sommetSelectionneModel.getX() &&
-                                        event.getX() <= sommetSelectionneModel.getX() + sommetSelectionneModel.getTaille().width &&
-                                        event.getY() >= sommetSelectionneModel.getY() &&
-                                        event.getY() <= sommetSelectionneModel.getY() + sommetSelectionneModel.getTaille().height){
-                                    trouve = true;
-                                }
-
-                                ++cpt;
-                            }
+                            boolean trouve = estTrouveSommet(event);
 
                             if(trouve) { //Si c'est sur un sommet, affichage du contextMenu.
                                 contextMenu.show(vbox, event.getScreenX(), event.getScreenY());
@@ -442,14 +425,75 @@ public class FXMLController extends VBox {
                             }
                         }
                     }
-                    else {
+                    else
                         enleverMenuContextuel();
-                    }
                 } else {
                     enleverMenuContextuel();
                 }
             }
         });
+        pane.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                estTrouveSommet(event);
+                sommetSelectionneView.setOnMousePressed(sommetOnMousePressedEventHandler);
+                sommetSelectionneView.setOnMouseDragged(sommetOnMouseDraggedEventHandler);
+            }
+        });
+
+
+    }
+
+
+    private double orgSceneX, orgSceneY, orgTranslateX, orgTranslateY;
+
+    EventHandler<MouseEvent> sommetOnMousePressedEventHandler =
+            new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent t) {
+                    orgSceneX = t.getSceneX();
+                    orgSceneY = t.getSceneY();
+                    orgTranslateX = ((View.Sommet)(t.getSource())).getTranslateX();
+                    orgTranslateY = ((View.Sommet)(t.getSource())).getTranslateY();
+                }
+            };
+
+    EventHandler<MouseEvent> sommetOnMouseDraggedEventHandler =
+            new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent t) {
+                    double offsetX = t.getSceneX() - orgSceneX;
+                    double offsetY = t.getSceneY() - orgSceneY;
+                    double newTranslateX = orgTranslateX + offsetX;
+                    double newTranslateY = orgTranslateY + offsetY;
+
+                    ((View.Sommet)(t.getSource())).setTranslateX(newTranslateX);
+                    ((View.Sommet)(t.getSource())).setTranslateY(newTranslateY);
+                    sommetSelectionneModel.setX((float)newTranslateX);
+                    sommetSelectionneModel.setY((float)newTranslateY);
+                }
+            };
+
+    private boolean estTrouveSommet(MouseEvent event) {
+        boolean trouve = false; // VRAI LIGNE, A GARDER
+        //boolean trouve = true; // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
+        int cpt = 0;
+        sommetSelectionneModel = null; // VRAI LIGNE, A GARDER // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
+
+        while(!trouve && cpt<grapheModel.getSommets().size()) { // DETECTION CLIC DROIT SUR SOMMET (On ne veut pas clic droit n'importe où).
+            sommetSelectionneModel = grapheModel.getSommets().get(cpt);
+            sommetSelectionneView = grapheView.getSommets().get(cpt);
+
+            if(event.getX() >= sommetSelectionneModel.getX() &&
+                    event.getX() <= sommetSelectionneModel.getX() + sommetSelectionneModel.getTaille().width &&
+                    event.getY() >= sommetSelectionneModel.getY() &&
+                    event.getY() <= sommetSelectionneModel.getY() + sommetSelectionneModel.getTaille().height){
+                trouve = true;
+            }
+
+            ++cpt;
+        }
+        return trouve;
     }
 
     private void enleverMenuContextuel() {

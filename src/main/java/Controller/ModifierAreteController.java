@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
@@ -20,6 +21,8 @@ import javafx.scene.paint.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by audreylentilhac on 14/03/2017.
@@ -35,12 +38,13 @@ public class ModifierAreteController extends FXMLController {
 
 
 
-    ModifierAreteController(Graphe graphe) throws IOException {
+    ModifierAreteController(Graphe grapheModel, View.Graphe grapheView) throws IOException {
         super();
-        this.grapheModel = graphe;
+        this.grapheModel = grapheModel;
+        this.grapheView = grapheView;
         if (this.grapheModel != null) {
             FXMLLoader fxmlLoaderPopUp = new FXMLLoader(getClass().getResource("/fxml/ModifierArete.fxml"));
-            popUpWindow.setTitle("Modifier Arête");
+            popUpWindow.setTitle("Supprimer/Modifier Arête");
             if (popUpWindow.getScene() == null) {
                 fxmlLoaderPopUp.setRoot(this);
                 fxmlLoaderPopUp.setController(this);
@@ -50,7 +54,7 @@ public class ModifierAreteController extends FXMLController {
 
             List<String> AreteStr = new ArrayList<String>();
 
-            for (Arete a : graphe.getAretes()) {
+            for (Arete a : grapheModel.getAretes()) {
                 AreteStr.add("tag : " + a.getTag() + " (id : " + a.getId() + " )");
             }
 
@@ -63,12 +67,12 @@ public class ModifierAreteController extends FXMLController {
                     .addListener(new ChangeListener<String>() {
                         public void changed(ObservableValue<? extends String> ov,
                                             String old_val, String new_val) {
-                            for (Arete a : grapheModel.getAretes()) {
+                            for (Arete a : ModifierAreteController.this.grapheModel.getAretes()) {
                                 if(Integer.toString(a.getId()).equals(listViewSAretes.getSelectionModel().getSelectedItem().toString().split("id : ")[1].split(" \\)")[0])) {
                                     selected = a;
                                 }
                             }
-                            AreteSelectionne = new_val;
+                            //AreteSelectionne = new_val;
                             couleurChoice.setValue(selected.getCouleur());
                             aretePoids.setText(Integer.toString(selected.getIndice()));
                             areteSize.setText(Integer.toString(selected.getEpaisseur()));
@@ -77,25 +81,52 @@ public class ModifierAreteController extends FXMLController {
         }
     }
 
+    @FXML
+    private Label erreurModifierArete;
     @FXML public void modifyArete() {
         if (selected != null) {
-                int i =0;
-                boolean foundSommet = false;
-                while (!foundSommet && i<grapheModel.getAretes().size()) {
-                    if (grapheModel.getAretes().get(i).getId() == selected.getId()) {
-                        grapheModel.getAretes().get(i).setCouleur(couleurChoice.getValue());
-                        grapheModel.getAretes().get(i).setEpaisseur(Integer.parseInt(areteSize.getText()));
-                        grapheModel.getAretes().get(i).setIndice(Integer.parseInt(aretePoids.getText()));
-                        foundSommet=true;
+
+            Pattern pattern = Pattern.compile("^[0-9]+$");
+            Matcher matcher = pattern.matcher(areteSize.getText());
+
+            if (!areteSize.getText().contains(".") && matcher.find() && Integer.parseInt(areteSize.getText()) > 0) {
+
+                matcher = pattern.matcher(aretePoids.getText());
+
+                if (!aretePoids.getText().contains(".") && matcher.find() && Integer.parseInt(aretePoids.getText()) > 0) {
+                    int i = 0;
+                    boolean foundSommet = false;
+                    while (!foundSommet && i < grapheModel.getAretes().size()) {
+                        if (grapheModel.getAretes().get(i).getId() == selected.getId()) {
+                            grapheModel.getAretes().get(i).setCouleur(couleurChoice.getValue());
+                            grapheModel.getAretes().get(i).setEpaisseur(Integer.parseInt(areteSize.getText()));
+                            grapheModel.getAretes().get(i).setIndice(Integer.parseInt(aretePoids.getText()));
+                            foundSommet = true;
+                        } else {
+                            i++;
+                        }
                     }
-                    else {
-                        i++;
-                    }
+
+                    grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+                    popUpWindow.close();
                 }
-            grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
-            popUpWindow.close();
+                else {
+                    erreurModifierArete.setText("Erreur - Le poids de l'arête doit être > 1 et une valeur entière.");
+                }
+            }
+            else {
+                erreurModifierArete.setText("Erreur - L'épaisseur de l'arête doit être > 1 et une valeur entière.");
+            }
         }
         else {
+            erreurModifierArete.setText("Erreur - Sélectionnez une arête.");
+        }
+    }
+
+    @FXML public void supprimerArete() {
+        if (selected != null) {
+            grapheModel.supprimerArete(selected);
+            grapheView.supprimerArete(selected);
             popUpWindow.close();
         }
     }
@@ -103,25 +134,5 @@ public class ModifierAreteController extends FXMLController {
     @FXML public void fermerModifyArete() {
         popUpWindow.close();
     }
-
-    @FXML public void supprArete() {
-        if (selected != null) {
-            int i =0;
-            boolean foundSommet = false;
-            while (!foundSommet && i<grapheModel.getAretes().size()) {
-                if (grapheModel.getAretes().get(i).getId() == selected.getId()) {
-                    grapheModel.getAretes().remove(i);
-                    foundSommet=true;
-                }
-                else {
-                    i++;
-                }
-            }
-            grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
-            popUpWindow.close();
-        }
-        else {
-            popUpWindow.close();
-        }    }
 
 }

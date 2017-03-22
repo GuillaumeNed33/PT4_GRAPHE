@@ -194,7 +194,7 @@ public class FXMLController extends VBox {
 
     @FXML
     public void clickAjouterSommet() throws IOException {
-        new AjoutSommetController(grapheModel);
+        new AjoutSommetController(grapheModel, grapheView);
     }
 
     @FXML
@@ -324,7 +324,7 @@ public class FXMLController extends VBox {
 
     @FXML public void clickModifyArete() throws IOException {
         //TODO modif aretes
-        new ModifierAreteController(grapheModel);
+        new ModifierAreteController(grapheModel, grapheView);
     }
 
 

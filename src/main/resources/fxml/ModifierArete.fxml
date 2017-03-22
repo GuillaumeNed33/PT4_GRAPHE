@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root maxWidth="1.7976931348623157E308" prefHeight="272.0" prefWidth="295.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxWidth="1.7976931348623157E308" prefHeight="259.0" prefWidth="496.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" text="Liste des aretes" textAlignment="CENTER" />
       <ListView fx:id="listViewSAretes" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" prefWidth="175.0">
@@ -23,44 +23,38 @@
                   <Insets right="20.0" />
                </HBox.margin>
             </ColorPicker>
-            <Label prefWidth="50.0" text="Size :">
+            <Label prefHeight="17.0" prefWidth="64.0" text="Épaisseur :">
                <HBox.margin>
                   <Insets top="5.0" />
                </HBox.margin>
             </Label>
             <TextField fx:id="areteSize" prefWidth="100.0" />
-         </children></HBox>
-      <HBox prefHeight="20.0" prefWidth="200.0">
-         <children>
-            <Label text="Poids  :">
+            <Label prefHeight="17.0" prefWidth="45.0" text="Poids  :">
                <HBox.margin>
-                  <Insets right="20.0" top="3.0" />
+                  <Insets left="20.0" top="3.0" />
                </HBox.margin>
             </Label>
-            <TextField fx:id="aretePoids" />
-         </children>
+            <TextField fx:id="aretePoids" prefHeight="25.0" prefWidth="100.0" />
+         </children></HBox>
+      <HBox prefHeight="20.0" prefWidth="200.0">
          <VBox.margin>
             <Insets top="5.0" />
          </VBox.margin>
       </HBox>
-      <Label>
+      <Label fx:id="erreurModifierArete">
          <VBox.margin>
             <Insets top="10.0" />
          </VBox.margin>
       </Label>
-      <Button fx:id="supprButton" onAction="#supprArete" mnemonicParsing="false" prefHeight="25.0" prefWidth="145.0" text="Supprimer l'arete">
-         <VBox.margin>
-            <Insets left="65.0" />
-         </VBox.margin>
-      </Button>
       <HBox alignment="CENTER" prefHeight="0.0" prefWidth="205.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#modifyArete" prefHeight="27.0" prefWidth="73.0" text="OK">
+            <Button mnemonicParsing="false" onAction="#supprimerArete" prefHeight="25.0" prefWidth="82.0" text="Supprimer" />
+            <Button mnemonicParsing="false" onAction="#modifyArete" prefHeight="27.0" prefWidth="73.0" text="Modifier">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#fermerModifyArete" prefHeight="27.0" prefWidth="100.0" text="Annuler">
+            <Button mnemonicParsing="false" onAction="#fermerModifyArete" prefHeight="25.0" prefWidth="74.0" text="Annuler">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>

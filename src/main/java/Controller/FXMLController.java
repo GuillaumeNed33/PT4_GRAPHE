@@ -2,7 +2,7 @@ package Controller;
 
 import Model.Graphe;
 import Model.Sommet;
-import View.*;
+import View.Arete;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,6 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -100,6 +101,9 @@ public class FXMLController extends VBox {
                 grapheModel.sauvegarderGraphe(file.getAbsolutePath());
             }
         }
+        else {
+            afficherFenetreAlerte("Vous ne pouvez pas exporter si vous n'avez pas importer un graphe avant.");
+        }
     }
 
     private FileChooser createFileChooser(String exporter) {
@@ -116,15 +120,24 @@ public class FXMLController extends VBox {
      * Fonction ouvrant une fenetre (FileChooser) permettant l'enregistrement d'un fichier dans le logiciel.
      */
     @FXML public void clickFichierEnregistrer() {
+        if (grapheModel != null) {
         grapheModel.sauvegarderGraphe(null);
+        }
+        else {
+            afficherFenetreAlerte("Vous ne pouvez pas enregistrer si vous n'avez pas importer un graphe avant.");
+        }
     }
 
     /**
      * Fonction permettant d'appliquer une distribution aléatoire des positions des sommets du graphe
      */
     @FXML public void clickRepresentationAleatoire() {
+        if (grapheModel != null) {
         grapheModel.setAlgorithmeRepresentation('a',(int)grapheView.getScrollPane().getWidth(),(int)grapheView.getScrollPane().getHeight());
         refreshGrapheView();
+        }
+        else
+            afficherFenetreAlerte("Vous ne pouvez pas appliquer la représentation aléatoire si vous n'avez pas importé un graphe avant.");
 
     }
 
@@ -132,8 +145,13 @@ public class FXMLController extends VBox {
      * Fonction permettant d'appliquer une distribution circulaire des positions des sommets du graphe
      */
     @FXML public void clickRepresentationCirculaire() {
-        grapheModel.setAlgorithmeRepresentation('c',(int)grapheView.getScrollPane().getWidth(),(int)grapheView.getScrollPane().getHeight());
-        refreshGrapheView();
+        if (grapheModel != null) {
+            grapheModel.setAlgorithmeRepresentation('c', (int) grapheView.getScrollPane().getWidth(), (int) grapheView.getScrollPane().getHeight());
+            refreshGrapheView();
+        }
+        else {
+            afficherFenetreAlerte("Vous ne pouvez pas appliquer la représentation circulaire si vous n'avez pas importer un graphe avant.");
+        }
     }
 
     /**
@@ -141,8 +159,14 @@ public class FXMLController extends VBox {
      */
     @FXML
     public void clickRepresentationForces() {
-        grapheModel.setAlgorithmeRepresentation('f',(int)grapheView.getScrollPane().getWidth(),(int)grapheView.getScrollPane().getHeight());
-        refreshGrapheView();
+        if (grapheModel != null && !grapheModel.indiceFixe()) {
+            grapheModel.setAlgorithmeRepresentation('f', (int) grapheView.getScrollPane().getWidth(), (int) grapheView.getScrollPane().getHeight());
+            refreshGrapheView();
+        }
+        else {
+            afficherFenetreAlerte("Vous ne pouvez pas appliquer la représentation modèle de forces si vous n'avez pas " +
+                    "importer un graphe avant ou si voux n'avez pas indicer le graphe.");
+        }
     }
 
     /**
@@ -153,12 +177,18 @@ public class FXMLController extends VBox {
         if (grapheModel != null) {
             this.grapheModel.setIndiceAleatoire();
         }
+        else {
+            afficherFenetreAlerte("Vous ne pouvez pas appliquer un indice aléatoire si vous n'avez pas importé un graphe avant");
+        }
     }
 
     @FXML
     public void clickIndicageDegré() {
         if (grapheModel != null) {
             this.grapheModel.setIndiceDegre();
+        }
+        else {
+            afficherFenetreAlerte("Vous ne pouvez pas appliquer un degré si vous n'avez pas importé un graphe avant");
         }
     }
 
@@ -281,6 +311,9 @@ public class FXMLController extends VBox {
                 if (grapheView != null) {
                     grapheView.getScrollPane().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
                 }
+                else {
+                    afficherFenetreAlerte("Importer un graphe avant de changer les couleurs.");
+                }
             }
         });
     }
@@ -388,7 +421,6 @@ public class FXMLController extends VBox {
                             //boolean trouve = true; // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
                             int cpt = 0;
                             sommetSelectionneModel = null; // VRAI LIGNE, A GARDER // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
-                            //sommetSelectionneModel = grapheModel.getSommets().get(0);
 
                             while(!trouve && cpt<grapheModel.getSommets().size()) { // DETECTION CLIC DROIT SUR SOMMET (On ne veut pas clic droit n'importe où).
                                 sommetSelectionneModel = grapheModel.getSommets().get(cpt);
@@ -429,6 +461,14 @@ public class FXMLController extends VBox {
     @FXML public void suppressionSommetSelectionne() {
         grapheModel.supprimerSommet(sommetSelectionneModel);
         sommetSelectionneModel = null;
+    }
+
+    private void afficherFenetreAlerte(String message){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Fenêtre d'erreur");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 }

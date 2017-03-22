@@ -76,9 +76,14 @@ public class AlgorithmeRepresentation {
     private float forceAttraction(Sommet sommet){
         ArrayList<Sommet> voisins = graphe.sommetsVoisins(sommet);
         float force = 0;
-        for (Sommet voisin : voisins) {
-            double distance = Math.sqrt(Math.pow((double)(voisin.getX() - sommet.getX()), 2.) + Math.pow((double)(voisin.getY() - sommet.getY()), 2.));
-            force += Math.log(distance);
+        if (voisins != null) {
+            for (Sommet voisin : voisins) {
+                double distance = Math.sqrt(Math.pow((double) (voisin.getX() - sommet.getX()), 2.) + Math.pow((double) (voisin.getY() - sommet.getY()), 2.));
+                force += Math.log(distance);
+            }
+        }
+        else{
+            return 0;
         }
         return force;
     }
@@ -92,9 +97,14 @@ public class AlgorithmeRepresentation {
     private float forceRepulsion(Sommet sommet){
         ArrayList<Sommet> voisins = graphe.sommetsNonVoisins(graphe.sommetsVoisins(sommet), sommet);
         float force = 0;
-        for (Sommet voisin : voisins) {
-            double distanceCarre = Math.pow((double)(voisin.getX() - sommet.getX()), 2.) + Math.pow((double)(voisin.getY() - sommet.getY()), 2.);
-            force += 1/distanceCarre;
+        if (voisins != null) {
+            for (Sommet voisin : voisins) {
+                double distanceCarre = Math.pow((double) (voisin.getX() - sommet.getX()), 2.) + Math.pow((double) (voisin.getY() - sommet.getY()), 2.);
+                force += 1 / distanceCarre;
+            }
+        }
+        else {
+            return 0;
         }
         return force;
     }

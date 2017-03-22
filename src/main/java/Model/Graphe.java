@@ -600,11 +600,15 @@ public class Graphe {
      */
     public ArrayList<Sommet> sommetsVoisins(Sommet sommet_origine){
         ArrayList<Sommet> voisinage = new ArrayList<Sommet>();
-        for(Arete arete : incidentes.get(sommet_origine)){
-            if( source(arete).getTag() == sommet_origine.getTag()){
-                voisinage.add(destination(arete));
+        try {
+            for (Arete arete : incidentes.get(sommet_origine)) {
+                if (source(arete).getTag() == sommet_origine.getTag()) {
+                    voisinage.add(destination(arete));
+                }
             }
-            //voisinage.add(source(arete).getTag() == sommet_origine.getTag() ? destination(arete) : source(arete));
+        }
+        catch (NullPointerException e){
+            return null;
         }
         return voisinage;
     }
@@ -636,9 +640,14 @@ public class Graphe {
      */
     public ArrayList<Sommet> sommetsNonVoisins(ArrayList<Sommet> voisins, Sommet sommetOrigine){
         ArrayList<Sommet> nonVoisins = new ArrayList<Sommet>();
-        for (Sommet s: sommets) {
-            if (!voisins.contains(s) && s!= sommetOrigine)
-                nonVoisins.add(s);
+        try {
+            for (Sommet s : sommets) {
+                if (!voisins.contains(s) && s != sommetOrigine)
+                    nonVoisins.add(s);
+            }
+        }
+        catch (NullPointerException e){
+            return null;
         }
         return nonVoisins;
     }

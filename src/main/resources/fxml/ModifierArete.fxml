@@ -48,6 +48,11 @@
             <Insets top="10.0" />
          </VBox.margin>
       </Label>
+      <Button fx:id="supprButton" onAction="#supprArete" mnemonicParsing="false" prefHeight="25.0" prefWidth="145.0" text="Supprimer l'arete">
+         <VBox.margin>
+            <Insets left="65.0" />
+         </VBox.margin>
+      </Button>
       <HBox alignment="CENTER" prefHeight="0.0" prefWidth="205.0">
          <children>
             <Button mnemonicParsing="false" onAction="#modifyArete" prefHeight="27.0" prefWidth="73.0" text="OK">

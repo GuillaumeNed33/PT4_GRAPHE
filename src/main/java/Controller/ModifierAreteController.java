@@ -103,4 +103,25 @@ public class ModifierAreteController extends FXMLController {
     @FXML public void fermerModifyArete() {
         popUpWindow.close();
     }
+
+    @FXML public void supprArete() {
+        if (selected != null) {
+            int i =0;
+            boolean foundSommet = false;
+            while (!foundSommet && i<grapheModel.getAretes().size()) {
+                if (grapheModel.getAretes().get(i).getId() == selected.getId()) {
+                    grapheModel.getAretes().remove(i);
+                    foundSommet=true;
+                }
+                else {
+                    i++;
+                }
+            }
+            grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+            popUpWindow.close();
+        }
+        else {
+            popUpWindow.close();
+        }    }
+
 }

@@ -181,7 +181,7 @@ public class FXMLController extends VBox {
      * @param event
      */
     @FXML public void clickCouleurGraphe(MouseEvent event) throws IOException {
-        new CouleurGrapheController(grapheModel);
+        new CouleurGrapheController(grapheModel, grapheView);
     }
 
     protected void fermerPopup(Button button) {

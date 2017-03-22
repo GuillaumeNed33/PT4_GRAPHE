@@ -577,7 +577,7 @@ public class Graphe {
         return res;
     }
 
-    public Sommet trouverSommetParTag(String source) {
+    private Sommet trouverSommetParTag(String source) {
         boolean trouve = false;
         int cpt = 0;
         Sommet res = null;
@@ -901,7 +901,12 @@ public class Graphe {
      * @param s
      */
     public void setIndiceDegre(Sommet s){
-        s.setIndice(incidentes.get(s).size());
+        try {
+            s.setIndice(incidentes.get(s).size());
+        }
+        catch (NullPointerException e) {
+            s.setIndice(0);
+        }
     }
 
     /**

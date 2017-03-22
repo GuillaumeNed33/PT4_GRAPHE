@@ -53,7 +53,14 @@ public class Sommet extends Pane {
 
     public int getIdGraphe() {return id;}
 
-    public void setColor(Color c) {
+    public Color getColor() {
+        return color;
+    }
+     public void setColor(Color c){
+        this.color = c;
+     }
+
+    public void setColorVue(Color c) {
         switch(fs) {
             case Cercle:
                 ((Circle)vue).setFill(c);

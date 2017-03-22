@@ -18,9 +18,9 @@
    </columnConstraints>
    <rowConstraints>
       <RowConstraints maxHeight="77.0" minHeight="10.0" prefHeight="77.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="98.0" minHeight="10.0" prefHeight="66.0" vgrow="SOMETIMES" />
-         <RowConstraints maxHeight="207.0" minHeight="10.0" prefHeight="43.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="207.0" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="98.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="207.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="207.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
    </rowConstraints>
       <Label layoutX="238.0" layoutY="53.0" text="Minimum">
          <GridPane.margin>

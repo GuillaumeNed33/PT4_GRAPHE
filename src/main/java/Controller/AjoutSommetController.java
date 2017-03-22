@@ -69,6 +69,7 @@ public class AjoutSommetController extends FXMLController {
 
 
             sommet.setCouleur(couleur);
+            sommet.setTaille(tailleSommet);
             sommet.setForme(forme);
 
             if (!grapheModel.ajouterSommet(sommet, new Size((int)popUpWindow.getMaxWidth(), (int)popUpWindow.getMaxHeight()))) {
@@ -76,7 +77,11 @@ public class AjoutSommetController extends FXMLController {
             }
             else {
                 popUpWindow.close();
-                grapheView.getSommets().add(new View.Sommet(sommet.getId(), tag, Forme_Sommet.getFormeByText(forme),sommet.getX(), sommet.getY()));
+                View.Sommet sommetVue = new View.Sommet(sommet.getId(), tag, Forme_Sommet.getFormeByText(forme),sommet.getX(), sommet.getY());
+                sommetVue.setTaille(sommet.getTaille());
+                sommetVue.setColorVue(sommet.getCouleur());
+                grapheView.getSommets().add(sommetVue);
+                grapheView.getCanvas().getChildren().add(sommetVue);
                 grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
             }
         }

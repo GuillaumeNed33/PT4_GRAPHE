@@ -12,13 +12,16 @@ public class Arete extends Group {
     private int id;
     private Sommet source;
     private Sommet destination;
+    private Color couleur;
+    private int epaisseur;
     private Line ligne;
     public Arete(Sommet src, Sommet dest) {
         this.id = idActuel++;
         this.source = src;
         this.destination = dest;
+        this.couleur = Color.BLACK;
         ligne = new Line();
-        ligne.setStroke(Color.BLACK);
+        ligne.setStroke(couleur);
         ligne.startXProperty().bind( source.layoutXProperty().add(source.getBoundsInParent().getWidth()-Sommet.RAYON_SOMMET));
         ligne.startYProperty().bind( source.layoutYProperty().add(source.getBoundsInParent().getHeight()-Sommet.RAYON_SOMMET));
 
@@ -26,6 +29,16 @@ public class Arete extends Group {
         ligne.endYProperty().bind( destination.layoutYProperty().add( destination.getBoundsInParent().getHeight()-Sommet.RAYON_SOMMET));
 
         getChildren().add(ligne);
+    }
+
+    public void setCouleur(Color couleur) {
+        this.couleur = couleur;
+        ligne.setStroke(couleur);
+    }
+
+    public void setEpaisseur(int epaisseur) {
+        this.epaisseur = epaisseur;
+        ligne.setStrokeWidth(epaisseur);
     }
 
     public Line getLigne() {

@@ -40,7 +40,7 @@ public class CouleurGrapheController extends FXMLController {
     @FXML
     public void colorierGraphe(){
         if (checkAretes.isSelected()) {
-            grapheModel.changerCouleurAretes(maxiCouleur.getValue(), miniCouleur.getValue());
+            grapheModel.changerCouleurAretes(miniCouleur.getValue(), maxiCouleur.getValue());
             int i = 0;
             for (Arete a : grapheView.getAretes()){
                 Color c = grapheModel.getAretes().get(i).getCouleur();
@@ -51,7 +51,7 @@ public class CouleurGrapheController extends FXMLController {
             fermerPopup(OKCouleurGraphe);
         }
         if (checkSommets.isSelected() && grapheModel.indiceFixe()) {
-            grapheModel.changerCouleurSommets(maxiCouleur.getValue(), miniCouleur.getValue());
+            grapheModel.changerCouleurSommets(miniCouleur.getValue(), maxiCouleur.getValue());
             int i = 0;
             for (Sommet s : grapheView.getSommets()){
                 Color c = grapheModel.getSommets().get(i).getCouleur();

@@ -1070,11 +1070,11 @@ public class Graphe {
      */
     private double intensite(int valeur, double cmax, double cmin, int indiceMax, int indiceMin){
         if (indiceMax != indiceMin) {
-            if (cmin - cmax >= 0){
-                return (Math.abs((((double)valeur - indiceMin) / ((double)indiceMax - (double)indiceMin)) * (cmin - cmax) + cmax));
+            if (cmin - cmax <= 0){
+                return ((((double)valeur - indiceMin) / ((double)indiceMax - (double)indiceMin)) * (cmin - cmax) + cmax);
             }
             else
-                return (Math.abs((((double)valeur - indiceMin) / ((double)indiceMax - (double)indiceMin)) * (cmax - cmin) + cmin));
+                return ((((double)valeur - indiceMin) / ((double)indiceMax - (double)indiceMin)) * (cmax - cmin) + cmin);
         }
         else
             return cmin;

@@ -67,7 +67,7 @@ public class FXMLController extends VBox {
             File file = fileChooser.showOpenDialog(null);
             if (file != null){
                 grapheView = new View.Graphe();
-                grapheModel = new Graphe(file.getAbsolutePath(), 1200, 600);
+                grapheModel = new Graphe(file.getAbsolutePath(), 1200, 680);
                 grapheView.chargerGraphe(grapheModel);
                 getVbox().getChildren().addAll(grapheView.getScrollPane());
                 setPane(grapheView.getCanvas());
@@ -79,7 +79,7 @@ public class FXMLController extends VBox {
             File file = fileChooser.showOpenDialog(null);
             if (file != null) {
                 grapheModel = null;
-                grapheModel = new Graphe(file.getAbsolutePath(), 1200,600);
+                grapheModel = new Graphe(file.getAbsolutePath(), 1200,680);
                 grapheView = null;
                 grapheView = new View.Graphe();
                 grapheView.chargerGraphe(grapheModel);
@@ -310,6 +310,7 @@ public class FXMLController extends VBox {
             public void handle(ActionEvent event) {
                 Color c = couleurFond.getValue();
                 if (grapheView != null) {
+                    grapheView.getCanvas().setPrefSize(grapheView.getScrollPane().getWidth(), grapheView.getScrollPane().getHeight());
                     grapheView.getCanvas().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
                 }
                 else {
@@ -409,7 +410,6 @@ public class FXMLController extends VBox {
     View.Sommet sommetSelectionneView;
     String tagSommetSelectionne;
     public void setPane(Pane pane){
-
         pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -434,22 +434,13 @@ public class FXMLController extends VBox {
             }
         });
 
-        pane.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (estTrouveSommet(event)) {
-                    sommetSelectionneView.setOnMousePressed(sommetOnMousePressedEventHandler);
-                    sommetSelectionneView.setOnMouseDragged(sommetOnMouseDraggedEventHandler);
-                    sommetSelectionneView.setOnMouseReleased(mouseEvent -> sommetSelectionneView.setCursor(Cursor.HAND));
-                    sommetSelectionneView.setOnMouseEntered(mouseEvent -> sommetSelectionneView.setCursor(Cursor.HAND));
-               }
-            }
-        });
-
         pane.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-
+                if (estTrouveSommet(event)) {
+                    sommetSelectionneView.setCursor(Cursor.HAND);
+                    sommetSelectionneView.setOnMouseDragged(sommetOnMouseDraggedEventHandler);
+                }
             }
         });
 
@@ -459,37 +450,16 @@ public class FXMLController extends VBox {
 
     private double dragDeltaX, dragDeltaY, orgTranslateX, orgTranslateY;
 
-    private EventHandler<MouseEvent> sommetOnMousePressedEventHandler =
-            new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent t) {
-                    dragDeltaX = sommetSelectionneView.getLayoutX() - t.getSceneX();
-                    dragDeltaY = sommetSelectionneView.getLayoutY() - t.getSceneY();
-                    sommetSelectionneView.setCursor(Cursor.MOVE);
-                    //orgTranslateX = ((View.Sommet)(t.getSource())).getTranslateX();
-                    //orgTranslateY = ((View.Sommet)(t.getSource())).getTranslateY();
-                }
-            };
-
     private EventHandler<MouseEvent> sommetOnMouseDraggedEventHandler =
             new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent t) {
-                    sommetSelectionneView.setLayoutX(t.getSceneX() + dragDeltaX);
-                    sommetSelectionneView.setLayoutY(t.getSceneY() + dragDeltaY);
+                    sommetSelectionneView.setLayoutX(t.getSceneX() - sommetSelectionneModel.getX());
+                    sommetSelectionneView.setLayoutY(t.getSceneY() - sommetSelectionneModel.getY());
 
-                    /*double offsetX = t.getSceneX() - orgSceneX;
-                    double offsetY = t.getSceneY() - orgSceneY;
-                    sommetSelectionneView.setTranslateX(offsetX);
-                    sommetSelectionneView.setTranslateY(offsetY);
-                    double newTranslateX = orgTranslateX + offsetX;
-                    double newTranslateY = orgTranslateY + offsetY;
+                    sommetSelectionneModel.setX((float)sommetSelectionneView.getLayoutX());
+                    sommetSelectionneModel.setY((float)sommetSelectionneView.getLayoutY());
 
-                    ((View.Sommet)(t.getSource())).setTranslateX(newTranslateX);
-                    ((View.Sommet)(t.getSource())).setTranslateY(newTranslateY);
-                    sommetSelectionneModel.setX((float)newTranslateX);
-                    sommetSelectionneModel.setY((float)newTranslateY);
-                    */
                 }
             };
 

@@ -2,7 +2,6 @@ package Controller;
 
 import Model.Arete;
 import Model.Graphe;
-import com.sun.glass.ui.Size;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.value.ChangeListener;
@@ -16,7 +15,6 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -131,6 +129,9 @@ public class ModifierAreteController extends FXMLController {
             grapheView.supprimerArete(selected);
             grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
             popUpWindow.close();
+        }
+        else {
+            erreurModifierArete.setText("Erreur - Sélectionnez une arête à supprimer.");
         }
     }
 

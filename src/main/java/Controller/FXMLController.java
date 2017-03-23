@@ -399,6 +399,7 @@ public class FXMLController extends VBox {
             public void handle(ActionEvent event) {
                 if (tagSommetSelectionne != null) {
                     sommetSelectionneModel.setTag(tagSommetSelectionne);
+                    sommetSelectionneView.setLb(tagSommetSelectionne);
                 }
             }
         });

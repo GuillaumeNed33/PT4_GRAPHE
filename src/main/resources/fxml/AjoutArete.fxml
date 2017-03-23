@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root prefHeight="272.0" prefWidth="295.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="280.0" prefWidth="454.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8.0.102-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane alignment="CENTER" hgap="5.0" vgap="5.0">
         <columnConstraints>
@@ -21,14 +21,17 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="170.0" text="Sommet 1" />
-            <Label alignment="CENTER" prefHeight="17.0" prefWidth="170.0" text="Sommet 2" GridPane.columnIndex="1" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="16.0" prefWidth="277.0" text="Sommet 1" />
+            <Label alignment="CENTER" prefHeight="16.0" prefWidth="308.0" text="Sommet 2" GridPane.columnIndex="1" />
          </children>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
       </GridPane>
       <HBox prefHeight="155.0" prefWidth="275.0">
          <children>
-            <ListView fx:id="listViewSommetsS" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="180.0" prefWidth="175.0" />
-            <ListView fx:id="listViewSommetsE" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="180.0" prefWidth="175.0" />
+            <ListView fx:id="listViewSommetsS" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="180.0" prefWidth="333.0" />
+            <ListView fx:id="listViewSommetsE" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="180.0" prefWidth="323.0" />
          </children>
       </HBox>
       <Label fx:id="erreurAjoutArete" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="34.0" textFill="#ee0000" />

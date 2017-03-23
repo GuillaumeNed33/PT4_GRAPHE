@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8.0.102-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane>
         <columnConstraints>
@@ -39,7 +39,7 @@
             <TextField fx:id="tagSommet" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <Label fx:id="erreurAjoutSommet" textFill="#ee0000">
+      <Label fx:id="erreurAjoutSommet" prefHeight="34.0" textFill="#ee0000">
          <padding>
             <Insets top="10.0" />
          </padding></Label>

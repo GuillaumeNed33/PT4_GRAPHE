@@ -22,16 +22,17 @@ public class SommetController {
     protected Size déterminationTailleRentrerParUtilisateur(String forme_sommet, TextField tailleSommet, Label messageErreur) {
         if (!tailleSommet.getText().contains(".")) {
             String[] elementsDansTaille = tailleSommet.getText().split(" ");
-            if (elementsDansTaille.length > 0) {
 
-                Pattern pattern = Pattern.compile("[0-9]+");
+            int limiteNombreValeur = 1;
+            if (forme_sommet.equals("Rectangle")) {
+                limiteNombreValeur = 2;
+            }
+
+            if (elementsDansTaille.length > limiteNombreValeur - 1) {
+
+                Pattern pattern;
                 Matcher matcherNombre;
                 Matcher matcherLettre;
-
-                int limiteNombreValeur = 1;
-                if (forme_sommet.equals("Rectangle")) {
-                    limiteNombreValeur = 2;
-                }
 
                 int largeur = 0;
                 int longueur = 0;

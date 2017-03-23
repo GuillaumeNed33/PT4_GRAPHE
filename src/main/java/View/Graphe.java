@@ -75,19 +75,33 @@ public class Graphe {
     }
 
     public void suppressionAreteEnFonctionDuSommetSuppr(Sommet sommetASuppr) {
+        ArrayList<Integer> indexAreteASuppr = trouverAreteViaSommet(sommetASuppr);
+
+        for (Integer index : indexAreteASuppr) {
+            canvas.getChildren().remove(aretes.get(index));
+            aretes.remove((int) index);
+        }
+    }
+
+    private ArrayList<Integer> trouverAreteViaSommet(Sommet sommetLie) {
         ArrayList<Integer> indexAreteASuppr = new ArrayList<Integer>();
         int indexArete = 0;
         for (Arete arete : aretes) {
-            if (arete.getSource() == sommetASuppr || arete.getDestination() == sommetASuppr) {
+            if (arete.getSource() == sommetLie || arete.getDestination() == sommetLie) {
                 indexAreteASuppr.add(indexArete);
             }
 
             ++indexArete;
         }
 
-        for (Integer index : indexAreteASuppr) {
-            canvas.getChildren().remove(aretes.get(index));
-            aretes.remove(index);
+        return indexAreteASuppr;
+    }
+
+    public void misAJourAretes(Sommet sommetLie) {
+        ArrayList<Integer> indexAretes = trouverAreteViaSommet(sommetLie);
+
+        for (Integer index : indexAretes) {
+            aretes.get(index).misAJourCoord();
         }
     }
 

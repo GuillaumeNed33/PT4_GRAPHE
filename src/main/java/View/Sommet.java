@@ -10,6 +10,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 
+import java.text.Normalizer;
+
 public class Sommet extends Pane {
     static float RAYON_SOMMET = 5.0f;
 
@@ -88,6 +90,13 @@ public class Sommet extends Pane {
         return coord_y;
     }
 
+    public void setCoord(double coord_x, double coord_y) {
+        this.coord_x = coord_x;
+        this.coord_y = coord_y;
+
+        vue.relocate(coord_x, coord_y);
+    }
+
     public Label getLb() {
         return lb;
     }
@@ -106,9 +115,37 @@ public class Sommet extends Pane {
         return color;
     }
 
-     public void setColor(Color c){
+    public void setColor(Color c){
         this.color = c;
      }
+
+    public void setForme(Forme_Sommet forme) {
+
+        int indexVue = getChildren().indexOf(vue);
+        getChildren().remove(indexVue);
+
+        fs = forme;
+
+        switch(fs) {
+            case Cercle:
+                vue = new Circle(taille.width ,color);
+                break;
+            case Losange:
+                vue = new Polygon();
+                break;
+            case Rectangle:
+                vue = new Rectangle(taille.width*2,taille.height*2,color);
+                break;
+            case Triangle:
+                vue = new Polygon(taille.width,0,taille.width*2,taille.width*2,0,taille.width*2); //ToDo A VERIFIER IMPORTANT
+                break;
+        }
+
+        lb.relocate(coord_x + taille.width * 2,coord_y + taille.height);
+        vue.relocate(coord_x, coord_y);
+
+        getChildren().add(vue);
+    }
 
     public void setColorVue(Color c) {
         switch(fs) {

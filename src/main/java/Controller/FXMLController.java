@@ -359,7 +359,7 @@ public class FXMLController extends VBox {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    new ModifierSommet(grapheModel, sommetSelectionneModel);
+                    new ModifierSommet(grapheModel, grapheView, sommetSelectionneModel, sommetSelectionneView);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -390,7 +390,7 @@ public class FXMLController extends VBox {
         copierEtiquetteSommet.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                tagSommetSelectionne = sommetSelectionneModel.getTag() + "test";
+                tagSommetSelectionne = sommetSelectionneModel.getTag();
             }
         });
 

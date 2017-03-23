@@ -8,7 +8,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -433,7 +432,7 @@ public class FXMLController extends VBox {
                 }
             }
         });
-
+/*
         pane.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -444,10 +443,10 @@ public class FXMLController extends VBox {
             }
         });
 
-
+*/
     }
 
-
+/*
     private double dragDeltaX, dragDeltaY, orgTranslateX, orgTranslateY;
 
     private EventHandler<MouseEvent> sommetOnMouseDraggedEventHandler =
@@ -461,7 +460,7 @@ public class FXMLController extends VBox {
                     sommetSelectionneModel.setY((float)sommetSelectionneView.getLayoutY());
 
                 }
-            };
+            };*/
 
     private boolean estTrouveSommet(MouseEvent event) {
         boolean trouve = false; // VRAI LIGNE, A GARDER

@@ -50,7 +50,7 @@ public class AjoutSommetController extends FXMLController {
     private Label erreurAjoutSommet;
     @FXML public void creerSommet() {
 
-        Size tailleSommet = sommetController.déterminationTailleRentrerParUtilisateur(this.tailleSommet, this.erreurAjoutSommet);
+        Size tailleSommet = sommetController.déterminationTailleRentrerParUtilisateur(comboBoxForme.getValue().toString(), this.tailleSommet, this.erreurAjoutSommet);
 
         Pair<Float, Float> coordSommet = null;
 

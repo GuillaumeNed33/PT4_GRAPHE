@@ -19,20 +19,25 @@ public class SommetController {
     SommetController(){
     }
 
-    protected Size déterminationTailleRentrerParUtilisateur(TextField tailleSommet, Label messageErreur) {
+    protected Size déterminationTailleRentrerParUtilisateur(String forme_sommet, TextField tailleSommet, Label messageErreur) {
         if (!tailleSommet.getText().contains(".")) {
             String[] elementsDansTaille = tailleSommet.getText().split(" ");
-            if (elementsDansTaille.length > 1) {
+            if (elementsDansTaille.length > 0) {
 
                 Pattern pattern = Pattern.compile("[0-9]+");
                 Matcher matcherNombre;
                 Matcher matcherLettre;
 
+                int limiteNombreValeur = 1;
+                if (forme_sommet.equals("Rectangle")) {
+                    limiteNombreValeur = 2;
+                }
+
                 int largeur = 0;
                 int longueur = 0;
                 int cptDetrompeur = 0; // Pour compter si il n'y a pas plus de valeurs que prévus
                 int cptElement = 0;
-                while (cptElement < elementsDansTaille.length && cptDetrompeur <= 2) {
+                while (cptElement < elementsDansTaille.length && cptDetrompeur <= limiteNombreValeur) {
                     pattern = Pattern.compile("[0-9]+");
                     matcherNombre = pattern.matcher(elementsDansTaille[cptElement]);
 
@@ -40,10 +45,18 @@ public class SommetController {
                     matcherLettre = pattern.matcher(elementsDansTaille[cptElement]);
 
                     if (matcherNombre.find() && cptDetrompeur != -1 && !matcherLettre.find()) {
-                        if (cptDetrompeur == 0) {
-                            largeur = Integer.parseInt(matcherNombre.group());
-                        } else if (cptDetrompeur == 1) {
-                            longueur = Integer.parseInt(matcherNombre.group());
+                        if (limiteNombreValeur == 2) {
+                            if (cptDetrompeur == 0) {
+                                largeur = Integer.parseInt(matcherNombre.group());
+                            } else if (cptDetrompeur == 1) {
+                                longueur = Integer.parseInt(matcherNombre.group());
+                            }
+                        }
+                        else {
+                            if (cptDetrompeur == 0) {
+                                largeur = Integer.parseInt(matcherNombre.group());
+                                longueur = Integer.parseInt(matcherNombre.group());
+                            }
                         }
 
                         ++cptDetrompeur;
@@ -56,11 +69,11 @@ public class SommetController {
                     ++cptElement;
                 }
 
-                if (cptDetrompeur <= 2) {
+                if (cptDetrompeur <= limiteNombreValeur) {
                     return new Size(largeur, longueur);
 
                 } else {
-                    messageErreur.setText("Erreur - Trop de valeurs.");
+                    messageErreur.setText("Erreur - Trop de valeurs (Seul la forme Rectangle nécessite 2 valeurs).");
                 }
             } else {
                 messageErreur.setText("Erreur - Une ou aucune valeur rentrée pour la taille du sommet.\n" +

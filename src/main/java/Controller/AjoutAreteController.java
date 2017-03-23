@@ -91,7 +91,7 @@ public class AjoutAreteController extends FXMLController {
             else {
                 Arete arete = new View.Arete(grapheView.rechercheSommetParId(idSommetEntre), grapheView.rechercheSommetParId(idSommetSortie));
                 grapheView.getAretes().add(arete);
-                grapheView.getCanvas().getChildren().add(arete);
+                grapheView.getCanvas().getChildren().add(0, arete); // Pour affichage en dessous des sommets
                 grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
                 popUpWindow.close();
             }

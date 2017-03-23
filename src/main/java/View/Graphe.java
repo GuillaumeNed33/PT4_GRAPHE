@@ -39,19 +39,9 @@ public class Graphe {
         }
 
         for (Map.Entry<Model.Arete, Pair<Model.Sommet, Model.Sommet>> e : graphe.getM_extremites().entrySet()) {
-            Sommet s1 = null;
-            Sommet s2 = null;
-            /*s1 = new Sommet(e.getValue().getKey().getTag(),
-                    e.getValue().getKey().getForme(),
-                    e.getValue().getKey().getX(),
-                    e.getValue().getKey().getY());
-            s2 = new Sommet(e.getValue().getValue().getTag(),
-                    e.getValue().getValue().getForme(),
-                    e.getValue().getValue().getX(),
-                    e.getValue().getValue().getY());*/
 
-            s1 = rechercheSommetParId(e.getValue().getKey().getId());
-            s2 = rechercheSommetParId(e.getValue().getValue().getId());
+            Sommet s1 = rechercheSommetParId(e.getValue().getKey().getId());
+            Sommet s2 = rechercheSommetParId(e.getValue().getValue().getId());
 
             aretes.add(new Arete(s1,s2));
 

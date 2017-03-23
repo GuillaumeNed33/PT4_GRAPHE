@@ -60,7 +60,7 @@ public class AjoutSommetController extends FXMLController {
 
         if (tailleSommet != null && coordSommet != null) {
 
-            String tag = tagSommet.getText();
+            String tag = tagSommet.getText().trim();
 
             Sommet sommet = new Sommet(tag, coordSommet.getKey(), coordSommet.getValue());
 

@@ -19,14 +19,12 @@ public class Sommet extends Pane {
     private Color color;
     private Forme_Sommet fs;
     private int id;
-    private String tag;
     private Node vue;
     private Label lb;
 
     public Sommet(int id, String tag, Forme_Sommet fs, double x, double y) {
         this.taille = new Size(5, 5);
         this.id = id;
-        this.tag = tag;
         this.fs = fs;
         this.color = Color.BLACK;
         this.coord_x = x;
@@ -93,6 +91,11 @@ public class Sommet extends Pane {
     public Label getLb() {
         return lb;
     }
+
+    public void setLb(String lb) {
+        this.lb.setText(lb);
+    }
+
     public Node getVue() {
         return vue;
     }

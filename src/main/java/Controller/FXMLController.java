@@ -381,7 +381,7 @@ public class FXMLController extends VBox {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    new ModifierTagSommet(grapheModel, sommetSelectionneModel);
+                    new ModifierTagSommet(grapheModel, grapheView, sommetSelectionneModel, sommetSelectionneView);
                 } catch(Exception e) {
                     e.printStackTrace();
                 }

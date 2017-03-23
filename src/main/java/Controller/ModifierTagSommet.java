@@ -12,25 +12,25 @@ import java.io.IOException;
 
 public class ModifierTagSommet extends FXMLController {
 
-    private Sommet sommetSelectionne;
-
     @FXML
     private TextField nouveauTag;
-    public ModifierTagSommet(Graphe graphe, Sommet sommetSelectionne) throws IOException {
+    public ModifierTagSommet(Graphe grapheModel, View.Graphe grapheView, Sommet sommetSelectionneModel, View.Sommet sommetSelectionneView) throws IOException {
         super();
-        this.grapheModel = graphe;
-        this.sommetSelectionne = sommetSelectionne;
+        this.grapheModel = grapheModel;
+        this.grapheView = grapheView;
+        this.sommetSelectionneModel = sommetSelectionneModel;
+        this.sommetSelectionneView = sommetSelectionneView;
 
-        if (graphe != null) {
+        if (grapheModel != null) {
             FXMLLoader fxmlLoaderPopUp = new FXMLLoader(getClass().getResource("/fxml/TagSommet.fxml"));
-            popUpWindow.setTitle("Modifier tag du sommet d'id " + sommetSelectionne.getTag());
+            popUpWindow.setTitle("Modifier tag du sommet d'id " + sommetSelectionneModel.getTag());
             if (popUpWindow.getScene() == null) {
                 fxmlLoaderPopUp.setRoot(this);
                 fxmlLoaderPopUp.setController(this);
                 popUpWindow.setScene(new Scene((Parent) fxmlLoaderPopUp.load()));
             }
 
-            nouveauTag.setText(sommetSelectionne.getTag());
+            nouveauTag.setText(sommetSelectionneModel.getTag());
 
             popUpWindow.show();
         }
@@ -40,7 +40,9 @@ public class ModifierTagSommet extends FXMLController {
     @FXML
     public void changerTagSommetSelectionne() {
 
-        sommetSelectionne.setTag(nouveauTag.getText());
+        sommetSelectionneModel.setTag(nouveauTag.getText());
+        sommetSelectionneView.setLb(nouveauTag.getText());
+        grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
         popUpWindow.close();
     }
 

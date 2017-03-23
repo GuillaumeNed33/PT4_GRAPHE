@@ -14,35 +14,33 @@ import java.io.IOException;
 
 public class AffichageProprieteSommet extends FXMLController {
 
-    private Sommet sommetSelectionne;
     @FXML
     private Label idSommetSelectionne, tagSommetSelectionne, tailleSommetSelectionne, positionSommetSelectionne
             , couleurSommetSelectionne, formeSommetSelectionne;
     @FXML
     private Circle visualisationCouleur;
-    public AffichageProprieteSommet(Graphe graphe, Sommet sommetSelectionne) throws IOException {
+    public AffichageProprieteSommet(Graphe graphe, Sommet sommetSelectionneModel) throws IOException {
         super();
         this.grapheModel = graphe;
-        this.sommetSelectionne = sommetSelectionne;
         if (graphe != null) {
             FXMLLoader fxmlLoaderPopUp = new FXMLLoader(getClass().getResource("/fxml/ProprietesSommetTab.fxml"));
-            popUpWindow.setTitle("Propriété du sommet d'id " + sommetSelectionne.getId());
+            popUpWindow.setTitle("Propriété du sommet d'id " + sommetSelectionneModel.getId());
             if (popUpWindow.getScene() == null) {
                 fxmlLoaderPopUp.setRoot(this);
                 fxmlLoaderPopUp.setController(this);
                 popUpWindow.setScene(new Scene((Parent) fxmlLoaderPopUp.load()));
             }
 
-            visualisationCouleur.setFill(sommetSelectionne.getCouleur());
+            visualisationCouleur.setFill(sommetSelectionneModel.getCouleur());
 
-            idSommetSelectionne.setText(Integer.toString(sommetSelectionne.getId()));
-            tagSommetSelectionne.setText(sommetSelectionne.getTag());
-            tailleSommetSelectionne.setText("(" + sommetSelectionne.getTaille().width + ", " +
-            sommetSelectionne.getTaille().height + ")");
-            positionSommetSelectionne.setText("(" + sommetSelectionne.getX() + ", " +
-                    sommetSelectionne.getY() + ")");
-            couleurSommetSelectionne.setText(sommetSelectionne.getCouleur().toString());
-            formeSommetSelectionne.setText(sommetSelectionne.getForme().toString());
+            idSommetSelectionne.setText(Integer.toString(sommetSelectionneModel.getId()));
+            tagSommetSelectionne.setText(sommetSelectionneModel.getTag());
+            tailleSommetSelectionne.setText("(" + sommetSelectionneModel.getTaille().width + ", " +
+            sommetSelectionneModel.getTaille().height + ")");
+            positionSommetSelectionne.setText("(" + sommetSelectionneModel.getX() + ", " +
+                    sommetSelectionneModel.getY() + ")");
+            couleurSommetSelectionne.setText(sommetSelectionneModel.getCouleur().toString());
+            formeSommetSelectionne.setText(sommetSelectionneModel.getForme().toString());
 
 
             popUpWindow.show();

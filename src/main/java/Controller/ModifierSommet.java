@@ -23,7 +23,6 @@ import java.io.IOException;
  */
 public class ModifierSommet extends FXMLController {
 
-    private Sommet sommetSelectionne;
     private SommetController sommetControl;
     private ObservableList<Forme_Sommet> formes = FXCollections.observableArrayList(Forme_Sommet.values());
 
@@ -32,19 +31,19 @@ public class ModifierSommet extends FXMLController {
     @FXML private ColorPicker couleurSommet;
     @FXML private Label erreurSommet;
 
-    public ModifierSommet(Graphe graphe, Sommet sommetSelectionne) throws IOException {
+    public ModifierSommet(Graphe graphe, Sommet sommetSelectionneModel) throws IOException {
         super();
         sommetControl= new SommetController();
         this.grapheModel = graphe;
-        this.sommetSelectionne = sommetSelectionne;
+        this.sommetSelectionneModel = sommetSelectionneModel;
         if (graphe != null) {
             FXMLLoader fxmlLoaderPopUp = new FXMLLoader(getClass().getResource("/fxml/ModifierSommet.fxml"));
-            popUpWindow.setTitle("Modifier le sommet " + sommetSelectionne.getId());
+            popUpWindow.setTitle("Modifier le sommet " + sommetSelectionneModel.getId());
             if (popUpWindow.getScene() == null) {
                 fxmlLoaderPopUp.setRoot(this);
                 fxmlLoaderPopUp.setController(this);
                 popUpWindow.setScene(new Scene((Parent) fxmlLoaderPopUp.load()));
-                formeSommet.setValue(sommetSelectionne.getForme());
+                formeSommet.setValue(sommetSelectionneModel.getForme());
                 formeSommet.setItems(formes);
             }
             popUpWindow.show();
@@ -53,7 +52,7 @@ public class ModifierSommet extends FXMLController {
 
     public void ModifierSommetSelectionne(){
 
-        Size tailleSommet = sommetControl.déterminationTailleRentrerParUtilisateur(sommetSelectionne.getForme().toString(), this.tailleSommet, this.erreurSommet);
+        Size tailleSommet = sommetControl.déterminationTailleRentrerParUtilisateur(sommetSelectionneModel.getForme().toString(), this.tailleSommet, this.erreurSommet);
         Pair<Float, Float> coordSommet = null;
         int indiceSommet = 0;
 
@@ -63,12 +62,12 @@ public class ModifierSommet extends FXMLController {
         }
         if (tailleSommet != null && coordSommet != null && indiceSommet != -1
                 && coordSommet.getKey() < popUpWindow.getMaxWidth() && coordSommet.getValue() < popUpWindow.getMaxHeight()) {
-            sommetSelectionne.setTaille(tailleSommet);
-            sommetSelectionne.setIndice(indiceSommet);
-            sommetSelectionne.setX(coordSommet.getKey());
-            sommetSelectionne.setY(coordSommet.getValue());
-            sommetSelectionne.setCouleur(couleurSommet.getValue());
-            sommetSelectionne.setForme(formeSommet.getValue().toString());
+            sommetSelectionneModel.setTaille(tailleSommet);
+            sommetSelectionneModel.setIndice(indiceSommet);
+            sommetSelectionneModel.setX(coordSommet.getKey());
+            sommetSelectionneModel.setY(coordSommet.getValue());
+            sommetSelectionneModel.setCouleur(couleurSommet.getValue());
+            sommetSelectionneModel.setForme(formeSommet.getValue().toString());
             popUpWindow.close();
         }
         else {

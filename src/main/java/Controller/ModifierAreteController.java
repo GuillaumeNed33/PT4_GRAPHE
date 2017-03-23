@@ -36,8 +36,6 @@ public class ModifierAreteController extends FXMLController {
     @FXML private TextField areteSize;
     @FXML private TextField aretePoids;
 
-
-
     ModifierAreteController(Graphe grapheModel, View.Graphe grapheView) throws IOException {
         super();
         this.grapheModel = grapheModel;

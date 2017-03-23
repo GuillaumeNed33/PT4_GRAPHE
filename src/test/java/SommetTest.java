@@ -18,7 +18,7 @@ public class SommetTest {
         Color couleur = Color.web("000000");
         assertEquals(sommet.getCouleur(), couleur);
 
-        String size = new Size(10,10).toString();
+        String size = new Size(5,5).toString();
         assertEquals(sommet.getTaille().toString(),size);
     }
 
@@ -74,8 +74,8 @@ public class SommetTest {
     @Test
     public void testTaille() {
         Sommet sommet = new Sommet("UnSommet");
-        assertEquals(sommet.getTaille().height,10,0);
-        assertEquals(sommet.getTaille().width,10,0);
+        assertEquals(sommet.getTaille().height,5,0);
+        assertEquals(sommet.getTaille().width,5,0);
 
         Size size = new Size(15,15);
         sommet.setTaille(size);

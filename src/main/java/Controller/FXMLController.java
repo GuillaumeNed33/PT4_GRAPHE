@@ -8,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -159,13 +160,13 @@ public class FXMLController extends VBox {
      */
     @FXML
     public void clickRepresentationForces() {
-        if (grapheModel != null && !grapheModel.indiceFixe()) {
+        if (grapheModel != null && grapheModel.indiceFixe()) {
             grapheModel.setAlgorithmeRepresentation('f', (int) grapheView.getScrollPane().getWidth(), (int) grapheView.getScrollPane().getHeight());
             refreshGrapheView();
         }
         else {
             afficherFenetreAlerte("Vous ne pouvez pas appliquer la représentation modèle de forces si vous n'avez pas " +
-                    "importer un graphe avant ou si voux n'avez pas indicer le graphe.");
+                    "importer un graphe avant ou si vous n'avez pas indicé le graphe.");
         }
     }
 
@@ -309,7 +310,7 @@ public class FXMLController extends VBox {
             public void handle(ActionEvent event) {
                 Color c = couleurFond.getValue();
                 if (grapheView != null) {
-                    grapheView.getScrollPane().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
+                    grapheView.getCanvas().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
                 }
                 else {
                     afficherFenetreAlerte("Importer un graphe avant de changer les couleurs.");
@@ -432,12 +433,23 @@ public class FXMLController extends VBox {
                 }
             }
         });
+
+        pane.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (estTrouveSommet(event)) {
+                    sommetSelectionneView.setOnMousePressed(sommetOnMousePressedEventHandler);
+                    sommetSelectionneView.setOnMouseDragged(sommetOnMouseDraggedEventHandler);
+                    sommetSelectionneView.setOnMouseReleased(mouseEvent -> sommetSelectionneView.setCursor(Cursor.HAND));
+                    sommetSelectionneView.setOnMouseEntered(mouseEvent -> sommetSelectionneView.setCursor(Cursor.HAND));
+               }
+            }
+        });
+
         pane.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                estTrouveSommet(event);
-                sommetSelectionneView.setOnMousePressed(sommetOnMousePressedEventHandler);
-                sommetSelectionneView.setOnMouseDragged(sommetOnMouseDraggedEventHandler);
+
             }
         });
 
@@ -445,25 +457,31 @@ public class FXMLController extends VBox {
     }
 
 
-    private double orgSceneX, orgSceneY, orgTranslateX, orgTranslateY;
+    private double dragDeltaX, dragDeltaY, orgTranslateX, orgTranslateY;
 
-    EventHandler<MouseEvent> sommetOnMousePressedEventHandler =
+    private EventHandler<MouseEvent> sommetOnMousePressedEventHandler =
             new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent t) {
-                    orgSceneX = t.getSceneX();
-                    orgSceneY = t.getSceneY();
-                    orgTranslateX = ((View.Sommet)(t.getSource())).getTranslateX();
-                    orgTranslateY = ((View.Sommet)(t.getSource())).getTranslateY();
+                    dragDeltaX = sommetSelectionneView.getLayoutX() - t.getSceneX();
+                    dragDeltaY = sommetSelectionneView.getLayoutY() - t.getSceneY();
+                    sommetSelectionneView.setCursor(Cursor.MOVE);
+                    //orgTranslateX = ((View.Sommet)(t.getSource())).getTranslateX();
+                    //orgTranslateY = ((View.Sommet)(t.getSource())).getTranslateY();
                 }
             };
 
-    EventHandler<MouseEvent> sommetOnMouseDraggedEventHandler =
+    private EventHandler<MouseEvent> sommetOnMouseDraggedEventHandler =
             new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent t) {
-                    double offsetX = t.getSceneX() - orgSceneX;
+                    sommetSelectionneView.setLayoutX(t.getSceneX() + dragDeltaX);
+                    sommetSelectionneView.setLayoutY(t.getSceneY() + dragDeltaY);
+
+                    /*double offsetX = t.getSceneX() - orgSceneX;
                     double offsetY = t.getSceneY() - orgSceneY;
+                    sommetSelectionneView.setTranslateX(offsetX);
+                    sommetSelectionneView.setTranslateY(offsetY);
                     double newTranslateX = orgTranslateX + offsetX;
                     double newTranslateY = orgTranslateY + offsetY;
 
@@ -471,12 +489,12 @@ public class FXMLController extends VBox {
                     ((View.Sommet)(t.getSource())).setTranslateY(newTranslateY);
                     sommetSelectionneModel.setX((float)newTranslateX);
                     sommetSelectionneModel.setY((float)newTranslateY);
+                    */
                 }
             };
 
     private boolean estTrouveSommet(MouseEvent event) {
         boolean trouve = false; // VRAI LIGNE, A GARDER
-        //boolean trouve = true; // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
         int cpt = 0;
         sommetSelectionneModel = null; // VRAI LIGNE, A GARDER // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
 

@@ -59,7 +59,7 @@ public class AlgorithmeRepresentation {
      * Permet une distribution par modele de Forces.
      */
     public void distributionModeleForces(int largeurEcran, int hauteurEcran){
-        distributionAleatoire(largeurEcran, hauteurEcran);
+        //distributionAleatoire(largeurEcran, hauteurEcran);
         for (Sommet sommet : graphe.getSommets()) {
             float forceTotale = forceAttraction(sommet) + forceRepulsion(sommet);
             sommet.setX(sommet.getX() + forceTotale);

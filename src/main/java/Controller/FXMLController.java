@@ -473,9 +473,9 @@ public class FXMLController extends VBox {
             sommetSelectionneView = grapheView.getSommets().get(cpt);
 
             if(event.getX() >= sommetSelectionneModel.getX() &&
-                    event.getX() <= sommetSelectionneModel.getX() + sommetSelectionneModel.getTaille().width &&
+                    event.getX() <= sommetSelectionneModel.getX() + sommetSelectionneModel.getTaille().width*2 &&
                     event.getY() >= sommetSelectionneModel.getY() &&
-                    event.getY() <= sommetSelectionneModel.getY() + sommetSelectionneModel.getTaille().height){
+                    event.getY() <= sommetSelectionneModel.getY() + sommetSelectionneModel.getTaille().height*2){
                 trouve = true;
             }
 
@@ -489,11 +489,6 @@ public class FXMLController extends VBox {
         contextMenu.hide();
     }
 
-
-    @FXML public void suppressionSommetSelectionne() {
-        grapheModel.supprimerSommet(sommetSelectionneModel);
-        sommetSelectionneModel = null;
-    }
 
     private void afficherFenetreAlerte(String message){
         Alert alert = new Alert(Alert.AlertType.ERROR);

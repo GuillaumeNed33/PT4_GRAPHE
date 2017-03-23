@@ -47,7 +47,7 @@ public class Sommet extends ComposantGraphe{
         super(idActuel++, 0, nom, Color.BLACK);
         this.x = 0;
         this.y = 0;
-        this.taille = new Size(10,10);
+        this.taille = new Size(5,5);
         this.forme = Forme_Sommet.Cercle;
     }
 
@@ -62,7 +62,7 @@ public class Sommet extends ComposantGraphe{
         super(idActuel++, 0, tag, Color.BLACK);
         this.x = x;
         this.y = y;
-        this.taille = new Size(10,10);
+        this.taille = new Size(5,5);
         forme = Forme_Sommet.Cercle;
     }
 
@@ -72,7 +72,7 @@ public class Sommet extends ComposantGraphe{
         this.idImportation = idImportation;
         this.x = 0;
         this.y = 0;
-        this.taille = new Size(10,10);
+        this.taille = new Size(5,5);
         this.forme = Forme_Sommet.Cercle;
     }
 

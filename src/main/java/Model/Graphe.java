@@ -167,7 +167,12 @@ public class Graphe {
         }
     }
 
-
+    /**
+     * Fonction permettant d'ajouter les attributs d'un sommet
+     * @param sommet
+     * @param ligne
+     * @param existe
+     */
     private void ajoutAttributsSommet(Sommet sommet, String ligne, boolean existe) {
         if (sommet != null) {
 
@@ -206,15 +211,6 @@ public class Graphe {
             tag = tag.replaceAll("\"$", "");
             arete.setTag(tag);
         }
-
-        /*pattern = Pattern.compile("color=+.+[a-z]"); // couleur de l'arête
-        matcher = pattern.matcher(ligne); // On le cherche dans la ligne
-
-        if (matcher.find()) {
-
-            String couleur = matcher.group().split("=")[1];
-            arete.setCouleurAreteStr(couleur);
-        }*/
     }
 
     private void creationAreteImportation(String ligne) {
@@ -838,30 +834,6 @@ public class Graphe {
     }
 
     /**
-     * Permet de vérifier s'il existe une arete entre 2 sommets.
-     * @param sommet_1 Représente le premier sommet pour la vérification.
-     * @param sommet_2 Représente le second sommet pour la vérification.
-     * @return Retourne vrai si il existe une arete entre les 2 sommets et faux dans le cas contraire.
-     */
-    private boolean verificationDoublonArete(Sommet sommet_1, Sommet sommet_2) {
-
-        boolean doublonArete = false;
-        if (!aretes.isEmpty()) {
-            int cptArete = 0;
-            /*while (cptArete < aretes.size()) {
-                if (aretes.get(cptArete).getEntree().getIdImportation() == idImportationSommetSource &&
-                        aretes.get(cptArete).getSortie().getIdImportation() == idImportationSommetDestination) {
-                    doublonArete = true;
-                }
-
-                ++cptArete;
-            }*/
-        }
-
-        return false;
-    }
-
-    /**
      * Permet de lier l'arete à un sommet.
      * @param arete Représente l'arete à lier.
      * @param sommet Représente le sommet auquel l'arete doit être liée.
@@ -1022,9 +994,11 @@ public class Graphe {
     public void changerCouleurSommet (Sommet sommet, Color cmin, Color cmax){
         if (indiceFixe()) {
             int valeur = sommet.getIndice();
-            double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMaxSommet(), indiceMinSommet());
-            double vert = intensite(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxSommet(), indiceMinSommet());
-            double bleu = intensite(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxSommet(), indiceMinSommet());
+            int indiceMax = indiceMaxSommet();
+            int indiceMin = indiceMinSommet();
+            double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMax, indiceMin);
+            double vert = intensite(valeur, cmax.getGreen(), cmin.getGreen(), indiceMax, indiceMin);
+            double bleu = intensite(valeur, cmax.getBlue(), cmin.getBlue(), indiceMax, indiceMin);
             sommet.setCouleur(new Color(rouge, vert, bleu, 1.));
         }
     }
@@ -1051,9 +1025,11 @@ public class Graphe {
      */
     public void changerCouleurArete (Arete arete, Color cmin, Color cmax){
             int valeur = arete.getIndice();
-            double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMaxArete(), indiceMinArete());
-            double vert = intensite(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxArete(), indiceMinArete());
-            double bleu = intensite(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxArete(), indiceMinArete());
+            int indiceMax = indiceMaxArete();
+            int indiceMin = indiceMinArete();
+            double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMax, indiceMin);
+            double vert = intensite(valeur, cmax.getGreen(), cmin.getGreen(), indiceMax, indiceMin);
+            double bleu = intensite(valeur, cmax.getBlue(), cmin.getBlue(), indiceMax, indiceMin);
             arete.setCouleur(new Color(rouge, vert, bleu, 1.));
     }
 
@@ -1082,7 +1058,9 @@ public class Graphe {
     public void changerTailleSommet(Sommet s, float maxSommet, float minSommet){
         if (indiceFixe()) {
             int valeur = s.getIndice();
-            int largeur = (int) intensite(valeur, maxSommet, minSommet, indiceMaxSommet(), indiceMinSommet());
+            int indiceMax = indiceMaxSommet();
+            int indiceMin = indiceMinSommet();
+            int largeur = (int) intensite(valeur, maxSommet, minSommet, indiceMax, indiceMin);
             Size taille = new Size(largeur, s.getTaille().height);
             s.setTaille(taille);
         }
@@ -1090,7 +1068,9 @@ public class Graphe {
 
     public void changerTailleArete(Arete a, float maxArete, float minArete){
             int valeur = a.getIndice();
-            int largeur = (int) intensite(valeur, maxArete, minArete, indiceMaxArete(), indiceMinArete());
+            int indiceMax = indiceMaxArete();
+            int indiceMin = indiceMinArete();
+            int largeur = (int) intensite(valeur, maxArete, minArete, indiceMax, indiceMin);
             a.setEpaisseur(largeur);
     }
 

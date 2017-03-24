@@ -23,11 +23,11 @@ public class Arete extends Group {
         ligne = new Line();
         ligne.setStroke(couleur);
 
-        ligne.startXProperty().bind( source.layoutXProperty().add(source.getCoord_x() + source.getTaille().width));
-        ligne.startYProperty().bind( source.layoutYProperty().add(source.getCoord_y() + source.getTaille().height));
+        ligne.startXProperty().bind( source.layoutXProperty().add(source.getCoord_x()));
+        ligne.startYProperty().bind( source.layoutYProperty().add(source.getCoord_y()));
 
-        ligne.endXProperty().bind( destination.layoutXProperty().add(destination.getCoord_x() + destination.getTaille().width));
-        ligne.endYProperty().bind( destination.layoutYProperty().add(destination.getCoord_y() + destination.getTaille().height));
+        ligne.endXProperty().bind( destination.layoutXProperty().add(destination.getCoord_x()));
+        ligne.endYProperty().bind( destination.layoutYProperty().add(destination.getCoord_y()));
 
         getChildren().add(ligne);
     }
@@ -43,11 +43,11 @@ public class Arete extends Group {
     }
 
     public void misAJourCoord() {
-        ligne.startXProperty().bind( source.layoutXProperty().add(source.getCoord_x() + source.getTaille().width));
-        ligne.startYProperty().bind( source.layoutYProperty().add(source.getCoord_y() + source.getTaille().height));
+        ligne.startXProperty().bind( source.layoutXProperty().add(source.getCoord_x()));
+        ligne.startYProperty().bind( source.layoutYProperty().add(source.getCoord_y()));
 
-        ligne.endXProperty().bind( destination.layoutXProperty().add(destination.getCoord_x() + destination.getTaille().width));
-        ligne.endYProperty().bind( destination.layoutYProperty().add(destination.getCoord_y() + destination.getTaille().height));
+        ligne.endXProperty().bind( destination.layoutXProperty().add(destination.getCoord_x()));
+        ligne.endYProperty().bind( destination.layoutYProperty().add(destination.getCoord_y()));
     }
 
     public Line getLigne() {

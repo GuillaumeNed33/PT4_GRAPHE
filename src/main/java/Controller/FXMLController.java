@@ -472,10 +472,10 @@ public class FXMLController extends VBox {
             sommetSelectionneModel = grapheModel.getSommets().get(cpt);
             sommetSelectionneView = grapheView.getSommets().get(cpt);
 
-            if(event.getX() >= sommetSelectionneModel.getX() &&
-                    event.getX() <= sommetSelectionneModel.getX() + sommetSelectionneModel.getTaille().width*2 &&
-                    event.getY() >= sommetSelectionneModel.getY() &&
-                    event.getY() <= sommetSelectionneModel.getY() + sommetSelectionneModel.getTaille().height*2){
+            if(event.getX() >= sommetSelectionneModel.getX() - sommetSelectionneModel.getTaille().width &&
+                    event.getX() <= sommetSelectionneModel.getX() + sommetSelectionneModel.getTaille().width &&
+                    event.getY() >= sommetSelectionneModel.getY() - sommetSelectionneModel.getTaille().height &&
+                    event.getY() <= sommetSelectionneModel.getY() + sommetSelectionneModel.getTaille().height){
                 trouve = true;
             }
 

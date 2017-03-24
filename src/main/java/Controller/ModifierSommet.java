@@ -83,8 +83,7 @@ public class ModifierSommet extends FXMLController {
             sommetSelectionneModel.setCouleur(couleurSommet.getValue());
             sommetSelectionneModel.setForme(formeSommet.getValue().toString());
 
-            sommetSelectionneView.setForme((Forme_Sommet) formeSommet.getValue());
-            sommetSelectionneView.setTaille(tailleSommet);
+            sommetSelectionneView.setFormeEtTaille((Forme_Sommet) formeSommet.getValue(), tailleSommet);
             sommetSelectionneView.setCoord(coordSommet.getKey(), coordSommet.getValue());
             sommetSelectionneView.setColorVue(couleurSommet.getValue());
 

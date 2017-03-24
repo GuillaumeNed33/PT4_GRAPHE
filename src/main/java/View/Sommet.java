@@ -32,22 +32,11 @@ public class Sommet extends Pane {
         this.coord_x = x;
         this.coord_y = y;
         this.lb = new Label(tag);
-        switch(fs) {
-            case Cercle:
-                vue = new Circle(taille.width ,color);
-                break;
-            case Losange:
-                vue = new Polygon();
-                break;
-            case Rectangle:
-                vue = new Rectangle(taille.width*2,taille.height*2,color);
-                break;
-            case Triangle:
-                vue = new Polygon(taille.width,0,taille.width*2,taille.width*2,0,taille.width*2); //ToDo A VERIFIER IMPORTANT
-                break;
-        }
-        lb.relocate(x + taille.width * 2,y + taille.height);
-        vue.relocate(x, y);
+
+        redefinitionDeLaVue();
+
+        lb.relocate(x + taille.width,y);
+        vue.relocate(x - taille.width, y - taille.height);
         getChildren().addAll(vue, lb);
     }
 
@@ -61,23 +50,10 @@ public class Sommet extends Pane {
         int indexVue = getChildren().indexOf(vue);
         getChildren().remove(indexVue);
 
-        switch(fs) {
-            case Cercle:
-                vue = new Circle(taille.width ,color);
-                break;
-            case Losange:
-                vue = new Polygon();
-                break;
-            case Rectangle:
-                vue = new Rectangle(taille.width*2,taille.height*2,color);
-                break;
-            case Triangle:
-                vue = new Polygon(taille.width,0,taille.width*2,taille.width*2,0,taille.width*2); //ToDo A VERIFIER IMPORTANT
-                break;
-        }
+         redefinitionDeLaVue();
 
-        lb.relocate(coord_x + taille.width * 2,coord_y + taille.height);
-        vue.relocate(coord_x, coord_y);
+        lb.relocate(coord_x + taille.width,coord_y);
+        vue.relocate(coord_x - taille.width, coord_y - taille.height);
 
         getChildren().add(vue);
     }
@@ -94,7 +70,7 @@ public class Sommet extends Pane {
         this.coord_x = coord_x;
         this.coord_y = coord_y;
 
-        vue.relocate(coord_x, coord_y);
+        vue.relocate(coord_x - taille.width, coord_y - taille.height);
     }
 
     public Label getLb() {
@@ -119,12 +95,24 @@ public class Sommet extends Pane {
         this.color = c;
      }
 
-    public void setForme(Forme_Sommet forme) {
+    public void setFormeEtTaille(Forme_Sommet forme, Size taille) {
+
+        this.taille = taille;
 
         int indexVue = getChildren().indexOf(vue);
         getChildren().remove(indexVue);
 
         fs = forme;
+
+        redefinitionDeLaVue();
+
+        lb.relocate(coord_x + taille.width,coord_y);
+        vue.relocate(coord_x - taille.width, coord_y - taille.height);
+
+        getChildren().add(vue);
+    }
+
+    public void redefinitionDeLaVue() {
 
         switch(fs) {
             case Cercle:
@@ -140,12 +128,8 @@ public class Sommet extends Pane {
                 vue = new Polygon(taille.width,0,taille.width*2,taille.width*2,0,taille.width*2); //ToDo A VERIFIER IMPORTANT
                 break;
         }
-
-        lb.relocate(coord_x + taille.width * 2,coord_y + taille.height);
-        vue.relocate(coord_x, coord_y);
-
-        getChildren().add(vue);
     }
+
 
     public void setColorVue(Color c) {
         switch(fs) {

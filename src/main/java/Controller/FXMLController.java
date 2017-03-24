@@ -290,14 +290,14 @@ public class FXMLController extends VBox {
      *
      */
     @FXML public void clickZoomMinus() {
-        //TODO zoom arriere
+        grapheView.getScrollPane().zoomOut();
     }
 
     /**
      *
      */
-    @FXML public void clickZoomPlus() throws IOException {
-        //TODO zoom plus
+    @FXML public void clickZoomPlus() {
+        grapheView.getScrollPane().zoomIn();
     }
     /**
      *

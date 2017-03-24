@@ -16,6 +16,11 @@ public class ZoomableScrollPane extends ScrollPane {
 
     public ZoomableScrollPane(Node content) {
         this.content = content;
+        setContent(this.content);
+    }
+
+    public void updateScrollPane(Node content) {
+        this.content = content;
         Group contentGroup = new Group();
         zoomGroup = new Group();
         contentGroup.getChildren().add(zoomGroup);
@@ -25,12 +30,7 @@ public class ZoomableScrollPane extends ScrollPane {
         zoomGroup.getTransforms().add(scaleTransform);
 
         zoomGroup.setOnScroll(new ZoomHandler());
-    }
 
-    public void updateScrollPane(Node content) {
-        this.content = content;
-        setContent(content);
-        System.out.println("UPDATE");
 
     }
 
@@ -80,12 +80,6 @@ public class ZoomableScrollPane extends ScrollPane {
 
     }
 
-    /**
-     *
-     * @param minimizeOnly
-     *            If the content fits already into the viewport, then we don't
-     *            zoom if this parameter is true.
-     */
     public void zoomToFit(boolean minimizeOnly) {
 
         double scaleX = getViewportBounds().getWidth() / getContent().getBoundsInLocal().getWidth();

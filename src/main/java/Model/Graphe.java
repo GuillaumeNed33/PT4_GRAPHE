@@ -168,10 +168,10 @@ public class Graphe {
     }
 
     /**
-     * Fonction permettant d'ajouter les attributs d'un sommet
-     * @param sommet
-     * @param ligne
-     * @param existe
+     * Méthode permettant d'initialiser les attributs d'un sommet.
+     * @param sommet Représente le sommet au quel il faut ajouter les attributs.
+     * @param ligne Représente la ligne dans le fichier qui concerne le sommet.
+     * @param existe Représente un boolean indiquant si le sommet se trouve déjà dans la liste des sommets ou non.
      */
     private void ajoutAttributsSommet(Sommet sommet, String ligne, boolean existe) {
         if (sommet != null) {
@@ -199,6 +199,10 @@ public class Graphe {
         }
     }
 
+    /**
+     * Méthode permettant d'initialiser les attributs d'une arête.
+     * @param ligne Représente la ligne dans le fichier qui concerne l'arête.
+     */
     private void ajoutAttributsArete(String ligne) {
 
         Arete arete = aretes.get(aretes.size()-1); // On récupère la dernière car dernière ajoutée
@@ -213,6 +217,10 @@ public class Graphe {
         }
     }
 
+    /**
+     * Méthode permettant de créer des arêtes lors de l'importation.
+     * @param ligne Représente la ligne concernant l'arête.
+     */
     private void creationAreteImportation(String ligne) {
         String elementSommet = ligne.split("\\[+.+;$")[0].trim();
         String[] sommet = elementSommet.split("->");
@@ -231,6 +239,13 @@ public class Graphe {
         }
     }
 
+    /**
+     * Méthode permettant de vérifier si une arête n'est pas déjà existante.
+     * @param parId Représente le fait de savoir si on passe la recherche via l'id d'importation ou par l'id du graphe.
+     * @param idSommetSource Représente le sommet source de l'arête.
+     * @param idSommetDestination Représente le sommet destinataire de l'arête.
+     * @return Retroune vrai si il y a un doublon et faux dans le cas contraire.
+     */
     private boolean verificationDoublonAreteParId(boolean parId, int idSommetSource, int idSommetDestination) {
 
         boolean doublonArete = false;
@@ -262,9 +277,9 @@ public class Graphe {
     }
 
     /**
-     *
-     * @param idImportation
-     * @return
+     * Méthode permettant de vérifier si le sommet n'existe pas déjà grâce à son id d'importation.
+     * @param idImportation Représente l'id qu'a le sommet dans le fichier.
+     * @return Retourne le sommet correspondant si il y a doublon sinon il retourne null.
      */
     private Sommet verificationSommetDoublonParIdImportation(int idImportation, boolean arete, String ligne) {
 
@@ -516,7 +531,7 @@ public class Graphe {
      * @return Retour vrai si la sauvegarde c'est bien passé ou faux dans le cas contraire.
      */
     private boolean sauvegarderGrapheGraphml (String chemin_sauvegarde) {
-        // TODO Essayer de se mettre d'accord pour les node-syle et key
+
         try {
             FileWriter fileWriter = new FileWriter (chemin_sauvegarde);
             BufferedWriter bufferedWriter = new BufferedWriter (fileWriter);
@@ -558,6 +573,12 @@ public class Graphe {
         return false;
     }
 
+
+    /**
+     * Méthode permettant de trouver un sommet via son id.
+     * @param id Représente l'id à chercher dans le graphe.
+     * @return Représente le sommet trouver via l'id et null si l'id ne correspond à aucun sommet.
+     */
     public Sommet trouverSommetParID(int id) {
         boolean trouve = false;
         int cpt = 0;
@@ -573,6 +594,12 @@ public class Graphe {
         return res;
     }
 
+
+    /**
+     * Méthode permettant de trouver un sommet via le tag.
+     * @param source Représente le tag du sommet à chercher.
+     * @return Représente le sommet trouver via le tag et null si le tag ne correspond à aucun sommet.
+     */
     private Sommet trouverSommetParTag(String source) {
         boolean trouve = false;
         int cpt = 0;
@@ -598,7 +625,7 @@ public class Graphe {
         ArrayList<Sommet> voisinage = new ArrayList<Sommet>();
         try {
             for (Arete arete : incidentes.get(sommet_origine)) {
-                if (source(arete).getTag() == sommet_origine.getTag()) {
+                if (source(arete).getTag().equals(sommet_origine.getTag())) {
                     voisinage.add(destination(arete));
                 }
             }
@@ -625,8 +652,7 @@ public class Graphe {
      * @return Retourne le sommet de destination.
      */
     public Sommet destination(Arete arete){
-        Sommet destination = extremites.get(arete).getValue();
-        return destination;
+        return extremites.get(arete).getValue();
     }
 
     /**
@@ -667,6 +693,12 @@ public class Graphe {
         return true;
     }
 
+
+    /**
+     * Méthode permettant d'ajouter un sommet initial.
+     * @param sommet Représente le sommet à ajouter si vérifie les conditions.
+     * @return Retourne vrai si l'ajout se fait et faux dans le cas contraire.
+     */
     public boolean ajouterSommetInitial(Sommet sommet){
         if (verificationPossibiliteAjoutSommetInitial(sommet.getTag())) {
             sommets.add(sommet);
@@ -679,6 +711,11 @@ public class Graphe {
         return true;
     }
 
+    /**
+     * Méthode permettant d'ajouter un sommet si son tag n'existe pas.
+     * @param tag Représente le tag à comparer dans les sommets.
+     * @return Retourne vrai si il existe un sommet avec ce tag ou faux dans le cas contraire.
+     */
     private boolean verificationPossibiliteAjoutSommetInitial(String tag) {
         Iterator<Sommet> iterateur_sommet = sommets.iterator();
         boolean trouver = false;
@@ -686,7 +723,7 @@ public class Graphe {
         while (!trouver && iterateur_sommet.hasNext()) {
             Sommet sommet_temp = iterateur_sommet.next();
 
-            if (sommet_temp.getTag() == tag) {
+            if (sommet_temp.getTag().equals(tag)) {
                 trouver = true;
             }
         }
@@ -878,28 +915,28 @@ public class Graphe {
     }
 
     /**
-     * Affecte le degré du sommet (son nombre d'arêtes) à l'indice du sommet
-     * @param s
+     * Méthode permettant d'affecter le degré du sommet (son nombre d'arêtes) à l'indice du sommet.
+     * @param sommet Représente le sommet a modifier.
      */
-    public void setIndiceDegre(Sommet s){
+    public void setIndiceDegre(Sommet sommet){
         try {
-            s.setIndice(incidentes.get(s).size());
+            sommet.setIndice(incidentes.get(sommet).size());
         }
         catch (NullPointerException e) {
-            s.setIndice(0);
+            sommet.setIndice(0);
         }
     }
 
     /**
-     * Affecte une valeur aléatoire à l'indice du sommet
-     * @param s
+     * Méthode permettant d'affecter une valeur aléatoire à l'indice du sommet.
+     * @param sommet Représente le sommet a modifier.
      */
-    public void setIndiceAleatoire (Sommet s){
-        s.setIndice(rand.nextInt());
+    public void setIndiceAleatoire (Sommet sommet){
+        sommet.setIndice(rand.nextInt());
     }
 
     /**
-     * Affecte pour chaque sommet du graphe son degré à son indice
+     * Méthode permmetant d'affecter pour chaque sommet du graphe son degré à son indice.
      */
     public void setIndiceDegre(){
         for (Sommet s: sommets) {
@@ -908,8 +945,7 @@ public class Graphe {
     }
 
     /**
-     *
-     * Affecte pour chaque sommet du graphe une valeur aléatoire à son indice
+     * Méthode permmetant d'affecter pour chaque sommet du graphe une valeur aléatoire à son indice.
      */
     public void setIndiceAleatoire(){
         for (Sommet s: sommets) {
@@ -918,8 +954,8 @@ public class Graphe {
     }
 
     /**
-     * Fonction récupérant l'indice maximal de tous les sommets du graphe
-     * @return
+     * Méthode permettant de récupérer l'indice maximal de tous les sommets du graphe.
+     * @return Retourne l'indice maximum des sommets.
      */
     public int indiceMaxSommet(){
         int i = sommets.size();
@@ -932,8 +968,8 @@ public class Graphe {
     }
 
     /**
-     * Fonction récupérant l'indice minimal de tous les sommets du graphe
-     * @return
+     * Méthode permettant de récupérer l'indice minimal de tous les sommets du graphe.
+     * @return Retourne l'indice minimum des sommets.
      */
     public int indiceMinSommet(){
         int i = sommets.size();
@@ -945,8 +981,8 @@ public class Graphe {
     }
 
     /**
-     * Fonction récupérant l'indice maximal de toutes les arêtes du graphe
-     * @return
+     * Méthode permettant de récupérer l'indice maximal de toutes les arêtes du graphe.
+     * @return Retourne l'indice maximum des arêtes.
      */
     public int indiceMaxArete(){
         int i = aretes.size();
@@ -958,8 +994,8 @@ public class Graphe {
     }
 
     /**
-     * Fonction récupérant l'indice minimal de toutes les aretes du graphe
-     * @return
+     *Méthode permettant de récupérer l'indice minimal de toutes les aretes du graphe.
+     * @return Retourne l'indice minimum des arêtes.
      */
     public int indiceMinArete(){
         int i = aretes.size();
@@ -972,7 +1008,7 @@ public class Graphe {
 
 
     /**
-     * Fonction permettant de changer la couleur de tous les sommet du graphe
+     * Méthode permettant de changer la couleur de tous les sommet du graphe
      * en fonction d'une couleur minimale et d'une couleur maximale
      * et de la valeur de l'indice de chaque sommet.
      * @param cmin Représente le min intervalle de couleur.
@@ -985,7 +1021,7 @@ public class Graphe {
     }
 
     /**
-     * Permet de changer la couleur d'un sommet en fonction d'une couleur
+     * Méthode permettant de changer la couleur d'un sommet en fonction d'une couleur
      * minimale et d'une couleur maximale et de la valeur de l'indice du sommet.
      * @param sommet Représente le sommet sur lequel on doit modifier la couleur.
      * @param cmin Représente le min intervalle de couleur.
@@ -1004,7 +1040,7 @@ public class Graphe {
     }
 
     /**
-     * Fonction permettant de changer la couleur de toutes les aretes du graphe
+     * Méthode permettant de changer la couleur de toutes les aretes du graphe
      * en fonction d'une couleur minimale et d'une couleur maximale
      * et de la valeur du poids de chaque arete.
      * @param cmin Représente le min intervalle de couleur.
@@ -1017,7 +1053,7 @@ public class Graphe {
     }
 
     /**
-     * Permet de changer la couleur d'une arete en fonction d'une couleur.
+     * Méthode permettant de changer la couleur d'une arete en fonction d'une couleur.
      * minimale et d'une couleur maximale et de la valeur du poids de l'arête
      * @param arete Représente l'arete
      * @param cmin Représente le min intervalle de couleur.
@@ -1035,7 +1071,7 @@ public class Graphe {
 
 
     /**
-     * Permet grâce à une fonction mathematique de generer une couleur pour une arete ou un sommet.
+     * Méthode permettant grâce à une fonction mathematique de generer une couleur pour une arete ou un sommet.
      * en fonction de la valeur de son indice suivant un intervalle
      * @param valeur
      * @param cmin Représente le min intervalle de couleur.
@@ -1055,25 +1091,45 @@ public class Graphe {
     }
 
 
-    public void changerTailleSommet(Sommet s, float maxSommet, float minSommet){
+    /**
+     * Méthode permettant de changer la taille des sommets en fonction d'un minimum et d'un maximum.
+     * @param sommet Représente le sommet à modifier.
+     * @param maxSommet Représente la taille maximum qu'un sommet peut avoir.
+     * @param minSommet Représente la taille minimum qu'un sommet peut avoir.
+     */
+    public void changerTailleSommet(Sommet sommet, float maxSommet, float minSommet){
         if (indiceFixe()) {
-            int valeur = s.getIndice();
+            int valeur = sommet.getIndice();
             int indiceMax = indiceMaxSommet();
             int indiceMin = indiceMinSommet();
             int largeur = (int) intensite(valeur, maxSommet, minSommet, indiceMax, indiceMin);
-            Size taille = new Size(largeur, s.getTaille().height);
-            s.setTaille(taille);
+            Size taille = new Size(largeur, sommet.getTaille().height);
+            sommet.setTaille(taille);
         }
     }
 
-    public void changerTailleArete(Arete a, float maxArete, float minArete){
-            int valeur = a.getIndice();
+    /**
+     * Méthode permettant de changer l'épaisseur des arêtes en fonction d'un minimum et d'un maximum.
+     * @param arete Représente l'arête à modifier.
+     * @param maxArete Représente l'épaisseur maximum que peut avoir une arête.
+     * @param minArete Représente l'épaisseur minimum que peut avoir une arête.
+     */
+    public void changerTailleArete(Arete arete, float maxArete, float minArete){
+            int valeur = arete.getIndice();
             int indiceMax = indiceMaxArete();
             int indiceMin = indiceMinArete();
             int largeur = (int) intensite(valeur, maxArete, minArete, indiceMax, indiceMin);
-            a.setEpaisseur(largeur);
+            arete.setEpaisseur(largeur);
     }
 
+
+    /**
+     * Méthode permettant de changer la taille du graphe (sommets et arêtes).
+     * @param maxSommet Représente la taille maximum qu'un sommet peut avoir.
+     * @param minSommet Représente la taille minimum qu'un sommet peut avoir.
+     * @param maxArete Représente l'épaisseur maximum que peut avoir une arête.
+     * @param minArete Représente l'épaisseur minimum que peut avoir une arête.
+     */
     public void changerTailleGraphe(float maxSommet, float minSommet, float maxArete, float minArete){
         for (Sommet s : sommets){
             changerTailleSommet(s, maxSommet, minSommet);
@@ -1084,8 +1140,8 @@ public class Graphe {
     }
 
     /**
-     * Vérifie si l'indice du sommet a été initialisé
-     * @return
+     * Méthode permettant de vérifier si l'indice des sommets ont été initialisé.
+     * @return Retourne vrai si ils sont initialisés et faux dans le cas contraire.
      */
     public boolean indiceFixe (){
         int i = 0;
@@ -1096,9 +1152,9 @@ public class Graphe {
     }
 
     /**
-     * Modifie la représentation du graphe suivant l'algorithme choisi
-     * @param algorithme
-     * @param largeurEcran
+     * Méthode permettant de modifier la représentation du graphe suivant l'algorithme choisi.
+     * @param algorithme Représente l'algoritme choisi.
+     * @param largeurEcran Représente la largeur de l"écran.
      */
     public void setAlgorithmeRepresentation(char algorithme, int largeurEcran, int hauteurEcran){
         switch (algorithme){
@@ -1146,20 +1202,11 @@ public class Graphe {
         return incidentes;
     }
 
-    public void setIncidentes(HashMap<Sommet, ArrayList<Arete>> incidentes) {
-
-        this.incidentes = incidentes;
-    }
-
     public HashMap<Arete, Pair<Sommet, Sommet>> getM_extremites() {
 
         return extremites;
     }
 
-    public void setM_extremites(HashMap<Arete, Pair<Sommet, Sommet>> m_extremites) {
-
-        this.extremites = m_extremites;
-    }
     public Size getTaille() {
         return taille;
     }

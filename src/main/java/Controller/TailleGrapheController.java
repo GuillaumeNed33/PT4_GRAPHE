@@ -13,9 +13,10 @@ import java.io.IOException;
 
 public class TailleGrapheController extends FXMLController {
 
-    TailleGrapheController(Graphe graphe) throws IOException {
+    TailleGrapheController(Graphe grapheModel, View.Graphe grapheView) throws IOException {
         super();
-        this.grapheModel = graphe;
+        this.grapheModel = grapheModel;
+        this.grapheView = grapheView;
         if (this.grapheModel != null) {
        FXMLLoader fxmlLoaderPopUp = new FXMLLoader(getClass().getResource("/fxml/TailleGraphe.fxml"));
             popUpWindow.setTitle("Taille du graphe");
@@ -51,9 +52,20 @@ public class TailleGrapheController extends FXMLController {
             if ((minSommet < maxSommet && minArete < maxArete) &&
                     (minSommet >= 1 && maxSommet > 1 && minArete >= 1 && maxArete > 1)) {
                 this.grapheModel.changerTailleGraphe(maxSommet, minSommet, maxArete, minArete);
+                int i = 0;
+                for (View.Sommet s : grapheView.getSommets()){
+                    s.setTaille(grapheModel.getSommets().get(i).getTaille());
+                    i++;
+                }
+                i = 0;
+                for (View.Arete a : grapheView.getAretes()){
+                    a.setEpaisseur(grapheModel.getAretes().get(i).getEpaisseur());
+                    i++;
+                }
+                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
                 popUpWindow.close();
             } else {
-                erreurMessageId.setText("Erreur - Valeurs incorrectes \n(max > min, min >= 1 et max >1).");
+                erreurMessageId.setText("Erreur - Valeurs incorrectes \n(max > min, min >= 1 et max > 1).");
             }
         } else {
             erreurMessageId.setText("Erreur - Vérifiez la présence \nde lettres, oublie de valeurs et/ou valeurs négatives.");

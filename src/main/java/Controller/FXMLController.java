@@ -203,7 +203,7 @@ public class FXMLController extends VBox {
     }
     @FXML
     public void clickTailleGraphe(MouseEvent mouseEvent) throws IOException {
-        new TailleGrapheController(grapheModel);
+        new TailleGrapheController(grapheModel, grapheView);
     }
 
     /**

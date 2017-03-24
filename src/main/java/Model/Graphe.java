@@ -1050,13 +1050,11 @@ public class Graphe {
      * @param cmax Représente la max intervalle de couleur.
      */
     public void changerCouleurArete (Arete arete, Color cmin, Color cmax){
-        if (indiceFixe()) {
             int valeur = arete.getIndice();
             double rouge = intensite(valeur, cmax.getRed(), cmin.getRed(), indiceMaxArete(), indiceMinArete());
             double vert = intensite(valeur, cmax.getGreen(), cmin.getGreen(), indiceMaxArete(), indiceMinArete());
             double bleu = intensite(valeur, cmax.getBlue(), cmin.getBlue(), indiceMaxArete(), indiceMinArete());
             arete.setCouleur(new Color(rouge, vert, bleu, 1.));
-        }
     }
 
 
@@ -1091,11 +1089,9 @@ public class Graphe {
     }
 
     public void changerTailleArete(Arete a, float maxArete, float minArete){
-        if (indiceFixe()) {
             int valeur = a.getIndice();
             int largeur = (int) intensite(valeur, maxArete, minArete, indiceMaxArete(), indiceMinArete());
             a.setEpaisseur(largeur);
-        }
     }
 
     public void changerTailleGraphe(float maxSommet, float minSommet, float maxArete, float minArete){

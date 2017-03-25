@@ -17,11 +17,44 @@ import javafx.util.Pair;
 
 import java.io.IOException;
 
-
+/**
+ * Classe AjoutSommetController
+ * permettant de gérer l'affichage de la fenêtre d'ajout d'un sommet au graphe
+ */
 public class AjoutSommetController extends FXMLController {
+
+    /**
+     * Représente le controller d'un sommet pour vérifier la validité de la saisie de l'utilisateir
+     */
     private SommetController sommetController;
-    @FXML
-    private ComboBox comboBoxForme;
+
+    /**
+     * Représente une liste déroulante comprennant toutes les formes que peuvent prendre les sommets
+     */
+    @FXML private ComboBox<Forme_Sommet> comboBoxForme;
+
+    /**
+     * Représente les valeurs respectivement de la taille, de la position et de l'étiquette du nouveau sommet
+     */
+    @FXML private TextField tailleSommet, positionSommet, tagSommet;
+
+    /**
+     * Représente le choix de couleur pour le sommet
+     */
+    @FXML private ColorPicker colorPickerSommet;
+
+    /**
+     * Représente le message d'erreur à afficher dans la fenêtre
+     * en cas d'erreur de saisie de l'utilisateur
+     */
+    @FXML private Label erreurAjoutSommet;
+
+    /**
+     * Constructeur permettant l'affichage de la fenêtre d'ajout d'un sommet au graphe
+     * @param grapheModel représente le graphe du Model
+     * @param grapheView représente le graphe de la View
+     * @throws IOException lève une exception
+     */
     AjoutSommetController(Graphe grapheModel, View.Graphe grapheView) throws IOException {
         super();
         this.grapheModel = grapheModel;
@@ -42,12 +75,10 @@ public class AjoutSommetController extends FXMLController {
         }
     }
 
-    @FXML
-    private TextField tailleSommet, positionSommet, tagSommet;
-    @FXML
-    ColorPicker colorPickerSommet;
-    @FXML
-    private Label erreurAjoutSommet;
+    /**
+     * Fonction permettant de controler la création d'un sommet.
+     * fonction ajoute le nouveau sommet dans le Model et met à jour la View
+     */
     @FXML public void creerSommet() {
 
         Size tailleSommet = sommetController.déterminationTailleRentrerParUtilisateur(comboBoxForme.getValue().toString(), this.tailleSommet, this.erreurAjoutSommet);
@@ -66,7 +97,6 @@ public class AjoutSommetController extends FXMLController {
 
             Color couleur = colorPickerSommet.getValue();
             String forme = comboBoxForme.getValue().toString();
-
 
             sommet.setCouleur(couleur);
             sommet.setTaille(tailleSommet);
@@ -87,6 +117,9 @@ public class AjoutSommetController extends FXMLController {
         }
     }
 
+    /**
+     * Fonction fermant la fenêtre d'ajout d'un sommet au clic sur "Annuler"
+     */
     @FXML public void fermerCreerSommet() {
         popUpWindow.close();
     }

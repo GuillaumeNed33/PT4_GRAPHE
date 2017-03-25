@@ -25,15 +25,54 @@ import java.util.regex.Pattern;
 /**
  * Created by audreylentilhac on 14/03/2017.
  */
+
+/**
+ * Classe ModifierAreteController
+ * affichant le contrôle de la modification ou suppression d'une arete
+ */
 public class ModifierAreteController extends FXMLController {
 
+    /**
+     * Représente le string de l'arête sélectionnée
+     */
     private String AreteSelectionne;
+
+    /**
+     * Représente l'arête sélectionnée
+     */
     private Arete selected = null;
+
+    /**
+     * Représente la liste des arêtes du graphe
+     */
     @FXML private ListView<String> listViewSAretes;
+
+    /**
+     * Représente le choix de couleur
+     */
     @FXML private ColorPicker couleurChoice;
+
+    /**
+     * Représente la taille de l'arête
+     */
     @FXML private TextField areteSize;
+
+    /**
+     * Représente le poids de l'arête
+     */
     @FXML private TextField aretePoids;
 
+    /**
+     * Représente le message d'erreur à afficher lors d'une erreur de saisie
+     */
+    @FXML private Label erreurModifierArete;
+
+    /**
+     * Constructeur de la fenêtre de la modification ou suppression d'une arête
+     * @param grapheModel représente le graphe du Model
+     * @param grapheView représente le graphe de la View
+     * @throws IOException lève une exception
+     */
     ModifierAreteController(Graphe grapheModel, View.Graphe grapheView) throws IOException {
         super();
         this.grapheModel = grapheModel;
@@ -66,11 +105,10 @@ public class ModifierAreteController extends FXMLController {
                         public void changed(ObservableValue<? extends String> ov,
                                             String old_val, String new_val) {
                             for (Arete a : ModifierAreteController.this.grapheModel.getAretes()) {
-                                if(Integer.toString(a.getId()).equals(listViewSAretes.getSelectionModel().getSelectedItem().toString().split("id : ")[1].split(" \\)")[0])) {
+                                if(Integer.toString(a.getId()).equals(listViewSAretes.getSelectionModel().getSelectedItem().split("id : ")[1].split(" \\)")[0])) {
                                     selected = a;
                                 }
                             }
-                            //AreteSelectionne = new_val;
                             couleurChoice.setValue(selected.getCouleur());
                             aretePoids.setText(Integer.toString(selected.getIndice()));
                             areteSize.setText(Integer.toString(selected.getEpaisseur()));
@@ -79,8 +117,9 @@ public class ModifierAreteController extends FXMLController {
         }
     }
 
-    @FXML
-    private Label erreurModifierArete;
+    /**
+     * Fonction permettant la modification des propriétés d'une arête
+     */
     @FXML public void modifyArete() {
         if (selected != null) {
 
@@ -123,6 +162,9 @@ public class ModifierAreteController extends FXMLController {
         }
     }
 
+    /**
+     * Fonction permettant la suppression d'une arête
+     */
     @FXML public void supprimerArete() {
         if (selected != null) {
             grapheModel.supprimerArete(selected);
@@ -135,8 +177,10 @@ public class ModifierAreteController extends FXMLController {
         }
     }
 
+    /**
+     * Fonction fermant la fenêtre au clic sur "Annuler"
+     */
     @FXML public void fermerModifyArete() {
         popUpWindow.close();
     }
-
 }

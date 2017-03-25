@@ -19,15 +19,42 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe AjoutAreteController
+ * permettant de gérer le controle sur l'ajout d'une arête au graphe
+ */
 public class AjoutAreteController extends FXMLController {
 
+    /**
+     * Représentent respectivement le sommet entrant sélectionné et le sommet sortant sélectionné
+     * pour l'ajout d'arête entre ces deux sommets
+     */
     private String sommetEntreSelectionne, sommetSortieSelectionne;
-    @FXML
-    private
-    ListView<String> listViewSommetsE;
-    @FXML
-    private ListView<String> listViewSommetsS;
 
+    /**
+     * Représente l'ensemble des sommets du graphe
+     * pour en sélectionner un comme sommet entrant
+     */
+    @FXML private ListView<String> listViewSommetsE;
+
+    /**
+     * Représente l'ensemble des sommets du graphe
+     * pour en sélectionner un comme sommet sortant
+     */
+    @FXML private ListView<String> listViewSommetsS;
+
+    /**
+     * Représente le message d'erreur à afficher dans la fenêtre
+     * en cas d'erreur de saisie de l'utilisateur
+     */
+    @FXML private Label erreurAjoutArete;
+
+    /**
+     * Constructeur de l'affichage de la fenêtre d'ajout d'une arête
+     * @param graphe représente le graphe du Model
+     * @param grapheView représente le graphe de la View
+     * @throws IOException lève une exception
+     */
     AjoutAreteController(Graphe graphe, View.Graphe grapheView) throws IOException {
         super();
         this.grapheModel = graphe;
@@ -50,7 +77,6 @@ public class AjoutAreteController extends FXMLController {
             ListProperty<String> listProperty = new SimpleListProperty<String>();
             listProperty.set(FXCollections.observableArrayList(sommetsStr));
 
-
             listViewSommetsE.itemsProperty().bind(listProperty);
             listViewSommetsS.itemsProperty().bind(listProperty);
 
@@ -59,7 +85,6 @@ public class AjoutAreteController extends FXMLController {
                         public void changed(ObservableValue<? extends String> ov,
                                             String old_val, String new_val) {
                             sommetEntreSelectionne = new_val;
-
                         }
                     });
 
@@ -70,16 +95,13 @@ public class AjoutAreteController extends FXMLController {
                             sommetSortieSelectionne = new_val;
                         }
                     });
-
-
         }
     }
 
-    @FXML
-    private
-    Label erreurAjoutArete;
+    /**
+     * Fonction d'ajout d'une arête dans le Model et mise à jour de la vue si la saisie est correcte.
+     */
     @FXML public void ajouterArete() {
-
         if (sommetEntreSelectionne != null && sommetSortieSelectionne != null) {
 
             int idSommetEntre = Integer.parseInt(sommetEntreSelectionne.split(" ")[5]);
@@ -101,7 +123,9 @@ public class AjoutAreteController extends FXMLController {
         }
     }
 
-
+    /**
+     * Fonction fermant la fenêtre d'ajout d'arête au clic sur "Annuler"
+     */
     @FXML public void fermerAjoutArete() {
         popUpWindow.close();
     }

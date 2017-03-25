@@ -10,11 +10,26 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
+/**
+ * Classe ModifierTagSommet
+ * affichant le contrôle de la modification de l'étiquette d'un sommet
+ */
 public class ModifierTagSommet extends FXMLController {
 
-    @FXML
-    private TextField nouveauTag;
-    public ModifierTagSommet(Graphe grapheModel, View.Graphe grapheView, Sommet sommetSelectionneModel, View.Sommet sommetSelectionneView) throws IOException {
+    /**
+     * Représente la nouvelle étiquette du sommet
+     */
+    @FXML private TextField nouveauTag;
+
+    /**
+     * Constructeur de la fenêtre de la modification de l'étiquette d'un sommet
+     * @param grapheModel représente le graphe du Model
+     * @param grapheView représente le graphe de la View
+     * @param sommetSelectionneModel représente le sommet sélectionné du Model
+     * @param sommetSelectionneView représente le sommet sélectionné dans la View
+     * @throws IOException lève une exception
+     */
+    ModifierTagSommet(Graphe grapheModel, View.Graphe grapheView, Sommet sommetSelectionneModel, View.Sommet sommetSelectionneView) throws IOException {
         super();
         this.grapheModel = grapheModel;
         this.grapheView = grapheView;
@@ -29,25 +44,25 @@ public class ModifierTagSommet extends FXMLController {
                 fxmlLoaderPopUp.setController(this);
                 popUpWindow.setScene(new Scene((Parent) fxmlLoaderPopUp.load()));
             }
-
             nouveauTag.setText(sommetSelectionneModel.getTag());
-
             popUpWindow.show();
         }
     }
 
-
-    @FXML
-    public void changerTagSommetSelectionne() {
-
+    /**
+     * Fonction modifiant l'étiquette du sommet sélectionné
+     */
+    @FXML public void changerTagSommetSelectionne() {
         sommetSelectionneModel.setTag(nouveauTag.getText());
         sommetSelectionneView.setLb(nouveauTag.getText());
         grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
         popUpWindow.close();
     }
 
-    @FXML
-    public void fermerChangerTagSommetSelectionne() {
+    /**
+     * Fonction fermant la fenêtre au clic sur "Annuler"
+     */
+    @FXML public void fermerChangerTagSommetSelectionne() {
         popUpWindow.close();
     }
 }

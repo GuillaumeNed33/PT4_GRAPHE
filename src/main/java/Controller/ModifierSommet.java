@@ -21,17 +21,46 @@ import java.io.IOException;
 /**
  * Created by audreylentilhac on 18/03/2017.
  */
+/**
+ * Classe ModifierSommet
+ * affichant le contrôle de la modification d'un sommet
+ */
 public class ModifierSommet extends FXMLController {
 
+    /**
+     * Représente le controller d'un sommet pour vérifier la validité de la saisie de l'utilisateir
+     */
     private SommetController sommetControl;
-    private ObservableList<Forme_Sommet> formes = FXCollections.observableArrayList(Forme_Sommet.values());
 
-    @FXML private ChoiceBox formeSommet;
+    /**
+     * Représente la liste déroulante des formes possibles d'un sommet
+     */
+    @FXML private ChoiceBox<Forme_Sommet> formeSommet;
+
+    /**
+     * Représente respectivement la position, la taille et l'indice d'un sommet
+     */
     @FXML private TextField PosSommet, tailleSommet, indiceSommet;
+
+    /**
+     * Représente le choix de couleur d'un sommet
+     */
     @FXML private ColorPicker couleurSommet;
+
+    /**
+     * Représente l'étiquette d'un sommet
+     */
     @FXML private Label erreurSommet;
 
-    public ModifierSommet(Graphe grapheModel, View.Graphe grapheView, Sommet sommetSelectionneModel, View.Sommet sommetSelectionneView) throws IOException {
+    /**
+     * Constructeur de la fenêtre de la modification d'un sommet
+     * @param grapheModel représente le graphe du Model
+     * @param grapheView représente le graphe de la View
+     * @param sommetSelectionneModel représente le sommet sélectionné du Model
+     * @param sommetSelectionneView représente le sommet sélectionné dans la View
+     * @throws IOException lève une exception
+     */
+    ModifierSommet(Graphe grapheModel, View.Graphe grapheView, Sommet sommetSelectionneModel, View.Sommet sommetSelectionneView) throws IOException {
         super();
         sommetControl= new SommetController();
         this.grapheModel = grapheModel;
@@ -46,6 +75,7 @@ public class ModifierSommet extends FXMLController {
                 fxmlLoaderPopUp.setController(this);
                 popUpWindow.setScene(new Scene((Parent) fxmlLoaderPopUp.load()));
                 formeSommet.setValue(sommetSelectionneModel.getForme());
+                ObservableList<Forme_Sommet> formes = FXCollections.observableArrayList(Forme_Sommet.values());
                 formeSommet.setItems(formes);
             }
 
@@ -57,7 +87,6 @@ public class ModifierSommet extends FXMLController {
             else {
                 tailleSommet.setText(Integer.toString(sommetSelectionneModel.getTaille().width));
             }
-
             indiceSommet.setText(Integer.toString(sommetSelectionneModel.getIndice()));
             couleurSommet.setValue(sommetSelectionneModel.getCouleur());
 
@@ -65,6 +94,9 @@ public class ModifierSommet extends FXMLController {
         }
     }
 
+    /**
+     * Fonction permettant de modifier les propriétés d'un sommet
+     */
     public void ModifierSommetSelectionne(){
 
         Size tailleSommet = sommetControl.déterminationTailleRentrerParUtilisateur(formeSommet.getValue().toString(), this.tailleSommet, this.erreurSommet);
@@ -83,10 +115,9 @@ public class ModifierSommet extends FXMLController {
             sommetSelectionneModel.setCouleur(couleurSommet.getValue());
             sommetSelectionneModel.setForme(formeSommet.getValue().toString());
 
-            sommetSelectionneView.setFormeEtTaille((Forme_Sommet) formeSommet.getValue(), tailleSommet);
+            sommetSelectionneView.setFormeEtTaille(formeSommet.getValue(), tailleSommet);
             sommetSelectionneView.setCoord(coordSommet.getKey(), coordSommet.getValue());
             sommetSelectionneView.setColorVue(couleurSommet.getValue());
-
 
             grapheView.misAJourAretes(sommetSelectionneView);
 
@@ -97,8 +128,10 @@ public class ModifierSommet extends FXMLController {
         }
     }
 
+    /**
+     * Fonction permettant de fermer la fenêtre au clic sur "Annuler"
+     */
     public void fermerPopUpModifierSommet(){
         popUpWindow.close();
     }
-
 }

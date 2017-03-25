@@ -6,10 +6,7 @@ import View.Arete;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -22,31 +19,76 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Classe FXMLController
+ * permettant de gérer la fenêtre principale
+ */
 public class FXMLController extends VBox {
+    /**
+     * Représente la fenêtre principale
+     */
     protected Stage popUpWindow;
+    /**
+     * Représente le graphe de View
+     */
     protected View.Graphe grapheView;
+    /**
+     * Représente la graphe du Model
+     */
     protected Model.Graphe grapheModel;
+    /**
+     * Représente la scène
+     */
     private VBox vbox;
 
-    public VBox getVbox() {
-        return vbox;
-    }
+    /**
+     * Représente le choix de couleur de fond de la fenêtre
+     */
+    @FXML private ColorPicker couleurFond;
 
+    /**
+     * Représente le sommet sélectionné dans le Model
+     */
+    Sommet sommetSelectionneModel;
+
+    /**
+     * Représente le sommet sélectionné dans la View
+     */
+    View.Sommet sommetSelectionneView;
+
+    /**
+     * Représente l'étiquette du sommet sélectionné
+     */
+    private String tagSommetSelectionne;
+
+    /**
+     * Constructeur initialisant la fenêtre principale
+     * @throws IOException lève une exception
+     */
     public FXMLController() throws IOException {
-        initPopup();
-    }
-
-    public void setGrapheView(View.Graphe g) {
-        grapheView = g;
-    }
-
-    private void initPopup() {
         popUpWindow = new Stage();
         popUpWindow.initModality(Modality.APPLICATION_MODAL);
         popUpWindow.setResizable(false);
     }
 
-    protected void refreshGrapheView() {
+    // Accesseur
+    public VBox getVbox() {
+        return vbox;
+    }
+
+    // Mutateur
+    public void setGrapheView(View.Graphe g) {
+        grapheView = g;
+    }
+    public void setVbox(VBox vbox) {
+        this.vbox = vbox;
+    }
+
+
+    /**
+     * Fonction de mise à jour de la vue par rapport au graphe du Model
+     */
+    private void refreshGrapheView() {
         grapheView = new View.Graphe();
         grapheView.chargerGraphe(grapheModel);
         getVbox().getChildren().remove(1);
@@ -106,9 +148,14 @@ public class FXMLController extends VBox {
         }
     }
 
-    private FileChooser createFileChooser(String exporter) {
+    /**
+     * Fonction de création d'une fenêtre de choix de fichiers
+     * @param titre de la fenêtre
+     * @return le fileChooser
+     */
+    private FileChooser createFileChooser(String titre) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle(exporter);
+        fileChooser.setTitle(titre);
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("GV", "*.gv"),
                 new FileChooser.ExtensionFilter("GRAPHML", "*.graphml")
@@ -182,6 +229,9 @@ public class FXMLController extends VBox {
         }
     }
 
+    /**
+     * Fonction permettant d'indicer par leur degré tous les sommets du graphe
+     */
     @FXML
     public void clickIndicageDegré() {
         if (grapheModel != null) {
@@ -192,43 +242,53 @@ public class FXMLController extends VBox {
         }
     }
 
+    /**
+     * Fonction de controle de l'ajout d'un sommet
+     * redirigeant vers le controller AjoutSommetController
+     * @throws IOException lève une exception
+     */
     @FXML
     public void clickAjouterSommet() throws IOException {
         new AjoutSommetController(grapheModel, grapheView);
     }
 
+    /**
+     * Fonction de controle de l'ajout d'une arête
+     * redirigeant vers le controller AjoutAreteController
+     * @throws IOException lève une exception
+     */
     @FXML
     public void clickAjouterArete() throws IOException {
         new AjoutAreteController(grapheModel, grapheView);
     }
+
+    /**
+     * Fonction de controle de la taille du graphe
+     * redirigeant vers le controller TailleGrapheController
+     * @param mouseEvent clic
+     * @throws IOException lève une exception
+     */
     @FXML
     public void clickTailleGraphe(MouseEvent mouseEvent) throws IOException {
         new TailleGrapheController(grapheModel, grapheView);
     }
 
     /**
-     *
-     * @param event
+     * Fonction de controle de la coloration du graphe
+     * redirigeant vers le controller CouleurGrapheController
+     * @param event clic
+     * @throws IOException lève une exception
      */
     @FXML public void clickCouleurGraphe(MouseEvent event) throws IOException {
         new CouleurGrapheController(grapheModel, grapheView);
     }
 
+    /**
+     * Fonction fermant la fenêtre courante
+     * @param button bouton de fermeture de la fenêtre
+     */
     protected void fermerPopup(Button button) {
         popUpWindow.close();
-    }
-
-    @FXML public void clickSupprimer() {
-        if (grapheModel != null) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/SupprSommet.fxml"));
-                popUpWindow.setTitle("Confirmer suppression");
-                popUpWindow.setScene(new Scene((Parent) fxmlLoader.load()));
-                popUpWindow.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     /**
@@ -242,7 +302,8 @@ public class FXMLController extends VBox {
                     grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
                 }
 
-            } else {
+            }
+            else {
                 for (View.Sommet s : grapheView.getSommets()) {
                     s.getVue().setVisible(true);
                     grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
@@ -260,7 +321,8 @@ public class FXMLController extends VBox {
                     a.setVisible(false);
                     grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
                 }
-            } else {
+            }
+            else {
                 for (Arete a : grapheView.getAretes()) {
                     a.setVisible(true);
                     grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
@@ -278,7 +340,8 @@ public class FXMLController extends VBox {
                     s.getLb().setVisible(false);
                     grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
                 }
-            } else {
+            }
+            else {
                 for (View.Sommet s : grapheView.getSommets()) {
                     s.getLb().setVisible(true);
                     grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
@@ -287,22 +350,24 @@ public class FXMLController extends VBox {
         }
     }
     /**
-     *
+     * Fonction de zoom -
      */
     @FXML public void clickZoomMinus() {
         grapheView.getScrollPane().zoomOut();
     }
 
     /**
-     *
+     * Fonction de zoom +
      */
-    @FXML public void clickZoomPlus() {
+    @FXML public void clickZoomPlus()  throws IOException{
         grapheView.getScrollPane().zoomIn();
     }
+
     /**
-     *
+     * Fonction permettant de modifier la couleur de fond de la fenêtre d'affichage du graphe
+     * @param event clic
+     * @throws IOException lève une exception
      */
-    @FXML private ColorPicker couleurFond;
     @FXML public void clickCouleurFond(MouseEvent event) throws IOException {
         couleurFond.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -319,16 +384,20 @@ public class FXMLController extends VBox {
         });
     }
 
-    public void setVbox(VBox vbox) {
-        this.vbox = vbox;
-    }
-
+    /**
+     * Fonction de controle de la modification d'une arête du graphe
+     * redirigeant vers le controller ModifierAreteController
+     * @throws IOException lève une exception
+     */
     @FXML public void clickModifyArete() throws IOException {
-        //TODO modif aretes
         new ModifierAreteController(grapheModel, grapheView);
     }
 
 
+    /**
+     * Représente le menu contextuel lors d'un double clic sur un sommet
+     * avec tous ses sous-menus
+     */
     private ContextMenu contextMenu = new ContextMenu();
     private MenuItem proprieteSommet = new MenuItem("Tableau de propriétés du sommet");
     private MenuItem modifierSommet = new MenuItem("Modifier le sommet");
@@ -341,7 +410,6 @@ public class FXMLController extends VBox {
      * Fonction d'insertion des options du contextMenu
      */
     public void setContextMenu() {
-
         contextMenu = new ContextMenu();
         contextMenu.getItems().addAll(proprieteSommet, modifierSommet, etiquetteSommet,supprimerSommet,copierEtiquetteSommet,collerEtquetteSommet);
 
@@ -406,9 +474,10 @@ public class FXMLController extends VBox {
 
     }
 
-    Sommet sommetSelectionneModel;
-    View.Sommet sommetSelectionneView;
-    String tagSommetSelectionne;
+    /**
+     * Fonction faisant apparaitre le menu contextuel lors d'un double clic sur un sommet valide
+     * @param pane Pane
+     */
     public void setPane(Pane pane){
         pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -463,12 +532,16 @@ public class FXMLController extends VBox {
                 }
             };*/
 
+    /** Fonction permettant de trouver le sommet sous le curseur
+     * @param event curseur
+     * @return vrai si le curseur correspond à un sommet faux sinon
+     */
     private boolean estTrouveSommet(MouseEvent event) {
-        boolean trouve = false; // VRAI LIGNE, A GARDER
+        boolean trouve = false;
         int cpt = 0;
-        sommetSelectionneModel = null; // VRAI LIGNE, A GARDER // LIGNE TEST, A EFFACER MAIS PAS DE SUITE (je test quoi)
+        sommetSelectionneModel = null;
 
-        while(!trouve && cpt<grapheModel.getSommets().size()) { // DETECTION CLIC DROIT SUR SOMMET (On ne veut pas clic droit n'importe où).
+        while(!trouve && cpt<grapheModel.getSommets().size()) {
             sommetSelectionneModel = grapheModel.getSommets().get(cpt);
             sommetSelectionneView = grapheView.getSommets().get(cpt);
 
@@ -478,18 +551,23 @@ public class FXMLController extends VBox {
                     event.getY() <= sommetSelectionneModel.getY() + sommetSelectionneModel.getTaille().height){
                 trouve = true;
             }
-
             ++cpt;
         }
         return trouve;
     }
 
+    /**
+     * Fonction cachant le menu contextuel lorsque l'utilisateur n'est plsu sur un sommet
+     */
     private void enleverMenuContextuel() {
         sommetSelectionneModel = null;
         contextMenu.hide();
     }
 
-
+    /**
+     * Fenetre d'alerte
+     * @param message à faire apparaitre dans la fenêtre
+     */
     private void afficherFenetreAlerte(String message){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Fenêtre d'erreur");
@@ -497,5 +575,4 @@ public class FXMLController extends VBox {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
 }

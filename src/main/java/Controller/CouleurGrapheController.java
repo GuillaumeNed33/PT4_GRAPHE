@@ -15,10 +15,46 @@ import javafx.scene.paint.Color;
 
 import java.io.IOException;
 
-
+/**
+ * Classe CouleurGrapheController
+ * permettant de gérer la fenêtre de coloration des sommets et des arêtes du graphe
+ */
 public class CouleurGrapheController extends FXMLController {
 
-    public CouleurGrapheController(Graphe grapheModel, View.Graphe grapheView) throws IOException {
+    /**
+     *  Représentent respcetivement la checkbox des sommets et la checkbox des arêtes
+     */
+    @FXML private CheckBox checkSommets, checkAretes;
+
+    /**
+     * Représentent respectivement le choix de couleur minimal et le choix de couleur maximal
+     */
+    @FXML private ColorPicker miniCouleur, maxiCouleur;
+
+    /**
+     * Représente le bouton de confirmation pour colorier le graphe
+     */
+    @FXML private Button OKCouleurGraphe;
+
+    /**
+     * Représente le message d'erreur à afficher dans la fenêtre
+     * en cas d'erreur de saisie de l'utilisateur
+     */
+    @FXML private Label erreurCouleurGraphe;
+
+    /**
+     * Représente le bouton d'annulation pour sortir de la fenêtre
+     * sans appliquer de modification
+     */
+    @FXML private Button annulerCouleurGraphe;
+
+    /**
+     * Constructeur permettant l'affichage de la fenêtre de coloration du graphe
+     * @param grapheModel représente le graphe du Model
+     * @param grapheView représente le graphe de la View
+     * @throws IOException lève une exception
+     */
+    CouleurGrapheController(Graphe grapheModel, View.Graphe grapheView) throws IOException {
         super();
         this.grapheModel = grapheModel;
         this.grapheView = grapheView;
@@ -33,12 +69,12 @@ public class CouleurGrapheController extends FXMLController {
             popUpWindow.show();
         }
     }
-    @FXML CheckBox checkSommets, checkAretes;
-    @FXML ColorPicker miniCouleur, maxiCouleur;
-    @FXML Button OKCouleurGraphe;
-    @FXML Label erreurCouleurGraphe;
-    @FXML
-    public void colorierGraphe(){
+
+    /**
+     * Fonction permettant de controler la coloration du grpahe.
+     * fonction ajoute le nouveau sommet dans le Model et met à jour la View
+     */
+    @FXML public void colorierGraphe(){
         if (checkAretes.isSelected()) {
             grapheModel.changerCouleurAretes(miniCouleur.getValue(), maxiCouleur.getValue());
             int i = 0;
@@ -65,11 +101,12 @@ public class CouleurGrapheController extends FXMLController {
         else {
             erreurCouleurGraphe.setText("Erreur - Les sommets ne sont pas indicés \net / ou vous n'avez pas sélectionné Sommets ou Arêtes.");
         }
-
     }
-    private Button annulerCouleurGraphe;
-    @FXML
-    public void fermerPopUpCouleurGraphe(){
+
+    /**
+     * Fonction fermant la fenêtre d'ajout d'un sommet au clic sur "Annuler"
+     */
+    @FXML public void fermerPopUpCouleurGraphe(){
         fermerPopup(annulerCouleurGraphe);
     }
 }

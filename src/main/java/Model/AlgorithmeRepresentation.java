@@ -6,7 +6,7 @@ import java.util.Random;
 /**
  * Classe permettant de disposer les sommets pour différentes représentations.
  */
-public class AlgorithmeRepresentation {
+class AlgorithmeRepresentation {
     /**
      * Représente la marge entre chaque sommet du graphe.
      */
@@ -26,14 +26,14 @@ public class AlgorithmeRepresentation {
      * Constructeur de l'algorithme de représentation d'un graphe.
      * @param graphe Représente le graphe qui initialisera de la classe AlgorithmeRepresentation.
      */
-    public AlgorithmeRepresentation(Graphe graphe){
+    AlgorithmeRepresentation(Graphe graphe){
         this.graphe = graphe;
     }
 
     /**
      *  Permet une distribution uniforme rectangulaire des sommets.
      */
-    public void distributionAleatoire(int largeurEcran, int hauteurEcran){
+    void distributionAleatoire(int largeurEcran, int hauteurEcran){
         for (Sommet sommet : graphe.getSommets()) {
             sommet.setX((random.nextFloat()*largeurEcran)+MARGE);
             sommet.setY((random.nextFloat()*hauteurEcran)+MARGE);
@@ -44,7 +44,7 @@ public class AlgorithmeRepresentation {
     /**
      * Permet une distribution circulaire des sommets.
      */
-    public void distributionCirculaire(int largeurEcran, int hauteurEcran){
+    void distributionCirculaire(int largeurEcran, int hauteurEcran){
         float indice = 0;
         for (Sommet sommet : graphe.getSommets()) {
             float rayon = (float)1/2 * (float)hauteurEcran;
@@ -58,8 +58,8 @@ public class AlgorithmeRepresentation {
     /**
      * Permet une distribution par modele de Forces.
      */
-    public void distributionModeleForces(int largeurEcran, int hauteurEcran){
-        //distributionAleatoire(largeurEcran, hauteurEcran);
+    void distributionModeleForces(){
+
         for (Sommet sommet : graphe.getSommets()) {
             float forceTotale = forceAttraction(sommet) + forceRepulsion(sommet);
             sommet.setX(sommet.getX() + forceTotale);

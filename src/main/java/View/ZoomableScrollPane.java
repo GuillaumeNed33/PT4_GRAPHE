@@ -7,22 +7,44 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.transform.Scale;
 
+/**
+ * Classe permettant d'initialiser se qui permettra de contenir le panneau affichant le graphe.
+ */
 public class ZoomableScrollPane extends ScrollPane {
-    Group zoomGroup;
-    Scale scaleTransform;
-    Node content;
-    double scaleValue = 1.0;
-    double delta = 0.1;
 
-    public ZoomableScrollPane(Node content) {
+    /**
+     * Représente l'échelle générale de la vue.
+     */
+    private Scale scaleTransform;
+
+    /**
+     * Représente le panneau contenant les données permettant l'affichage du graphe.
+     */
+    private Node content;
+
+    /**
+     * Représente l'échelle de la vue.
+     */
+    private double scaleValue = 1.0;
+
+    /**
+     * Représente la valeur delta permettant d'incrémenter ou décrémenter l'échelle de la vue.
+     */
+    private double delta = 0.1;
+
+    ZoomableScrollPane(Node content) {
         this.content = content;
         setContent(this.content);
     }
 
+    /**
+     * Méthode permettant de mettre à jour le panneau affichant le graphe.
+     * @param content Représente le panneau contenant les données permettant l'affichage du graphe.
+     */
     public void updateScrollPane(Node content) {
         this.content = content;
         Group contentGroup = new Group();
-        zoomGroup = new Group();
+        Group zoomGroup = new Group();
         contentGroup.getChildren().add(zoomGroup);
         zoomGroup.getChildren().add(content);
         setContent(contentGroup);
@@ -42,13 +64,16 @@ public class ZoomableScrollPane extends ScrollPane {
         zoomTo(1.0);
     }
 
-    public void zoomTo(double scaleValue) {
+    /**
+     * Méthode permettant de changer l'échelle de la vue.
+     * @param scaleValue Représente la nouvelle échelle de la vue.
+     */
+    private void zoomTo(double scaleValue) {
 
         this.scaleValue = scaleValue;
 
         scaleTransform.setX(scaleValue);
         scaleTransform.setY(scaleValue);
-
     }
 
     public void zoomActual() {
@@ -58,6 +83,9 @@ public class ZoomableScrollPane extends ScrollPane {
 
     }
 
+    /**
+     * Méthode permettant de diminuer l'échelle de la vue.
+     */
     public void zoomOut() {
         scaleValue -= delta;
 
@@ -68,6 +96,9 @@ public class ZoomableScrollPane extends ScrollPane {
         zoomTo(scaleValue);
     }
 
+    /**
+     * Méthode permettant d'augmenter l'échelle de la vue.
+     */
     public void zoomIn() {
 
         scaleValue += delta;
@@ -108,6 +139,9 @@ public class ZoomableScrollPane extends ScrollPane {
 
     }
 
+    /**
+     * Classe permettant de vérifier si l'utilisateur utilise la molette pour augmenter ou diminuer l'échelle de la vue.
+     */
     private class ZoomHandler implements EventHandler<ScrollEvent> {
 
         @Override

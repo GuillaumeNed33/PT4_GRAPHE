@@ -48,11 +48,6 @@ public class Graphe {
     private HashMap<Arete, Pair<Sommet,Sommet>> extremites;    // conteneur liant pour chaque arete sa paire de sommets
 
     /**
-     * Représente l'ensemble des clefs de style (definies dans les fichier .graphml).
-     */
-    //private ArrayList<KeyStyleGRAPHML> keyGML;
-
-    /**
      *  Représente une valeur aléatoire.
      */
     private static Random rand = new Random();
@@ -110,7 +105,7 @@ public class Graphe {
      * @param fichier Représente le path du fichier à charger.
      */
     private void chargerGrapheGV(String fichier){
-        String chaine = "";
+
         try{
             InputStream ips=new FileInputStream(fichier);
             InputStreamReader ipsr=new InputStreamReader(ips);
@@ -151,14 +146,13 @@ public class Graphe {
                         String elementSommet = ligne.split("\\[+.+;$")[0].trim();
                         int idImportationSommet = Integer.parseInt(elementSommet.split("node")[1].replace("\"", ""));
 
-                        verificationSommetDoublonParIdImportation(idImportationSommet, false, ligne);// Pas de doublon
+                        verificationSommetDoublonParIdImportation(idImportationSommet, true, ligne);// Pas de doublon
 
                     } else if (elementLigne[1].equals("->")) { // Creation arete
 
                         creationAreteImportation(ligne);
                     }
                 }
-                chaine+=ligne+"\n";
             }
             br.close();
         }
@@ -185,7 +179,7 @@ public class Graphe {
                 sommet.setTag(label);
             }
 
-            pattern = Pattern.compile("shape=+[A-Z a-z]+\\ "); // forme du sommet
+            pattern = Pattern.compile("shape=+[A-Z a-z]+ "); // forme du sommet
             matcher = pattern.matcher(ligne); // On le cherche dans la ligne
 
             if (matcher.find()) {
@@ -227,11 +221,9 @@ public class Graphe {
         int idImportationSommetSource = Integer.parseInt(sommet[0].split("node")[1].replace("\"", "").trim());
         int idImportationSommetDestination = Integer.parseInt(sommet[1].split("node")[1].replace("\"", "").trim());
 
-        boolean doublonArete = verificationDoublonAreteParId(true, idImportationSommetSource, idImportationSommetDestination);
-
-        if (!doublonArete) {
-            Sommet sommetSource = verificationSommetDoublonParIdImportation(idImportationSommetSource, true, ligne);
-            Sommet sommetDestination = verificationSommetDoublonParIdImportation(idImportationSommetDestination, true, ligne);
+        if (!verificationDoublonAreteParId(true, idImportationSommetSource, idImportationSommetDestination)) {
+            Sommet sommetSource = verificationSommetDoublonParIdImportation(idImportationSommetSource, false, null);
+            Sommet sommetDestination = verificationSommetDoublonParIdImportation(idImportationSommetDestination, false, null);
 
             ajouterArete(sommetSource, sommetDestination);
 
@@ -241,18 +233,18 @@ public class Graphe {
 
     /**
      * Méthode permettant de vérifier si une arête n'est pas déjà existante.
-     * @param parId Représente le fait de savoir si on passe la recherche via l'id d'importation ou par l'id du graphe.
+     * @param parIdImportation Représente le fait de savoir si on passe la recherche via l'id d'importation ou par l'id du graphe.
      * @param idSommetSource Représente le sommet source de l'arête.
      * @param idSommetDestination Représente le sommet destinataire de l'arête.
      * @return Retroune vrai si il y a un doublon et faux dans le cas contraire.
      */
-    private boolean verificationDoublonAreteParId(boolean parId, int idSommetSource, int idSommetDestination) {
+    private boolean verificationDoublonAreteParId(boolean parIdImportation, int idSommetSource, int idSommetDestination) {
 
         boolean doublonArete = false;
         if (!aretes.isEmpty()) {
             int cptArete = 0;
             while (cptArete < aretes.size() && !doublonArete) {
-                if (parId) {
+                if (parIdImportation) {
                     if ((aretes.get(cptArete).getEntree().getIdImportation() == idSommetSource &&
                             aretes.get(cptArete).getSortie().getIdImportation() == idSommetDestination) || (
                             aretes.get(cptArete).getEntree().getIdImportation() == idSommetDestination &&
@@ -279,9 +271,11 @@ public class Graphe {
     /**
      * Méthode permettant de vérifier si le sommet n'existe pas déjà grâce à son id d'importation.
      * @param idImportation Représente l'id qu'a le sommet dans le fichier.
+     * @param ajoutAttributs Représente le fait de vouloir où non lui rajouter des attributs
+     * @param ligne Représente la ligne où il faut chercher les éléments pour ajouter des attributs aux sommets.
      * @return Retourne le sommet correspondant si il y a doublon sinon il retourne null.
      */
-    private Sommet verificationSommetDoublonParIdImportation(int idImportation, boolean arete, String ligne) {
+    private Sommet verificationSommetDoublonParIdImportation(int idImportation, boolean ajoutAttributs, String ligne) {
 
         boolean existe = false;
         int cpt = 0;
@@ -296,7 +290,7 @@ public class Graphe {
             }
         }
 
-        if (!existe && arete) {
+        if (!existe && !ajoutAttributs) {
             sommet = new Sommet(idImportation);
             sommets.add(sommet);
         }
@@ -304,7 +298,7 @@ public class Graphe {
             sommet = new Sommet(idImportation);
         }
 
-        if (arete) {
+        if (!ajoutAttributs) {
             return sommet;
         }
         else {
@@ -316,127 +310,51 @@ public class Graphe {
 
     /**
      * Charge les fichiers .GRAPHML.
-     * @param fichier
+     * @param fichier Représente le chemin du fichier contenant le graphe.
      */
     private void chargerGrapheGRAPHML(String fichier) {
-        String chaine = "";
-        //keyGML = new ArrayList<KeyStyleGRAPHML>();
+
         try {
             InputStream ips = new FileInputStream(fichier);
             InputStreamReader ipsr = new InputStreamReader(ips);
             BufferedReader br = new BufferedReader(ipsr);
             String ligne;
-            boolean directedGraph = false;
-            int tmpIdNode=-999;
-            int tmpIdEdge=-999;
-            String tmpkeyID = null;
+
+            Pattern patternIdImportation = Pattern.compile("\\d+$");
+
+            Matcher matcherSrc;
+            Matcher matcherDest;
 
             while ((ligne = br.readLine()) != null) {
+                if (ligne.contains("<node ")) {
 
-                if(ligne.contains("<data ")) {
-                    if(tmpIdNode != -999 || tmpIdEdge != -999) {
-                        String keyId = ligne.split("key=\"")[1].split("\"")[0];
-                        String value = ligne.split(">")[1].split("</")[0];
+                    String [] recupId = ligne.split("id=\"");
+                    String idImportation = recupId[1].split("\"")[0];
 
-                        KeyStyleGRAPHML key = null;
-                        int i = 0;
-                        boolean find = false;
+                    matcherSrc = patternIdImportation.matcher(idImportation);
 
-                       /* while(i < keyGML.size() && !find) {
-                            if(keyGML.get(i).getId().equals(keyId)) {
-                                find = true;
-                                key = keyGML.get(i);
-                            }
-                            else
-                                i++;
-                        }*/
+                    if (matcherSrc.find()) {
+                        verificationSommetDoublonParIdImportation(Integer.parseInt(matcherSrc.group()), false, null);
                     }
                 }
-                else if (ligne.contains("<key")) {
-                    tmpIdNode = -999;
-                    tmpIdEdge = -999;
 
-                    String [] recupId = ligne.split("id=\"");
-                    String id = recupId[1].split("\"")[0];
+                else if (ligne.contains("<edge ")) {
 
-                    String [] recupType = ligne.split("for=\"");
-                    String type = recupType[1].split("\"")[0]; //node or edge
-
-                    String [] recupAttributeName = ligne.split("attr.name=\"");
-                    String keyName = recupAttributeName[1].split("\"")[0];
-
-                    //keyGML.add(new KeyStyleGRAPHML(id,type, keyName));
-                    tmpkeyID=id;
-                }
-
-                else if (ligne.contains("<default ")) {
-
-                    String [] recup = ligne.split("<default>");
-                    String value = recup[1].split("</")[0];
-
-                    int i =1; boolean find = false;
-
-                    /*while(i < keyGML.size() && !find) {
-                        if(keyGML.get(i).getId().equals(tmpkeyID)) {
-                            find = true;
-                            keyGML.get(i).setAttrType(value);
-                        }
-                        else
-                            i++;
-                    }*/
-                }
-
-                else if (ligne.contains("<graph ")) {
-                    tmpIdNode = -999;
-                    tmpIdEdge = -999;
-                    String [] recupId = ligne.split("id=\"");
-                    nom = recupId[1].split("\"")[0];
-                    String [] recupType = ligne.split("edgedefault=\"");
-                    String typeArete = recupType[1].split("\"")[0];
-                    directedGraph = !typeArete.equals("undirected");
-                }
-
-                else if (ligne.contains("<node-style ")) {
-                    tmpIdNode = -999;
-                    tmpIdEdge = -999;
-
-                    String [] recupId = ligne.split("id=\"");
-                    String id = recupId[1].split("\"")[0];
-                }
-
-                else if (ligne.contains("<node ")) {
-                    tmpIdEdge = -999;
-                    String [] recupId = ligne.split("id=\"");
-                    String id = recupId[1].split("\"")[0];
-                    Size tailleFenetre = new Size(10,10);
-                    if (ligne.contains("style")) {
-                        String style = ligne.split("style=\"")[1].split("\"")[0];
-                    }
-                    Sommet s = new Sommet(id);
-                    ajouterSommetInitial(s);
-                    tmpIdNode = s.getIdImportation();
-                }
-
-                else if (ligne.contains("<edge ")){
-                    tmpIdNode = -999;
-                    boolean directedArete;
-                    if(ligne.contains("directed=\"true\""))
-                        directedArete = true;
-                    else if(ligne.contains("directed=\"false\""))
-                        directedArete = false;
-                    else
-                        directedArete = directedGraph;
-
-                    String [] recupId = ligne.split("id=\"");
-                    String id = recupId[1].split("\"")[0];
                     String [] recupSource = ligne.split("source=\"");
-                    String source = recupSource[1].split("\"")[0];
+                    matcherSrc = patternIdImportation.matcher(recupSource[1].split("\"")[0]);
 
                     String [] recupTarget = ligne.split("target=\"");
-                    String dest = recupTarget[1].split("\"")[0];
+                    matcherDest = patternIdImportation.matcher(recupTarget[1].split("\"")[0]);
 
-                    if(trouverSommetParTag(source) != null && trouverSommetParTag(dest) != null)
-                        ajouterAreteInitial(trouverSommetParTag(source), trouverSommetParTag(dest), id);
+                    if (matcherSrc.find() && matcherDest.find()) {
+
+                        if (!verificationDoublonAreteParId(true, Integer.parseInt(matcherSrc.group()), Integer.parseInt(matcherDest.group()))) {
+                            Sommet sommetSource = verificationSommetDoublonParIdImportation(Integer.parseInt(matcherSrc.group()), false, null);
+                            Sommet sommetDestination = verificationSommetDoublonParIdImportation(Integer.parseInt(matcherDest.group()), false, null);
+
+                            ajouterArete(sommetSource, sommetDestination);
+                        }
+                    }
                 }
             }
             br.close();
@@ -596,27 +514,6 @@ public class Graphe {
 
 
     /**
-     * Méthode permettant de trouver un sommet via le tag.
-     * @param source Représente le tag du sommet à chercher.
-     * @return Représente le sommet trouver via le tag et null si le tag ne correspond à aucun sommet.
-     */
-    private Sommet trouverSommetParTag(String source) {
-        boolean trouve = false;
-        int cpt = 0;
-        Sommet res = null;
-        while(!trouve && cpt < sommets.size()) {
-            if(sommets.get(cpt).getTag().equals(source)) {
-                trouve = true;
-                res = sommets.get(cpt);
-            }
-            else
-                cpt++;
-        }
-        return res;
-    }
-
-
-    /**
      * Permet d'obtenir les sommets voisins d'un sommet.
      * @param sommet_origine Représente le sommet de référence pour déterminer si les autres sommets sont voisins.
      * @return Retourne la liste des sommets voisins.
@@ -695,43 +592,6 @@ public class Graphe {
 
 
     /**
-     * Méthode permettant d'ajouter un sommet initial.
-     * @param sommet Représente le sommet à ajouter si vérifie les conditions.
-     * @return Retourne vrai si l'ajout se fait et faux dans le cas contraire.
-     */
-    public boolean ajouterSommetInitial(Sommet sommet){
-        if (verificationPossibiliteAjoutSommetInitial(sommet.getTag())) {
-            sommets.add(sommet);
-            incidentes.put(sommet, new ArrayList<Arete>());
-        }
-        else {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Méthode permettant d'ajouter un sommet si son tag n'existe pas.
-     * @param tag Représente le tag à comparer dans les sommets.
-     * @return Retourne vrai si il existe un sommet avec ce tag ou faux dans le cas contraire.
-     */
-    private boolean verificationPossibiliteAjoutSommetInitial(String tag) {
-        Iterator<Sommet> iterateur_sommet = sommets.iterator();
-        boolean trouver = false;
-
-        while (!trouver && iterateur_sommet.hasNext()) {
-            Sommet sommet_temp = iterateur_sommet.next();
-
-            if (sommet_temp.getTag().equals(tag)) {
-                trouver = true;
-            }
-        }
-        return !trouver;
-
-    }
-
-    /**
      * Permet de vérifier que les coordonnées du sommet sont correctes et qu'il n'existe pas un sommet à ces coordonnées.
      * @param coord_y_sommet Représente la coordonnée en y, à vérifier, du sommet.
      * @param coord_x_sommet Représente la coordonnée en x, à vérifier, du sommet.
@@ -761,28 +621,6 @@ public class Graphe {
 
         return true;
     }
-
-    /**
-     * Permet de vérifier si le sommet peut-être déplacé et si c'est le cas alors effectuer le déplacement.
-     * Le boolean de retour permet de gérer les erreurs d'ajouts (aspect graphique).
-     * @param sommet Représente le sommet à déplacer.
-     * @param nouvelle_coord_x Représente la nouvelle coordonnée en x du sommet.
-     * @param nouvelle_coord_y Représente la nouvelle coordonnée en y du sommet.
-     * @return Retourne vrai si le déplacement c'est bien effectué ou faux dans le cas contraire.
-     */
-    public boolean deplacerSommet(Sommet sommet, float nouvelle_coord_x, float nouvelle_coord_y, Size tailleFenetre) {
-        if (sommet != null && verificationCoordonneesValide(nouvelle_coord_x, nouvelle_coord_y, tailleFenetre)) {
-            sommet.setX(nouvelle_coord_x);
-            sommet.setY(nouvelle_coord_y);
-        }
-        else {
-            return false;
-        }
-
-        return true;
-    }
-
-
 
     /**
      * Permet de supprimer un sommet du graphe.
@@ -834,29 +672,6 @@ public class Graphe {
         return true;
     }
 
-    /**
-     * Permet d'ajouter une arete nommée au graphe et qui se lie à 2 sommets distinct.
-     * Le boolean de retour permet de gérer les erreurs d'ajouts (aspect graphique).
-     * @param sommet_1 Représente le premier sommet à lier avec l'arete.
-     * @param sommet_2 Représente le second sommet à lier avec l'arete.
-     * @param tag reprséente le nom de l'arete
-     * @return Retourne vrai si l'ajout de l'arete ce fait ou faux dans le cas contraire.
-     */
-    public boolean ajouterAreteInitial(Sommet sommet_1, Sommet sommet_2, String tag) {
-
-        if (verificationPossibiliteAjoutArete(sommet_1, sommet_2)) {
-            Arete arete = new Arete(sommet_1, sommet_2, tag);
-            aretes.add(arete);
-
-            extremites.put(arete, new Pair<Sommet,Sommet>(sommet_1, sommet_2));
-            lierAreteAuSommet(arete, sommet_1);
-            lierAreteAuSommet(arete, sommet_2);
-        }
-        else {
-            return false;
-        }
-        return true;
-    }
 
     /**
      * Permet de vérifier si les sommets en paramètre sont différents et si ils sont bien initialisé.
@@ -909,7 +724,7 @@ public class Graphe {
      * @param coord_y Représente la coordonnée y à vérifier.
      * @return Retourne vrai si les coordonnées sont valide ou faux le cas contraire.
      */
-    public boolean verificationCoordonneesValide(float coord_x, float coord_y, Size tailleFenetre) {
+    private boolean verificationCoordonneesValide(float coord_x, float coord_y, Size tailleFenetre) {
         return coord_x >= 0 && coord_y >= 0 && coord_x <= tailleFenetre.width && coord_y <= tailleFenetre.height;
 
     }
@@ -931,7 +746,7 @@ public class Graphe {
      * Méthode permettant d'affecter une valeur aléatoire à l'indice du sommet.
      * @param sommet Représente le sommet a modifier.
      */
-    public void setIndiceAleatoire (Sommet sommet){
+    private void setIndiceAleatoire (Sommet sommet){
         sommet.setIndice(rand.nextInt());
     }
 
@@ -1027,7 +842,7 @@ public class Graphe {
      * @param cmin Représente le min intervalle de couleur.
      * @param cmax Représente la max intervalle de couleur.
      */
-    public void changerCouleurSommet (Sommet sommet, Color cmin, Color cmax){
+    private void changerCouleurSommet (Sommet sommet, Color cmin, Color cmax){
         if (indiceFixe()) {
             int valeur = sommet.getIndice();
             int indiceMax = indiceMaxSommet();
@@ -1053,9 +868,9 @@ public class Graphe {
     }
 
     /**
-     * Méthode permettant de changer la couleur d'une arete en fonction d'une couleur.
-     * minimale et d'une couleur maximale et de la valeur du poids de l'arête
-     * @param arete Représente l'arete
+     * Méthode permettant de changer la couleur d'une arete en fonction d'une couleur
+     * minimale et d'une couleur maximale et de la valeur du poids de l'arête.
+     * @param arete Représente l'arete à modifier.
      * @param cmin Représente le min intervalle de couleur.
      * @param cmax Représente la max intervalle de couleur.
      */
@@ -1071,12 +886,12 @@ public class Graphe {
 
 
     /**
-     * Méthode permettant grâce à une fonction mathematique de generer une couleur pour une arete ou un sommet.
-     * en fonction de la valeur de son indice suivant un intervalle
-     * @param valeur
+     * Méthode permettant grâce à une fonction mathematique de generer une couleur pour une arete ou un sommet
+     * en fonction de la valeur de son indice suivant un intervalle.
+     * @param valeur Représente l'indice du sommet.
      * @param cmin Représente le min intervalle de couleur.
      * @param cmax Représente la max intervalle de couleur.
-     * @return
+     * @return Retourne l'intensité calculé.
      */
     private double intensite(int valeur, double cmax, double cmin, int indiceMax, int indiceMin){
         if (indiceMax != indiceMin) {
@@ -1097,7 +912,7 @@ public class Graphe {
      * @param maxSommet Représente la taille maximum qu'un sommet peut avoir.
      * @param minSommet Représente la taille minimum qu'un sommet peut avoir.
      */
-    public void changerTailleSommet(Sommet sommet, float maxSommet, float minSommet){
+    private void changerTailleSommet(Sommet sommet, float maxSommet, float minSommet){
         if (indiceFixe()) {
             int valeur = sommet.getIndice();
             int indiceMax = indiceMaxSommet();
@@ -1114,7 +929,7 @@ public class Graphe {
      * @param maxArete Représente l'épaisseur maximum que peut avoir une arête.
      * @param minArete Représente l'épaisseur minimum que peut avoir une arête.
      */
-    public void changerTailleArete(Arete arete, float maxArete, float minArete){
+    private void changerTailleArete(Arete arete, float maxArete, float minArete){
             int valeur = arete.getIndice();
             int indiceMax = indiceMaxArete();
             int indiceMin = indiceMinArete();
@@ -1167,7 +982,7 @@ public class Graphe {
                 break;
             }
             case 'f': {
-                algorithmeRepresentation.distributionModeleForces(largeurEcran, hauteurEcran);
+                algorithmeRepresentation.distributionModeleForces();
                 break;
             }
             default:

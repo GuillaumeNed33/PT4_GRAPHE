@@ -10,10 +10,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 
-import java.text.Normalizer;
-
 public class Sommet extends Pane {
-    static float RAYON_SOMMET = 5.0f;
 
     private double coord_x;
     private double coord_y;
@@ -58,11 +55,11 @@ public class Sommet extends Pane {
         getChildren().add(vue);
     }
 
-    public double getCoord_x() {
+    double getCoord_x() {
         return coord_x;
     }
 
-    public double getCoord_y() {
+    double getCoord_y() {
         return coord_y;
     }
 
@@ -85,7 +82,7 @@ public class Sommet extends Pane {
         return vue;
     }
 
-    public int getIdGraphe() {return id;}
+    int getIdGraphe() {return id;}
 
     public Color getColor() {
         return color;
@@ -112,7 +109,7 @@ public class Sommet extends Pane {
         getChildren().add(vue);
     }
 
-    public void redefinitionDeLaVue() {
+    private void redefinitionDeLaVue() {
 
         switch(fs) {
             case Cercle:
@@ -125,11 +122,10 @@ public class Sommet extends Pane {
                 vue = new Rectangle(taille.width*2,taille.height*2,color);
                 break;
             case Triangle:
-                vue = new Polygon(taille.width,0,taille.width*2,taille.width*2,0,taille.width*2); //ToDo A VERIFIER IMPORTANT
+                vue = new Polygon(taille.width,0,taille.width*2,taille.width*2,0,taille.width*2);
                 break;
         }
     }
-
 
     public void setColorVue(Color c) {
         switch(fs) {

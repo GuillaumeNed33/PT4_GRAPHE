@@ -10,12 +10,12 @@ public class ComposantGraphe {
     /**
      * Représente l'identifiant d'un composant du graphe (arête ou sommet).
      */
-    protected int identifiant;
+    private int identifiant;
 
     /**
      * Représente l'indice d'un composant du graphe (arête ou sommet).
      */
-    protected int indice;
+    private int indice;
 
     /**
      * Représente la couleur d'un composant du graphe (arête ou sommet).
@@ -25,7 +25,7 @@ public class ComposantGraphe {
     /**
      * Représente le nom d'un composant du graphe (arête ou sommet).
      */
-    protected String nom;
+    private String nom;
 
     /**
      * Constructeur permettant d'initialiser tout les attribut déclaré au-dessus.

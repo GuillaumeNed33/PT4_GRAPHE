@@ -12,14 +12,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by audreylentilhac on 18/03/2017.
+ * Classe permettant d'éviter la duplication de code pour la vérification de saisie de données par l'utilisateur,
+ * pour les sommets.
  */
-public class SommetController {
+class SommetController {
 
     /**
-     * List d'observable permettant d'initialiser les différentes combo box via l'énumération Forme_Sommet.
+     * Liste d'observable permettant d'initialiser les différentes combo box via l'énumération Forme_Sommet.
      */
-    protected ObservableList<Forme_Sommet> formes = FXCollections.observableArrayList(Forme_Sommet.values());
+    ObservableList<Forme_Sommet> formes = FXCollections.observableArrayList(Forme_Sommet.values());
     SommetController(){
     }
 
@@ -30,7 +31,7 @@ public class SommetController {
      * @param messageErreur Représente le Label où s'affichera un message en rouge si l'utilisateur rentre une taille invalide.
      * @return Retourne la taille rentrée par l'utiliseur sous le type Size et retourne null si la taille saisie est invalide.
      */
-    protected Size déterminationTailleRentrerParUtilisateur(Forme_Sommet forme_sommet, TextField tailleSommet, Label messageErreur) {
+    Size déterminationTailleRentrerParUtilisateur(Forme_Sommet forme_sommet, TextField tailleSommet, Label messageErreur) {
         if (!tailleSommet.getText().contains(".")) {
             String[] elementsDansTaille = tailleSommet.getText().split(" ");
 
@@ -50,10 +51,10 @@ public class SommetController {
                 int cptDetrompeur = 0; // Pour compter si il n'y a pas plus de valeurs que prévus
                 int cptElement = 0;
                 while (cptElement < elementsDansTaille.length && cptDetrompeur <= limiteNombreValeur) {
-                    pattern = Pattern.compile("[0-9]+");
+                    pattern = Pattern.compile("\\d+");
                     matcherNombre = pattern.matcher(elementsDansTaille[cptElement]);
 
-                    pattern = Pattern.compile("[^\\d+\\.+\\ ]+");
+                    pattern = Pattern.compile("[^\\d+. ]+");
                     matcherLettre = pattern.matcher(elementsDansTaille[cptElement]);
 
                     if (matcherNombre.find() && cptDetrompeur != -1 && !matcherLettre.find()) {
@@ -105,7 +106,7 @@ public class SommetController {
      * @param messageErreur Représente le Label où s'affichera un message en rouge si l'utilisateur rentre une position invalide.
      * @return Retourne la position rentrée par l'utiliseur sous le type d'une Pair et retourne null si la position saisie est invalide.
      */
-    protected Pair<Float, Float> déterminationPositionRentrerParUtilisateur(TextField positionSommet, Label messageErreur) {
+    Pair<Float, Float> déterminationPositionRentrerParUtilisateur(TextField positionSommet, Label messageErreur) {
 
         String[] elementsDansPosition = positionSommet.getText().split(" ");
         if (elementsDansPosition.length > 1) {
@@ -120,10 +121,10 @@ public class SommetController {
             int cptElement = 0;
             while (cptElement < elementsDansPosition.length && cptDetrompeur != -1 && cptDetrompeur <= 2) {
 
-                pattern = Pattern.compile("[0-9]+");
+                pattern = Pattern.compile("\\d+");
                 matcherNombre = pattern.matcher(elementsDansPosition[cptElement]);
 
-                pattern = Pattern.compile("[^\\d+\\.+\\ ]+");
+                pattern = Pattern.compile("[^\\d+. ]+");
                 matcherLettre = pattern.matcher(elementsDansPosition[cptElement]);
 
                 if (matcherNombre.find() && !matcherLettre.find()) {
@@ -166,7 +167,7 @@ public class SommetController {
      * @param messageErreur Représente le Label où s'affichera un message en rouge si l'utilisateur rentre un indice invalide.
      * @return Retourne l'indice rentré par l'utiliseur sous le type int et retourne -1 si l'indice saisi est invalide.
      */
-    protected int déterminationIndiceRentrerParUtilisateur(TextField indiceSommet, Label messageErreur) {
+    int déterminationIndiceRentrerParUtilisateur(TextField indiceSommet, Label messageErreur) {
 
         String indice = indiceSommet.getText();
         if (indice.length() > 0 && !indice.contains(".") && !indice.contains(",") && !indice.contains("-")) {

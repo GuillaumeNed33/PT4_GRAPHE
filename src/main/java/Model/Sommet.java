@@ -10,7 +10,7 @@ public class Sommet extends ComposantGraphe{
 
     /**
      * Représente le prochain id à utiliser.
-     * il est static donc commun à l'ensemble des objets de la classe.
+     * Il est static donc commun à l'ensemble des objets de la classe.
      */
     private static int idActuel = 0;
 
@@ -80,9 +80,9 @@ public class Sommet extends ComposantGraphe{
     }
 
 
-    // Accesseur et Mutateurs
+    // ACCESSEURS ET MUTATEURS
 
-    public int getIdImportation() {
+    int getIdImportation() {
 
         return idImportation;
     }

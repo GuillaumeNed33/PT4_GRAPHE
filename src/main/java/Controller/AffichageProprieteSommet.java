@@ -16,7 +16,7 @@ import java.io.IOException;
  * Classe AffichagePropriétéSommet
  * affichant le contrôle du tableau des propriétés d'un sommet
  */
-public class AffichageProprieteSommet extends FXMLController {
+class AffichageProprieteSommet extends FXMLController {
     /**
      * Représente respectivement  l'identifiant, l'étiquette, la taille,
      * la position, la couleur et la forme du sommet sélectionné

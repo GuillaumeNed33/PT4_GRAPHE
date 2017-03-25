@@ -18,9 +18,7 @@ import javafx.util.Pair;
 
 import java.io.IOException;
 
-/**
- * Created by audreylentilhac on 18/03/2017.
- */
+
 /**
  * Classe ModifierSommet
  * affichant le contrôle de la modification d'un sommet

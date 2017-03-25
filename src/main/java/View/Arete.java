@@ -5,64 +5,89 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 /**
- *
+ * Classe représentant les arêtes graphique.
  */
 public class Arete extends Group {
+
+    /**
+     * Représente le prochain id à utiliser.
+     * Il est static donc commun à l'ensemble des objets de la classe.
+     */
     private static int idActuel = 0;
+
+    /**
+     * Représente l'id de l'arête.
+     */
     private int id;
+
+    /**
+     * Représente le sommet source de l'arête.
+     */
     private Sommet source;
+
+    /**
+     * Représente le sommet destination de l'arête.
+     */
     private Sommet destination;
-    private Color couleur;
-    private int epaisseur;
+
+    /**
+     * Représente la version graphique de l'arête, une ligne.
+     */
     private Line ligne;
+
+
+    /**
+     * Constructeur permettant de créer et d'ajouter une arête dans la vue.
+     * @param src Représente le sommet source de l'arête.
+     * @param dest Représente le sommet destination de l'arête.
+     */
     public Arete(Sommet src, Sommet dest) {
         this.id = idActuel++;
         this.source = src;
         this.destination = dest;
-        this.couleur = Color.BLACK;
         ligne = new Line();
-        ligne.setStroke(couleur);
+        ligne.setStroke(Color.BLACK);
 
-        ligne.startXProperty().bind( source.layoutXProperty().add(source.getCoord_x()));
-        ligne.startYProperty().bind( source.layoutYProperty().add(source.getCoord_y()));
-
-        ligne.endXProperty().bind( destination.layoutXProperty().add(destination.getCoord_x()));
-        ligne.endYProperty().bind( destination.layoutYProperty().add(destination.getCoord_y()));
+        misAJourCoord();
 
         getChildren().add(ligne);
     }
 
-    public void setCouleur(Color couleur) {
-        this.couleur = couleur;
-        ligne.setStroke(couleur);
-    }
-
-    public void setEpaisseur(int epaisseur) {
-        this.epaisseur = epaisseur;
-        ligne.setStrokeWidth(epaisseur);
-    }
-
-    public void misAJourCoord() {
+    /**
+     * Méthode permettant de mettre a jour les coordonnées de l'arête en fonction des sommets source et destination.
+     */
+    void misAJourCoord() {
         ligne.startXProperty().bind( source.layoutXProperty().add(source.getCoord_x()));
         ligne.startYProperty().bind( source.layoutYProperty().add(source.getCoord_y()));
 
         ligne.endXProperty().bind( destination.layoutXProperty().add(destination.getCoord_x()));
         ligne.endYProperty().bind( destination.layoutYProperty().add(destination.getCoord_y()));
+    }
+
+
+    // ACCESSEURS ET MUTATEURS
+
+    public void setCouleur(Color couleur) {
+        ligne.setStroke(couleur);
+    }
+
+    public void setEpaisseur(int epaisseur) {
+        ligne.setStrokeWidth(epaisseur);
     }
 
     public Line getLigne() {
         return ligne;
     }
 
-    public Sommet getSource() {
+    Sommet getSource() {
         return source;
     }
 
-    public Sommet getDestination() {
+    Sommet getDestination() {
         return destination;
     }
 
-    public int getIdGraphe() {
+    int getIdGraphe() {
         return id;
     }
 }

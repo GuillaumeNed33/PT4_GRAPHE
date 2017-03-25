@@ -9,13 +9,34 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Thomas on 13/03/2017.
+ * Classe représentant la version graphique du graphe.
+ * Permet ainsi de stocker les sommets et les arêtes.
  */
 public class Graphe {
+
+    /**
+     * Représente le panneau où s'affichera le graphe.
+     */
     private Pane canvas;
+
+    /**
+     * Représente se qui permettra de contenir le panneau permettant l'affichage du graphe.
+     */
     private ZoomableScrollPane scrollPane;
+
+    /**
+     * Représente la liste des sommets.
+     */
     private List<Sommet> sommets;
+
+    /**
+     * Représente la liste des arêtes.
+     */
     private List<Arete> aretes;
+
+    /**
+     * Constructeur permettant d'initialiser l'aspect de l'affichage.
+     */
     public Graphe() {
         canvas = new Pane();
         scrollPane = new ZoomableScrollPane(canvas);
@@ -24,6 +45,10 @@ public class Graphe {
         aretes = new ArrayList<Arete>();
     }
 
+    /**
+     * Permet d'initialiser le graphe (View) un graphe grâce à une autre graphe (Model)
+     * @param graphe Représente le graphe (Model) où sont stockés toutes les données sur les sommets et les arêtes.
+     */
     public void chargerGraphe(Model.Graphe graphe) {
 
         for (Model.Sommet sommet : graphe.getSommets()) {
@@ -52,6 +77,11 @@ public class Graphe {
         scrollPane.updateScrollPane(canvas);
     }
 
+    /**
+     * Méthode permettant de rechercher un sommet via son id.
+     * @param id_recherche Représente l'id à rechercher.
+     * @return Retourne le sommet correspondant l'id en paramètre (existe obligatoirement)
+     */
     public Sommet rechercheSommetParId(int id_recherche) {
 
         boolean trouve = false;
@@ -69,13 +99,22 @@ public class Graphe {
         return sommets.get(cptSommet);
     }
 
+    /**
+     * Méthode permettant de supprimer un sommet de la vue.
+     * @param sommetASuppr Représente le sommet à supprimer.
+     */
     public void suppressionSommet(Sommet sommetASuppr) {
+        suppressionAreteEnFonctionDuSommetSuppr(sommetASuppr);
         sommets.remove(sommetASuppr);
         canvas.getChildren().remove(sommetASuppr);
     }
 
-    public void suppressionAreteEnFonctionDuSommetSuppr(Sommet sommetASuppr) {
-        ArrayList<Integer> indexAreteASuppr = trouverAreteViaSommet(sommetASuppr);
+    /**
+     * Méthode permettant de supprimer une arête lié à un sommet qu'on supprime.
+     * @param sommetASuppr Représente le sommet que l'on cherche à supprimer.
+     */
+    private void suppressionAreteEnFonctionDuSommetSuppr(Sommet sommetASuppr) {
+        ArrayList<Integer> indexAreteASuppr = trouverAretesViaSommet(sommetASuppr);
 
         for (Integer index : indexAreteASuppr) {
             canvas.getChildren().remove(aretes.get(index));
@@ -83,28 +122,42 @@ public class Graphe {
         }
     }
 
-    private ArrayList<Integer> trouverAreteViaSommet(Sommet sommetLie) {
-        ArrayList<Integer> indexAreteASuppr = new ArrayList<Integer>();
+
+    /**
+     * Méthode permetant de retourner une liste d'index correspondant aux arêtes lié au sommet.
+     * @param sommetLie Représente le sommet pour lequel on cherche les arêtes qui lui sont liées.
+     * @return Retourne une liste d'index de la liste d'arêtes.
+     */
+    private ArrayList<Integer> trouverAretesViaSommet(Sommet sommetLie) {
+        ArrayList<Integer> indexAretes = new ArrayList<Integer>();
         int indexArete = 0;
         for (Arete arete : aretes) {
             if (arete.getSource() == sommetLie || arete.getDestination() == sommetLie) {
-                indexAreteASuppr.add(indexArete);
+                indexAretes.add(indexArete);
             }
 
             ++indexArete;
         }
 
-        return indexAreteASuppr;
+        return indexAretes;
     }
 
+    /**
+     * Méthode permettant de mettre à jour les coordonnées des arêtes lorsque un sommet est modifié.
+     * @param sommetLie Représente le sommet modifié.
+     */
     public void misAJourAretes(Sommet sommetLie) {
-        ArrayList<Integer> indexAretes = trouverAreteViaSommet(sommetLie);
+        ArrayList<Integer> indexAretes = trouverAretesViaSommet(sommetLie);
 
         for (Integer index : indexAretes) {
             aretes.get(index).misAJourCoord();
         }
     }
 
+    /**
+     * Méthode permettant de supprimer une arête dans la liste des arêtes.
+     * @param areteASuppr Représente l'arête à supprimer.
+     */
     public void supprimerArete(Model.Arete areteASuppr) {
 
         boolean trouve = false;
@@ -121,6 +174,8 @@ public class Graphe {
             }
         }
     }
+
+    // ACCESSEUR ET MUTATEUR
 
     public Pane getCanvas() {
         return canvas;

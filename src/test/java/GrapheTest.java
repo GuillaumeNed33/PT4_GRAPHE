@@ -258,22 +258,6 @@ public class GrapheTest {
     }
 
     @Test
-    public void testDeplaceSommet() {
-
-        Size m = new Size(10,10);
-        Graphe g = new Graphe();
-
-        Sommet s = new Sommet("s1",1,1);
-
-        g.ajouterSommet(s,m);
-
-        g.deplacerSommet(s,3,3,m);
-
-        Assert.assertEquals(s.getX(),3,0);
-        Assert.assertEquals(s.getY(),3,0);
-    }
-
-    @Test
     public void testIndiceMinMaxArete() {
 
         Size m = new Size(10,10);
@@ -402,11 +386,11 @@ public class GrapheTest {
         Sommet s = new Sommet("s1",1,1);
         Sommet s2 = new Sommet("s2",2,2);
 
-        g.ajouterSommetInitial(s);
-        g.ajouterSommetInitial(s2);
+        g.ajouterSommet(s, m);
+        g.ajouterSommet(s2, m);
 
-        g.ajouterAreteInitial(s,s2,"TagArete");
-
+        g.ajouterArete(s,s2);
+        g.getAretes().get(0).setTag("TagArete");
 
         Assert.assertEquals(g.getAretes().size(),1,0);
         Assert.assertEquals(g.getAretes().get(0).getEntree(),s);

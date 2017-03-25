@@ -50,7 +50,6 @@ public class SuppressionSommet extends FXMLController {
     public void suppressionSommetSelectionne() {
         grapheModel.supprimerSommet(sommetSelectionneModel);
         grapheView.suppressionSommet(sommetSelectionneView);
-        grapheView.suppressionAreteEnFonctionDuSommetSuppr(sommetSelectionneView);
         grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
         sommetSelectionneModel = null;
         popUpWindow.close();

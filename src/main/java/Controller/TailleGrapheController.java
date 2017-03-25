@@ -11,8 +11,17 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
+/**
+ * Classe permettant d'afficher le contrôle pour le changement de taille des sommets et des arêtes.
+ */
 public class TailleGrapheController extends FXMLController {
 
+    /**
+     * Constructeur permettant d'initialiser la popup pour le changement de taille des sommets et des arêtes.
+     * @param grapheModel Représente le graphe (Model).
+     * @param grapheView Représente le graphe (View).
+     * @throws IOException Lève une exception.
+     */
     TailleGrapheController(Graphe grapheModel, View.Graphe grapheView) throws IOException {
         super();
         this.grapheModel = grapheModel;
@@ -30,14 +39,15 @@ public class TailleGrapheController extends FXMLController {
     }
 
     @FXML
-    private
-    TextField idMinSommet, idMaxSommet, idMinArete, idMaxArete;
+    private TextField idMinSommet, idMaxSommet, idMinArete, idMaxArete;
     @FXML
-    private
-    Button okTailleGraphe;
+    private Button okTailleGraphe;
     @FXML
-    private
-    Label erreurMessageId;
+    private Label erreurMessageId;
+
+    /**
+     * Méthode permettant de changer la taille des sommets et des arêtes en fonction de la saisie de l'utilisateur.
+     */
     @FXML public void changementTailleGraphe() {
 
         if (idMinSommet.getText().matches("^[0-9]+$") && idMaxSommet.getText().matches("^[0-9]+$") &&
@@ -72,6 +82,9 @@ public class TailleGrapheController extends FXMLController {
         }
     }
 
+    /**
+     * Méthode permettant de fermer la popup de changement de taille des sommets et des arêtes lorsque l'utilisateur clique sur annuler.
+     */
     @FXML public void fermerPopupChangementTaille() {
         popUpWindow.close();
     }

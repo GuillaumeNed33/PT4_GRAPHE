@@ -15,16 +15,27 @@ import java.util.regex.Pattern;
  * Created by audreylentilhac on 18/03/2017.
  */
 public class SommetController {
+
+    /**
+     * List d'observable permettant d'initialiser les différentes combo box via l'énumération Forme_Sommet.
+     */
     protected ObservableList<Forme_Sommet> formes = FXCollections.observableArrayList(Forme_Sommet.values());
     SommetController(){
     }
 
-    protected Size déterminationTailleRentrerParUtilisateur(String forme_sommet, TextField tailleSommet, Label messageErreur) {
+    /**
+     * Méthode permettant de vérifier l'intégrité des données rentré par l'utilisateur dans le Text Field de la taille.
+     * @param forme_sommet Représente la forme du sommet sélectionné dans la combo box.
+     * @param tailleSommet Représente le Text Field où l'utilisateur rentre la taille qu'il veut définir pour le sommet.
+     * @param messageErreur Représente le Label où s'affichera un message en rouge si l'utilisateur rentre une taille invalide.
+     * @return Retourne la taille rentrée par l'utiliseur sous le type Size et retourne null si la taille saisie est invalide.
+     */
+    protected Size déterminationTailleRentrerParUtilisateur(Forme_Sommet forme_sommet, TextField tailleSommet, Label messageErreur) {
         if (!tailleSommet.getText().contains(".")) {
             String[] elementsDansTaille = tailleSommet.getText().split(" ");
 
             int limiteNombreValeur = 1;
-            if (forme_sommet.equals("Rectangle")) {
+            if (forme_sommet == Forme_Sommet.Rectangle) {
                 limiteNombreValeur = 2;
             }
 
@@ -88,6 +99,12 @@ public class SommetController {
         return null;
     }
 
+    /**
+     * Méthode permettant de vérifier l'intégrité des données rentré par l'utilisateur dans le Text Field de la position.
+     * @param positionSommet Représente le Text Field où l'utilisateur rentre la position qu'il veut définir pour le sommet.
+     * @param messageErreur Représente le Label où s'affichera un message en rouge si l'utilisateur rentre une position invalide.
+     * @return Retourne la position rentrée par l'utiliseur sous le type d'une Pair et retourne null si la position saisie est invalide.
+     */
     protected Pair<Float, Float> déterminationPositionRentrerParUtilisateur(TextField positionSommet, Label messageErreur) {
 
         String[] elementsDansPosition = positionSommet.getText().split(" ");
@@ -141,6 +158,14 @@ public class SommetController {
 
         return null;
     }
+
+
+    /**
+     * Méthode permettant de vérifier l'intégrité des données rentré par l'utilisateur dans le Text Field de l'indice.
+     * @param indiceSommet Représente le Text Field où l'utilisateur rentre la l'indice qu'il veut définir pour le sommet.
+     * @param messageErreur Représente le Label où s'affichera un message en rouge si l'utilisateur rentre un indice invalide.
+     * @return Retourne l'indice rentré par l'utiliseur sous le type int et retourne -1 si l'indice saisi est invalide.
+     */
     protected int déterminationIndiceRentrerParUtilisateur(TextField indiceSommet, Label messageErreur) {
 
         String indice = indiceSommet.getText();

@@ -4,7 +4,7 @@ import com.sun.glass.ui.Size;
 import javafx.scene.paint.Color;
 
 /**
- * Created by audreylentilhac on 02/02/2017.
+ * Classe permettant de construire un sommet.
  */
 public class Sommet extends ComposantGraphe{
 
@@ -66,7 +66,10 @@ public class Sommet extends ComposantGraphe{
         forme = Forme_Sommet.Cercle;
     }
 
-
+    /**
+     * Constructeur utilisé lors de l'importation du graphe.
+     * @param idImportation Représente l'id qu'a le sommet dans le fichier.
+     */
     public Sommet(int idImportation) {
         super(idActuel++, 0, "", Color.BLACK);
         this.idImportation = idImportation;

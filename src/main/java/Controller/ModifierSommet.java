@@ -99,7 +99,7 @@ public class ModifierSommet extends FXMLController {
      */
     public void ModifierSommetSelectionne(){
 
-        Size tailleSommet = sommetControl.déterminationTailleRentrerParUtilisateur(formeSommet.getValue().toString(), this.tailleSommet, this.erreurSommet);
+        Size tailleSommet = sommetControl.déterminationTailleRentrerParUtilisateur(formeSommet.getValue(), this.tailleSommet, this.erreurSommet);
         Pair<Float, Float> coordSommet = null;
         int indiceSommet = 0;
 

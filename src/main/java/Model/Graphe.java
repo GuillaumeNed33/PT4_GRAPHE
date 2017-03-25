@@ -50,7 +50,7 @@ public class Graphe {
     /**
      * Représente l'ensemble des clefs de style (definies dans les fichier .graphml).
      */
-    private ArrayList<KeyStyleGRAPHML> keyGML;
+    //private ArrayList<KeyStyleGRAPHML> keyGML;
 
     /**
      *  Représente une valeur aléatoire.
@@ -320,7 +320,7 @@ public class Graphe {
      */
     private void chargerGrapheGRAPHML(String fichier) {
         String chaine = "";
-        keyGML = new ArrayList<KeyStyleGRAPHML>();
+        //keyGML = new ArrayList<KeyStyleGRAPHML>();
         try {
             InputStream ips = new FileInputStream(fichier);
             InputStreamReader ipsr = new InputStreamReader(ips);
@@ -342,14 +342,14 @@ public class Graphe {
                         int i = 0;
                         boolean find = false;
 
-                        while(i < keyGML.size() && !find) {
+                       /* while(i < keyGML.size() && !find) {
                             if(keyGML.get(i).getId().equals(keyId)) {
                                 find = true;
                                 key = keyGML.get(i);
                             }
                             else
                                 i++;
-                        }
+                        }*/
                     }
                 }
                 else if (ligne.contains("<key")) {
@@ -365,7 +365,7 @@ public class Graphe {
                     String [] recupAttributeName = ligne.split("attr.name=\"");
                     String keyName = recupAttributeName[1].split("\"")[0];
 
-                    keyGML.add(new KeyStyleGRAPHML(id,type, keyName));
+                    //keyGML.add(new KeyStyleGRAPHML(id,type, keyName));
                     tmpkeyID=id;
                 }
 
@@ -376,14 +376,14 @@ public class Graphe {
 
                     int i =1; boolean find = false;
 
-                    while(i < keyGML.size() && !find) {
+                    /*while(i < keyGML.size() && !find) {
                         if(keyGML.get(i).getId().equals(tmpkeyID)) {
                             find = true;
                             keyGML.get(i).setAttrType(value);
                         }
                         else
                             i++;
-                    }
+                    }*/
                 }
 
                 else if (ligne.contains("<graph ")) {

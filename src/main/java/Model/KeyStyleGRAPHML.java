@@ -7,6 +7,7 @@ import java.lang.String;
  */
 public class KeyStyleGRAPHML {
 
+
     private String id;
     private boolean forNode;
     private String attrName;
@@ -25,26 +26,6 @@ public class KeyStyleGRAPHML {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public boolean isForNode() {
-        return forNode;
-    }
-
-    public void setForNode(boolean forNode) {
-        this.forNode = forNode;
-    }
-
-    public String getAttrName() {
-        return attrName;
-    }
-
-    public void setAttrName(String attrName) {
-        this.attrName = attrName;
-    }
-
-    public String getAttrType() {
-        return attrType;
     }
 
     public void setAttrType(String attrType) {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Created by audreylentilhac on 20/02/2017.
+ * Classe permettant de disposer les sommets pour différentes représentations.
  */
 public class AlgorithmeRepresentation {
     /**

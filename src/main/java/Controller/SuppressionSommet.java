@@ -10,9 +10,19 @@ import javafx.scene.control.Button;
 
 import java.io.IOException;
 
+/**
+ * Classe permettant d'afficher le contrôle pour la suppression d'un sommet.
+ */
 public class SuppressionSommet extends FXMLController {
 
-
+    /**
+     * Constructeur permettant d'initialiser la popup de la suppression d'un sommet.
+     * @param graphe Représente le graphe (Model).
+     * @param sommetSelectionneModel Représente le sommet (Model) sélectionné par un double clic de l'utilisateur.
+     * @param sommetSelectionneView Représente le sommet (View) sélectionné par un double clic de l'utilisateur.
+     * @param grapheView Représente le graphe (View).
+     * @throws IOException Lève une exception.
+     */
     public SuppressionSommet(Graphe graphe, Sommet sommetSelectionneModel, View.Sommet sommetSelectionneView, View.Graphe grapheView) throws IOException {
         super();
         this.grapheModel = graphe;
@@ -33,6 +43,9 @@ public class SuppressionSommet extends FXMLController {
     }
 
 
+    /**
+     * Méthode permettant de confirmer la suppression d'un sommet.
+     */
     @FXML
     public void suppressionSommetSelectionne() {
         grapheModel.supprimerSommet(sommetSelectionneModel);
@@ -43,10 +56,11 @@ public class SuppressionSommet extends FXMLController {
         popUpWindow.close();
     }
 
-    @FXML
-    private Button annulerSuppressionSommetSelectionne;
+    /**
+     * Méthode permettant d'annuler la popup de confirmation de la suppression d'un sommet.
+     */
     @FXML
     public void fermerSupprimerSommetSelectionne() {
-        fermerPopup(annulerSuppressionSommetSelectionne);
+        popUpWindow.close();
     }
 }

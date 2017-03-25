@@ -107,7 +107,7 @@ public class AjoutSommetController extends FXMLController {
             }
             else {
                 popUpWindow.close();
-                View.Sommet sommetVue = new View.Sommet(sommet.getId(), tag, Forme_Sommet.getFormeByText(forme),sommet.getX(), sommet.getY());
+                View.Sommet sommetVue = new View.Sommet(sommet.getId(), tag, Forme_Sommet.getFormeViaTexte(forme),sommet.getX(), sommet.getY());
                 sommetVue.setTaille(sommet.getTaille());
                 sommetVue.setColorVue(sommet.getCouleur());
                 grapheView.getSommets().add(sommetVue);

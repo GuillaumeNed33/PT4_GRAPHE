@@ -326,7 +326,7 @@ public class Graphe {
             Matcher matcherDest;
 
             while ((ligne = br.readLine()) != null) {
-                if (ligne.contains("<node ")) {
+                if (ligne.contains("<node ") && ligne.contains("id=\"")) {
 
                     String [] recupId = ligne.split("id=\"");
                     String idImportation = recupId[1].split("\"")[0];
@@ -338,12 +338,12 @@ public class Graphe {
                     }
                 }
 
-                else if (ligne.contains("<edge ")) {
+                else if (ligne.contains("<edge ") && ligne.contains("source=\"") && ligne.contains("target=\"")) {
 
-                    String [] recupSource = ligne.split("source=\"");
+                    String[] recupSource = ligne.split("source=\"");
                     matcherSrc = patternIdImportation.matcher(recupSource[1].split("\"")[0]);
 
-                    String [] recupTarget = ligne.split("target=\"");
+                    String[] recupTarget = ligne.split("target=\"");
                     matcherDest = patternIdImportation.matcher(recupTarget[1].split("\"")[0]);
 
                     if (matcherSrc.find() && matcherDest.find()) {

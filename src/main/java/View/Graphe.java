@@ -118,8 +118,9 @@ public class Graphe {
         int cptIndex = 0;
 
         for (Integer index : indexAreteASuppr) {
+            // On soustrait à un compteur pour annuler le décalage des indexs quand on remove dans ArrayList aretes.
             canvas.getChildren().remove(aretes.get(index - cptIndex));
-            aretes.remove((int) index - cptIndex);
+            aretes.remove(index - cptIndex);
             ++cptIndex;
         }
     }

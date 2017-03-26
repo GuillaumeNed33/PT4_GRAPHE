@@ -10,21 +10,64 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * Classe permettant de créer un sommet pour l'affichage du graphe.
+ */
 public class Sommet extends Pane {
 
+    /**
+     * Représente la coordonnée en x du sommet.
+     */
     private double coord_x;
+
+    /**
+     * Représente la coordonnée en y du sommet.
+     */
     private double coord_y;
+
+    /**
+     * Représente la taille du sommet.
+     */
     private Size taille;
+
+    /**
+     * Représente la couleur du sommet.
+     */
     private Color color;
+
+    /**
+     * Représente la forme du sommet.
+     */
     private Forme_Sommet fs;
+
+    /**
+     * Représente l'id du sommet.
+     */
     private int id;
+
+    /**
+     * Représente l'aspect graphique du sommet.
+     */
     private Node vue;
+
+    /**
+     * Représente l'aspect graphique du tag.
+     */
     private Label lb;
 
-    public Sommet(int id, String tag, Forme_Sommet fs, double x, double y) {
+
+    /**
+     * Constructeur pour créer un sommet graphique.
+     * @param id Représente l'identifiant du sommet.
+     * @param tag Rerpésente la tag du sommet.
+     * @param formeSommet Représente la forme du sommet.
+     * @param x Représente la coordonnée en x du sommet.
+     * @param y Représente la coordonnée en y du sommet.
+     */
+    public Sommet(int id, String tag, Forme_Sommet formeSommet, double x, double y) {
         this.taille = new Size(5, 5);
         this.id = id;
-        this.fs = fs;
+        this.fs = formeSommet;
         this.color = Color.BLACK;
         this.coord_x = x;
         this.coord_y = y;
@@ -36,6 +79,30 @@ public class Sommet extends Pane {
         vue.relocate(x - taille.width, y - taille.height);
         getChildren().addAll(vue, lb);
     }
+
+    /**
+     * Permet de changer la forme graphique du sommet.
+     */
+    private void redefinitionDeLaVue() {
+
+        switch(fs) {
+            case Cercle:
+                vue = new Circle(taille.width ,color);
+                break;
+            case Losange:
+                vue = new Polygon();
+                break;
+            case Rectangle:
+                vue = new Rectangle(taille.width*2,taille.height*2,color);
+                break;
+            case Triangle:
+                vue = new Polygon(taille.width,0,taille.width*2,taille.width*2,0,taille.width*2);
+                break;
+        }
+    }
+
+
+    // ACCESSEURS ET MUTATEURS
 
     public Size getTaille() {
         return taille;
@@ -109,23 +176,6 @@ public class Sommet extends Pane {
         getChildren().add(vue);
     }
 
-    private void redefinitionDeLaVue() {
-
-        switch(fs) {
-            case Cercle:
-                vue = new Circle(taille.width ,color);
-                break;
-            case Losange:
-                vue = new Polygon();
-                break;
-            case Rectangle:
-                vue = new Rectangle(taille.width*2,taille.height*2,color);
-                break;
-            case Triangle:
-                vue = new Polygon(taille.width,0,taille.width*2,taille.width*2,0,taille.width*2);
-                break;
-        }
-    }
 
     public void setColorVue(Color c) {
         switch(fs) {

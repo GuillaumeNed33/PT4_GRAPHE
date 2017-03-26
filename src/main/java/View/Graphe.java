@@ -115,10 +115,12 @@ public class Graphe {
      */
     private void suppressionAreteEnFonctionDuSommetSuppr(Sommet sommetASuppr) {
         ArrayList<Integer> indexAreteASuppr = trouverAretesViaSommet(sommetASuppr);
+        int cptIndex = 0;
 
         for (Integer index : indexAreteASuppr) {
-            canvas.getChildren().remove(aretes.get(index));
-            aretes.remove((int) index);
+            canvas.getChildren().remove(aretes.get(index - cptIndex));
+            aretes.remove((int) index - cptIndex);
+            ++cptIndex;
         }
     }
 

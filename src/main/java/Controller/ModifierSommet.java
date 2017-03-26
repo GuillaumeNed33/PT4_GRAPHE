@@ -116,6 +116,7 @@ public class ModifierSommet extends FXMLController {
             sommetSelectionneView.setFormeEtTaille(formeSommet.getValue(), tailleSommet);
             sommetSelectionneView.setCoord(coordSommet.getKey(), coordSommet.getValue());
             sommetSelectionneView.setColorVue(couleurSommet.getValue());
+            sommetSelectionneView.getLb().relocate(coordSommet.getKey() + tailleSommet.width,coordSommet.getValue());
 
             grapheView.misAJourAretes(sommetSelectionneView);
 

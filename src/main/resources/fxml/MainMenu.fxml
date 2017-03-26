@@ -107,7 +107,7 @@
                                     <ToggleGroup fx:id="IndicageRadioButtonGroup" />
                                  </toggleGroup>
                               </RadioMenuItem>
-                                    <RadioMenuItem mnemonicParsing="false" onAction="#clickIndicageDegré" text="Degrès" toggleGroup="$IndicageRadioButtonGroup" />
+                                    <RadioMenuItem mnemonicParsing="false" onAction="#clickIndicageDegré" text="Degré" toggleGroup="$IndicageRadioButtonGroup" />
                                 </items>
                             </MenuButton>
                         </children>

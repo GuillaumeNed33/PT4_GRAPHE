@@ -144,7 +144,7 @@ public class FXMLController extends VBox {
             }
         }
         else {
-            afficherFenetreAlerte("Vous ne pouvez pas exporter si vous n'avez pas importer un graphe avant.");
+            afficherFenetreAlerte("Vous ne pouvez pas exporter si vous n'avez pas importé un graphe avant.");
         }
     }
 
@@ -171,7 +171,7 @@ public class FXMLController extends VBox {
         grapheModel.sauvegarderGraphe(null);
         }
         else {
-            afficherFenetreAlerte("Vous ne pouvez pas enregistrer si vous n'avez pas importer un graphe avant.");
+            afficherFenetreAlerte("Vous ne pouvez pas enregistrer si vous n'avez pas importé un graphe avant.");
         }
     }
 
@@ -197,7 +197,7 @@ public class FXMLController extends VBox {
             refreshGrapheView();
         }
         else {
-            afficherFenetreAlerte("Vous ne pouvez pas appliquer la représentation circulaire si vous n'avez pas importer un graphe avant.");
+            afficherFenetreAlerte("Vous ne pouvez pas appliquer la représentation circulaire si vous n'avez pas importé un graphe avant.");
         }
     }
 
@@ -212,7 +212,7 @@ public class FXMLController extends VBox {
         }
         else {
             afficherFenetreAlerte("Vous ne pouvez pas appliquer la représentation modèle de forces si vous n'avez pas " +
-                    "importer un graphe avant ou si vous n'avez pas indicé le graphe.");
+                    "importé un graphe avant ou si vous n'avez pas indicé le graphe.");
         }
     }
 
@@ -378,7 +378,7 @@ public class FXMLController extends VBox {
                     grapheView.getCanvas().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
                 }
                 else {
-                    afficherFenetreAlerte("Importer un graphe avant de changer les couleurs.");
+                    afficherFenetreAlerte("Importez un graphe avant de changer les couleurs.");
                 }
             }
         });

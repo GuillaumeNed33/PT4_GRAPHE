@@ -178,6 +178,15 @@ public class Graphe {
         }
     }
 
+    public void miseAJourPositions(Model.Graphe graphe) {
+        int cpt = 0;
+        for(Model.Sommet s : graphe.getSommets()) {
+            sommets.get(cpt).setCoord(s.getX(),s.getY());
+            misAJourAretes(sommets.get(cpt));
+            cpt++;
+        }
+    }
+
     // ACCESSEUR ET MUTATEUR
 
     public Pane getCanvas() {

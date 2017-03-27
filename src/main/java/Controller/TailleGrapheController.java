@@ -41,8 +41,6 @@ public class TailleGrapheController extends FXMLController {
     @FXML
     private TextField idMinSommet, idMaxSommet, idMinArete, idMaxArete;
     @FXML
-    private Button okTailleGraphe;
-    @FXML
     private Label erreurMessageId;
 
     /**
@@ -62,16 +60,19 @@ public class TailleGrapheController extends FXMLController {
             if ((minSommet < maxSommet && minArete < maxArete) &&
                     (minSommet >= 1 && maxSommet > 1 && minArete >= 1 && maxArete > 1)) {
                 this.grapheModel.changerTailleGraphe(maxSommet, minSommet, maxArete, minArete);
+
                 int i = 0;
-                for (View.Sommet s : grapheView.getSommets()){
-                    s.setTaille(grapheModel.getSommets().get(i).getTaille());
-                    i++;
-                }
-                i = 0;
                 for (View.Arete a : grapheView.getAretes()){
                     a.setEpaisseur(grapheModel.getAretes().get(i).getEpaisseur());
                     i++;
                 }
+                i = 0;
+                for (View.Sommet s : grapheView.getSommets()){
+                    s.setTaille(grapheModel.getSommets().get(i).getTaille());
+                    grapheView.misAJourAretes(s);
+                    i++;
+                }
+
                 grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
                 popUpWindow.close();
             } else {

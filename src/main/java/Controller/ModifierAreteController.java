@@ -33,11 +33,6 @@ import java.util.regex.Pattern;
 public class ModifierAreteController extends FXMLController {
 
     /**
-     * Représente le string de l'arête sélectionnée
-     */
-    private String AreteSelectionne;
-
-    /**
      * Représente l'arête sélectionnée
      */
     private Arete selected = null;

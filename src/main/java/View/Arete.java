@@ -72,7 +72,10 @@ public class Arete extends Group {
     }
 
     public void setEpaisseur(int epaisseur) {
+
         ligne.setStrokeWidth(epaisseur);
+
+        misAJourCoord();
     }
 
     public Line getLigne() {

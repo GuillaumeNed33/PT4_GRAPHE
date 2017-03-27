@@ -120,15 +120,13 @@ public class FXMLController extends VBox {
             fileChooser.setInitialDirectory(new File("./ressources/"));
             File file = fileChooser.showOpenDialog(null);
             if (file != null) {
-                grapheModel = null;
                 grapheModel = new Graphe(file.getAbsolutePath(), 1200,680);
-                grapheView = null;
                 grapheView = new View.Graphe();
                 grapheView.chargerGraphe(grapheModel);
                 getVbox().getChildren().remove(1);
                 getVbox().getChildren().addAll(grapheView.getScrollPane());
                 setPane(grapheView.getCanvas());
-                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+                //grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
             }
         }
     }

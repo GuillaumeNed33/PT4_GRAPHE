@@ -1,5 +1,4 @@
 import Controller.FXMLController;
-import View.Graphe;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,7 +12,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
 
         /** GESTION DES NODES **/
-        View.Graphe g = new Graphe();
         VBox root = new VBox();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainMenu.fxml"));
         TabPane menu = loader.load();
@@ -28,7 +26,6 @@ public class Main extends Application {
         primaryStage.show();
         FXMLController controller = (FXMLController)loader.getController();
         controller.setVbox(root);
-        controller.setPane(g.getCanvas());
     }
     public static void main(String[] args) {
         launch(args);

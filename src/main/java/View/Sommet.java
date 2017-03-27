@@ -13,7 +13,7 @@ import javafx.scene.shape.Rectangle;
 /**
  * Classe permettant de créer un sommet pour l'affichage du graphe.
  */
-public class Sommet extends Pane {
+public class Sommet extends Group {
 
     /**
      * Représente la coordonnée en x du sommet.

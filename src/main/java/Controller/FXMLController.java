@@ -511,20 +511,23 @@ public class FXMLController extends VBox {
             @Override
             public void handle(MouseEvent event) {
                 if (estTrouveSommet(event)) {
+
                     sommetSelectionneView.setCursor(Cursor.CLOSED_HAND);
-                    sommetSelectionneView.setOnMouseReleased(sommetOnMouseDropEventHandler);
+
+                    sommetSelectionneView.setOnMouseReleased(sommetOnMouseReleaseEventHandler);
                     sommetSelectionneView.setOnMouseDragged(sommetOnMouseDraggedEventHandler);
                 }
             }
         });
     }
 
-    private EventHandler<MouseEvent> sommetOnMouseDropEventHandler =
+    private EventHandler<MouseEvent> sommetOnMouseReleaseEventHandler =
             new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     sommetSelectionneView.setCursor(null);
                     sommetSelectionneView.setOnMouseDragged(null);
+                    sommetSelectionneView = null;
                 }
             };
 
@@ -556,10 +559,15 @@ public class FXMLController extends VBox {
                     event.getX() <= sommetSelectionneModel.getX() + sommetSelectionneModel.getTaille().width &&
                     event.getY() >= sommetSelectionneModel.getY() - sommetSelectionneModel.getTaille().height &&
                     event.getY() <= sommetSelectionneModel.getY() + sommetSelectionneModel.getTaille().height){
+
                 trouve = true;
+            } else {
+                ++cpt;
+                sommetSelectionneModel = null;
+                sommetSelectionneView = null;
             }
-            ++cpt;
         }
+
         return trouve;
     }
 

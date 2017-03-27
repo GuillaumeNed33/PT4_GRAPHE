@@ -921,7 +921,14 @@ public class Graphe {
             int indiceMax = indiceMaxSommet();
             int indiceMin = indiceMinSommet();
             int largeur = (int) intensite(valeur, maxSommet, minSommet, indiceMax, indiceMin);
-            Size taille = new Size(largeur, sommet.getTaille().height);
+            Size taille;
+            if (!sommet.getForme().equals(Forme_Sommet.Rectangle)) {
+                taille = new Size(largeur, largeur);
+            }
+            else {
+                taille = new Size(largeur, sommet.getTaille().height);
+            }
+
             sommet.setTaille(taille);
         }
     }

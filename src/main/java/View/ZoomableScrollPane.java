@@ -1,6 +1,10 @@
 package View;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
@@ -35,6 +39,8 @@ public class ZoomableScrollPane extends ScrollPane {
     ZoomableScrollPane(Node content) {
         this.content = content;
         setContent(this.content);
+        setFitToHeight(true);
+        setFitToWidth(true);
     }
 
     /**
@@ -66,7 +72,17 @@ public class ZoomableScrollPane extends ScrollPane {
      * Méthode permettant de changer l'échelle de la vue.
      * @param scaleValue Représente la nouvelle échelle de la vue.
      */
-    private void zoomTo(double scaleValue) {
+    public void zoomTo(double scaleValue, ScrollEvent event) {
+
+        this.scaleValue = scaleValue;
+
+        scaleTransform.setPivotX(event.getX());
+        scaleTransform.setPivotY(event.getY());
+        scaleTransform.setX(scaleValue);
+        scaleTransform.setY(scaleValue);
+
+    }
+    public void zoomTo(double scaleValue) {
 
         this.scaleValue = scaleValue;
 
@@ -154,7 +170,7 @@ public class ZoomableScrollPane extends ScrollPane {
                     scaleValue += delta;
                 }
 
-                zoomTo(scaleValue);
+                zoomTo(scaleValue, scrollEvent);
 
                 scrollEvent.consume();
             }

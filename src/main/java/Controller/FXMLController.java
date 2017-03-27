@@ -87,19 +87,6 @@ public class FXMLController extends VBox {
 
 
     /**
-     * Fonction de mise à jour de la vue par rapport au graphe du Model
-     */
-    private void refreshGrapheView() {
-        grapheView = new View.Graphe();
-        grapheView.chargerGraphe(grapheModel);
-        getVbox().getChildren().remove(1);
-        getVbox().getChildren().addAll(grapheView.getScrollPane());
-        setPane(grapheView.getCanvas());
-        grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
-    }
-
-
-    /**
      * Fonction ouvrant une fenetre (FileChooser) permettant l'importation d'un fichier dans le logiciel.
      */
     @FXML public void clickFichierImporter() {
@@ -124,7 +111,7 @@ public class FXMLController extends VBox {
                 grapheView = new View.Graphe();
                 grapheView.chargerGraphe(grapheModel);
                 getVbox().getChildren().remove(1);
-                getVbox().getChildren().addAll(grapheView.getScrollPane());
+                getVbox().getChildren().add(0, grapheView.getScrollPane());
                 setPane(grapheView.getCanvas());
                 //grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
             }
@@ -180,8 +167,10 @@ public class FXMLController extends VBox {
     @FXML public void clickRepresentationAleatoire() {
         if (grapheModel != null) {
         grapheModel.setAlgorithmeRepresentation('a',(int)grapheView.getScrollPane().getWidth(),(int)grapheView.getScrollPane().getHeight());
-        refreshGrapheView();
+        grapheView.miseAJourPositions(grapheModel);
+        grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
         }
+
         else
             afficherFenetreAlerte("Vous ne pouvez pas appliquer la représentation aléatoire si vous n'avez pas importé un graphe avant.");
 
@@ -193,7 +182,8 @@ public class FXMLController extends VBox {
     @FXML public void clickRepresentationCirculaire() {
         if (grapheModel != null) {
             grapheModel.setAlgorithmeRepresentation('c', (int) grapheView.getScrollPane().getWidth(), (int) grapheView.getScrollPane().getHeight());
-            refreshGrapheView();
+            grapheView.miseAJourPositions(grapheModel);
+            grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
         }
         else {
             afficherFenetreAlerte("Vous ne pouvez pas appliquer la représentation circulaire si vous n'avez pas importé un graphe avant.");
@@ -207,7 +197,8 @@ public class FXMLController extends VBox {
     public void clickRepresentationForces() {
         if (grapheModel != null && grapheModel.indiceFixe()) {
             grapheModel.setAlgorithmeRepresentation('f', (int) grapheView.getScrollPane().getWidth(), (int) grapheView.getScrollPane().getHeight());
-            refreshGrapheView();
+            grapheView.miseAJourPositions(grapheModel);
+            grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
         }
         else {
             afficherFenetreAlerte("Vous ne pouvez pas appliquer la représentation modèle de forces si vous n'avez pas " +

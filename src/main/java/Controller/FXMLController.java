@@ -239,7 +239,10 @@ public class FXMLController extends VBox {
      */
     @FXML
     public void clickAjouterSommet() throws IOException {
-        new AjoutSommetController(grapheModel, grapheView);
+        if (grapheModel != null)
+            new AjoutSommetController(grapheModel, grapheView);
+        else
+            afficherFenetreAlerte("Vous ne pouvez pas ajouter de sommet si vous n'avez pas importé un graphe avant");
     }
 
     /**
@@ -249,7 +252,10 @@ public class FXMLController extends VBox {
      */
     @FXML
     public void clickAjouterArete() throws IOException {
-        new AjoutAreteController(grapheModel, grapheView);
+        if (grapheModel != null)
+            new AjoutAreteController(grapheModel, grapheView);
+        else
+            afficherFenetreAlerte("Vous ne pouvez pas ajouter d'arête si vous n'avez pas importé un graphe avant");
     }
 
     /**
@@ -260,7 +266,10 @@ public class FXMLController extends VBox {
      */
     @FXML
     public void clickTailleGraphe(MouseEvent mouseEvent) throws IOException {
-        new TailleGrapheController(grapheModel, grapheView);
+        if (grapheModel != null)
+            new TailleGrapheController(grapheModel, grapheView);
+        else
+            afficherFenetreAlerte("Vous ne pouvez pas modifier la taille du graphe si vous n'avez pas importé un graphe avant");
     }
 
     /**
@@ -270,7 +279,10 @@ public class FXMLController extends VBox {
      * @throws IOException lève une exception
      */
     @FXML public void clickCouleurGraphe(MouseEvent event) throws IOException {
-        new CouleurGrapheController(grapheModel, grapheView);
+        if (grapheModel != null)
+            new CouleurGrapheController(grapheModel, grapheView);
+        else
+            afficherFenetreAlerte("Vous ne pouvez pas modifier la couleur du graphe si vous n'avez pas importé un graphe avant");
     }
 
     /**
@@ -380,7 +392,10 @@ public class FXMLController extends VBox {
      * @throws IOException lève une exception
      */
     @FXML public void clickModifyArete() throws IOException {
-        new ModifierAreteController(grapheModel, grapheView);
+        if (grapheModel != null)
+            new ModifierAreteController(grapheModel, grapheView);
+        else
+            afficherFenetreAlerte("Vous ne pouvez pas modifier d'arête si vous n'avez pas importé un graphe avant");
     }
 
 

@@ -37,6 +37,8 @@ public class ZoomableScrollPane extends ScrollPane {
         setContent(this.content);
     }
 
+    Group zoomGroup;
+
     /**
      * Méthode permettant de mettre à jour le panneau affichant le graphe.
      * @param content Représente le panneau contenant les données permettant l'affichage du graphe.
@@ -44,13 +46,12 @@ public class ZoomableScrollPane extends ScrollPane {
     public void updateScrollPane(Node content) {
         this.content = content;
         Group contentGroup = new Group();
-        Group zoomGroup = new Group();
+        zoomGroup = new Group();
         contentGroup.getChildren().add(zoomGroup);
         zoomGroup.getChildren().add(content);
         setContent(contentGroup);
         scaleTransform = new Scale(scaleValue, scaleValue, 0, 0);
         zoomGroup.getTransforms().add(scaleTransform);
-
         zoomGroup.setOnScroll(new ZoomHandler());
     }
 

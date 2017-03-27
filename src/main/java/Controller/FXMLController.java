@@ -126,7 +126,6 @@ public class FXMLController extends VBox {
                 getVbox().getChildren().remove(1);
                 getVbox().getChildren().addAll(grapheView.getScrollPane());
                 setPane(grapheView.getCanvas());
-                //grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
             }
         }
     }
@@ -507,22 +506,30 @@ public class FXMLController extends VBox {
             public void handle(MouseEvent event) {
                 if (estTrouveSommet(event)) {
                     sommetSelectionneView.setCursor(Cursor.CLOSED_HAND);
+                    sommetSelectionneView.setOnMouseReleased(sommetOnMouseDropEventHandler);
                     sommetSelectionneView.setOnMouseDragged(sommetOnMouseDraggedEventHandler);
                 }
-                else
-                    sommetSelectionneView.setOnMouseDragged(null);
             }
         });
     }
 
+    private EventHandler<MouseEvent> sommetOnMouseDropEventHandler =
+            new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    sommetSelectionneView.setCursor(null);
+                    sommetSelectionneView.setOnMouseDragged(null);
+                }
+            };
+
     private EventHandler<MouseEvent> sommetOnMouseDraggedEventHandler =
             new EventHandler<MouseEvent>() {
                 @Override
-                public void handle(MouseEvent t) {
-                    sommetSelectionneView.setCoord(t.getX(), t.getY());
+                public void handle(MouseEvent event) {
+                    sommetSelectionneView.setCoord(event.getX(), event.getY());
                     grapheView.misAJourAretes(sommetSelectionneView);
-                    sommetSelectionneModel.setX((float)sommetSelectionneView.getCoord_x());
-                    sommetSelectionneModel.setY((float)sommetSelectionneView.getCoord_y());
+                    sommetSelectionneModel.setX((float)event.getX());
+                    sommetSelectionneModel.setY((float)event.getY());
                 }
             };
 

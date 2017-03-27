@@ -150,7 +150,8 @@ public class ZoomableScrollPane extends ScrollPane {
             {
 
                 if (scrollEvent.getDeltaY() < 0) {
-                    scaleValue -= delta;
+                    if (scaleValue >0.5)
+                        scaleValue -= delta;
                 } else {
                     scaleValue += delta;
                 }

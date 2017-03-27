@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -502,35 +503,30 @@ public class FXMLController extends VBox {
                 }
             }
         });
-/*
+
         pane.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if (estTrouveSommet(event)) {
-                    sommetSelectionneView.setCursor(Cursor.HAND);
+                    sommetSelectionneView.setCursor(Cursor.CLOSED_HAND);
                     sommetSelectionneView.setOnMouseDragged(sommetOnMouseDraggedEventHandler);
                 }
+                else
+                    sommetSelectionneView.setOnMouseDragged(null);
             }
         });
-
-*/
     }
-
-/*
-    private double dragDeltaX, dragDeltaY, orgTranslateX, orgTranslateY;
 
     private EventHandler<MouseEvent> sommetOnMouseDraggedEventHandler =
             new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent t) {
-                    sommetSelectionneView.setLayoutX(t.getSceneX() - sommetSelectionneModel.getX());
-                    sommetSelectionneView.setLayoutY(t.getSceneY() - sommetSelectionneModel.getY());
-
-                    sommetSelectionneModel.setX((float)sommetSelectionneView.getLayoutX());
-                    sommetSelectionneModel.setY((float)sommetSelectionneView.getLayoutY());
-
+                    sommetSelectionneView.setCoord(t.getX(), t.getY());
+                    grapheView.misAJourAretes(sommetSelectionneView);
+                    sommetSelectionneModel.setX((float)sommetSelectionneView.getCoord_x());
+                    sommetSelectionneModel.setY((float)sommetSelectionneView.getCoord_y());
                 }
-            };*/
+            };
 
     /** Fonction permettant de trouver le sommet sous le curseur
      * @param event curseur

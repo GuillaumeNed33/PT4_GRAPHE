@@ -122,11 +122,11 @@ public class Sommet extends Pane {
         getChildren().add(vue);
     }
 
-    double getCoord_x() {
+    public double getCoord_x() {
         return coord_x;
     }
 
-    double getCoord_y() {
+    public double getCoord_y() {
         return coord_y;
     }
 
@@ -134,6 +134,7 @@ public class Sommet extends Pane {
         this.coord_x = coord_x;
         this.coord_y = coord_y;
 
+        lb.relocate(coord_x + taille.width,coord_y);
         vue.relocate(coord_x - taille.width, coord_y - taille.height);
     }
 

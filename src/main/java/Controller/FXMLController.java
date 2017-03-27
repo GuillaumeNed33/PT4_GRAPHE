@@ -111,7 +111,7 @@ public class FXMLController extends VBox {
                 grapheView = new View.Graphe();
                 grapheView.chargerGraphe(grapheModel);
                 getVbox().getChildren().remove(1);
-                getVbox().getChildren().add(0, grapheView.getScrollPane());
+                getVbox().getChildren().add(grapheView.getScrollPane());
                 setPane(grapheView.getCanvas());
             }
         }

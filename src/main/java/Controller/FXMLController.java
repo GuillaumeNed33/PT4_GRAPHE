@@ -144,7 +144,7 @@ public class FXMLController extends VBox {
             }
         }
         else {
-            afficherFenetreAlerte("Vous ne pouvez pas exporter si vous n'avez pas importer un graphe avant.");
+            afficherFenetreAlerte("Vous ne pouvez pas exporter si vous n'avez pas importé un graphe avant.");
         }
     }
 

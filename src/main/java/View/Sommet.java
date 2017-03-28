@@ -102,7 +102,6 @@ public class Sommet extends Group {
         }
     }
 
-
     // ACCESSEURS ET MUTATEURS
 
     public Size getTaille() {

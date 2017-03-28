@@ -392,7 +392,6 @@ public class FXMLController extends VBox {
                 Color c = couleurFond.getValue();
                 if (grapheView != null) {
 
-                    grapheView.getCanvas().setMinSize(grapheView.getScrollPane().getWidth(), grapheView.getScrollPane().getHeight());
                     grapheView.getCanvas().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
                 }
                 else {

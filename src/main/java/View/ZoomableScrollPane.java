@@ -5,6 +5,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.transform.Scale;
 
 /**
@@ -53,6 +54,9 @@ public class ZoomableScrollPane extends ScrollPane {
         scaleTransform = new Scale(scaleValue, scaleValue, 0, 0);
         zoomGroup.getTransforms().add(scaleTransform);
         zoomGroup.setOnScroll(new ZoomHandler());
+
+        Pane pane = (Pane) content;
+        pane.setMinSize(getWidth(), getHeight());
     }
 
 
@@ -117,14 +121,30 @@ public class ZoomableScrollPane extends ScrollPane {
             // if (scrollEvent.isControlDown())
             {
 
+                Pane pane = (Pane) content;
+                double tempScaleValue = scaleValue;
                 if (scrollEvent.getDeltaY() < 0) {
-                    if (scaleValue >0.5)
-                        scaleValue -= delta;
+                    if (scaleValue > 0.6)
+                        tempScaleValue -= delta;
                 } else {
-                    scaleValue += delta;
+                    tempScaleValue += delta;
                 }
 
-                zoomTo(scaleValue, scrollEvent);
+
+                if (tempScaleValue != scaleValue) {
+                    scaleValue = tempScaleValue;
+
+                    zoomTo(scaleValue, scrollEvent);
+
+                    if (scaleValue < 1) {
+                        pane.setMinWidth(getWidth() + getWidth()*(1 - scaleValue));
+                        pane.setPrefWidth(getWidth() + getWidth()*(1 - scaleValue));
+                    }
+                    else if (scaleValue >= 1) {
+                        pane.setMinWidth(getWidth());
+                        pane.setPrefWidth(getWidth());
+                    }
+                }
 
                 scrollEvent.consume();
             }

@@ -84,7 +84,7 @@ public class CouleurGrapheController extends FXMLController {
                 i++;
             }
             grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
-            fermerPopup(OKCouleurGraphe);
+            popUpWindow.close();
         }
         if (checkSommets.isSelected() && grapheModel.indiceFixe()) {
             grapheModel.changerCouleurSommets(miniCouleur.getValue(), maxiCouleur.getValue());
@@ -96,7 +96,7 @@ public class CouleurGrapheController extends FXMLController {
                 i++;
             }
             grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
-            fermerPopup(OKCouleurGraphe);
+            popUpWindow.close();
         }
         else {
             erreurCouleurGraphe.setText("Erreur - Les sommets ne sont pas indicés \net / ou vous n'avez pas sélectionné Sommets ou Arêtes.");
@@ -107,6 +107,6 @@ public class CouleurGrapheController extends FXMLController {
      * Fonction fermant la fenêtre d'ajout d'un sommet au clic sur "Annuler"
      */
     @FXML public void fermerPopUpCouleurGraphe(){
-        fermerPopup(annulerCouleurGraphe);
+        popUpWindow.close();
     }
 }

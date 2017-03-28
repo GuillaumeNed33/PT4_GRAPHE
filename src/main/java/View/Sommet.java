@@ -2,9 +2,9 @@ package View;
 
 import Model.Forme_Sommet;
 import com.sun.glass.ui.Size;
-import javafx.scene.*;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
@@ -13,7 +13,7 @@ import javafx.scene.shape.Rectangle;
 /**
  * Classe permettant de créer un sommet pour l'affichage du graphe.
  */
-public class Sommet extends Pane {
+public class Sommet extends Group {
 
     /**
      * Représente la coordonnée en x du sommet.
@@ -123,11 +123,11 @@ public class Sommet extends Pane {
         getChildren().add(vue);
     }
 
-    public double getCoord_x() {
+    double getCoord_x() {
         return coord_x;
     }
 
-    public double getCoord_y() {
+    double getCoord_y() {
         return coord_y;
     }
 
@@ -135,8 +135,8 @@ public class Sommet extends Pane {
         this.coord_x = coord_x;
         this.coord_y = coord_y;
 
-        lb.relocate(coord_x + taille.width,coord_y);
         vue.relocate(coord_x - taille.width, coord_y - taille.height);
+        lb.relocate(coord_x + taille.width,coord_y);
     }
 
     public Label getLb() {

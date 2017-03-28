@@ -63,6 +63,11 @@ public class FXMLController extends VBox {
     private String tagSommetSelectionne;
 
     /**
+     * Représente le fait d'avoir déjà cliqué su importer/exporter.
+     */
+    private static boolean clicImporterExporter = false;
+
+    /**
      * Constructeur initialisant la fenêtre principale
      * @throws IOException lève une exception
      */
@@ -90,10 +95,14 @@ public class FXMLController extends VBox {
      * Fonction ouvrant une fenetre (FileChooser) permettant l'importation d'un fichier dans le logiciel.
      */
     @FXML public void clickFichierImporter() {
-        if (grapheView == null) {
+
+        if (grapheView == null && !clicImporterExporter) {
+            clicImporterExporter = true;
+
             FileChooser fileChooser = createFileChooser("Importer");
             fileChooser.setInitialDirectory(new File("./ressources/"));
             File file = fileChooser.showOpenDialog(null);
+
             if (file != null){
                 grapheView = new View.Graphe();
                 grapheModel = new Graphe(file.getAbsolutePath(), 1200, 680);
@@ -101,19 +110,25 @@ public class FXMLController extends VBox {
                 getVbox().getChildren().addAll(grapheView.getScrollPane());
                 setPane(grapheView.getCanvas());
             }
+            clicImporterExporter = false;
         }
         else {
-            FileChooser fileChooser = createFileChooser("Importer");
-            fileChooser.setInitialDirectory(new File("./ressources/"));
-            File file = fileChooser.showOpenDialog(null);
-            if (file != null) {
-                grapheModel = new Graphe(file.getAbsolutePath(), 1200,680);
-                grapheView = new View.Graphe();
-                grapheView.chargerGraphe(grapheModel);
-                getVbox().getChildren().remove(1);
-                getVbox().getChildren().add(0, grapheView.getScrollPane());
-                setPane(grapheView.getCanvas());
-                //grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+            if (!clicImporterExporter) {
+                clicImporterExporter = true;
+
+                FileChooser fileChooser = createFileChooser("Importer");
+                fileChooser.setInitialDirectory(new File("./ressources/"));
+                File file = fileChooser.showOpenDialog(null);
+
+                if (file != null) {
+                    grapheModel = new Graphe(file.getAbsolutePath(), 1200, 680);
+                    grapheView = new View.Graphe();
+                    grapheView.chargerGraphe(grapheModel);
+                    getVbox().getChildren().remove(1);
+                    getVbox().getChildren().add(grapheView.getScrollPane());
+                    setPane(grapheView.getCanvas());
+                }
+                clicImporterExporter = false;
             }
         }
     }
@@ -122,14 +137,19 @@ public class FXMLController extends VBox {
      * Fonction ouvrant une fenetre (FileChooser) permettant l'exportation d'un fichier dans le logiciel.
      */
     @FXML public void clickFichierExporter() {
-        if (grapheModel != null) {
+        if (grapheModel != null && !clicImporterExporter) {
+            clicImporterExporter = true;
+
             FileChooser fileChooser = createFileChooser("Exporter");
             File file = fileChooser.showSaveDialog(null);
+
             if (file != null) {
                 grapheModel.sauvegarderGraphe(file.getAbsolutePath());
             }
+
+            clicImporterExporter = false;
         }
-        else {
+        else if (!clicImporterExporter) {
             afficherFenetreAlerte("Vous ne pouvez pas exporter si vous n'avez pas importé un graphe avant.");
         }
     }
@@ -239,7 +259,10 @@ public class FXMLController extends VBox {
      */
     @FXML
     public void clickAjouterSommet() throws IOException {
-        new AjoutSommetController(grapheModel, grapheView);
+        if (grapheModel != null)
+            new AjoutSommetController(grapheModel, grapheView);
+        else
+            afficherFenetreAlerte("Vous ne pouvez pas ajouter de sommet si vous n'avez pas importé un graphe avant");
     }
 
     /**
@@ -249,7 +272,10 @@ public class FXMLController extends VBox {
      */
     @FXML
     public void clickAjouterArete() throws IOException {
-        new AjoutAreteController(grapheModel, grapheView);
+        if (grapheModel != null)
+            new AjoutAreteController(grapheModel, grapheView);
+        else
+            afficherFenetreAlerte("Vous ne pouvez pas ajouter d'arête si vous n'avez pas importé un graphe avant");
     }
 
     /**
@@ -260,7 +286,10 @@ public class FXMLController extends VBox {
      */
     @FXML
     public void clickTailleGraphe(MouseEvent mouseEvent) throws IOException {
-        new TailleGrapheController(grapheModel, grapheView);
+        if (grapheModel != null)
+            new TailleGrapheController(grapheModel, grapheView);
+        else
+            afficherFenetreAlerte("Vous ne pouvez pas modifier la taille du graphe si vous n'avez pas importé un graphe avant");
     }
 
     /**
@@ -270,16 +299,12 @@ public class FXMLController extends VBox {
      * @throws IOException lève une exception
      */
     @FXML public void clickCouleurGraphe(MouseEvent event) throws IOException {
-        new CouleurGrapheController(grapheModel, grapheView);
+        if (grapheModel != null)
+            new CouleurGrapheController(grapheModel, grapheView);
+        else
+            afficherFenetreAlerte("Vous ne pouvez pas modifier la couleur du graphe si vous n'avez pas importé un graphe avant");
     }
 
-    /**
-     * Fonction fermant la fenêtre courante
-     * @param button bouton de fermeture de la fenêtre
-     */
-    protected void fermerPopup(Button button) {
-        popUpWindow.close();
-    }
 
     /**
      * Fonction traitant le ToggleButton permettant l'affichage ou non des sommets du graphe.
@@ -339,6 +364,8 @@ public class FXMLController extends VBox {
             }
         }
     }
+
+
     /**
      * Fonction de zoom -
      */
@@ -364,9 +391,9 @@ public class FXMLController extends VBox {
             public void handle(ActionEvent event) {
                 Color c = couleurFond.getValue();
                 if (grapheView != null) {
-                    //grapheView.getCanvas().setPrefSize(grapheView.getScrollPane().getWidth(), grapheView.getScrollPane().getHeight());
+
+                    grapheView.getCanvas().setMinSize(grapheView.getScrollPane().getWidth(), grapheView.getScrollPane().getHeight());
                     grapheView.getCanvas().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
-                    grapheView.getScrollPane().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
                 }
                 else {
                     afficherFenetreAlerte("Importez un graphe avant de changer les couleurs.");
@@ -381,7 +408,10 @@ public class FXMLController extends VBox {
      * @throws IOException lève une exception
      */
     @FXML public void clickModifyArete() throws IOException {
-        new ModifierAreteController(grapheModel, grapheView);
+        if (grapheModel != null)
+            new ModifierAreteController(grapheModel, grapheView);
+        else
+            afficherFenetreAlerte("Vous ne pouvez pas modifier d'arête si vous n'avez pas importé un graphe avant");
     }
 
 
@@ -400,7 +430,7 @@ public class FXMLController extends VBox {
     /**
      * Fonction d'insertion des options du contextMenu
      */
-    public void setContextMenu() {
+    private void setContextMenu() {
         contextMenu = new ContextMenu();
         contextMenu.getItems().addAll(proprieteSommet, modifierSommet, etiquetteSommet,supprimerSommet,copierEtiquetteSommet,collerEtquetteSommet);
 
@@ -469,7 +499,7 @@ public class FXMLController extends VBox {
      * Fonction faisant apparaitre le menu contextuel lors d'un double clic sur un sommet valide
      * @param pane Pane
      */
-    public void setPane(Pane pane){
+    private void setPane(Pane pane){
         pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -498,23 +528,34 @@ public class FXMLController extends VBox {
             @Override
             public void handle(MouseEvent event) {
                 if (estTrouveSommet(event)) {
+
                     sommetSelectionneView.setCursor(Cursor.CLOSED_HAND);
+
+                    sommetSelectionneView.setOnMouseReleased(sommetOnMouseReleaseEventHandler);
                     sommetSelectionneView.setOnMouseDragged(sommetOnMouseDraggedEventHandler);
                 }
-                else
-                    sommetSelectionneView.setOnMouseDragged(null);
             }
         });
     }
 
+    private EventHandler<MouseEvent> sommetOnMouseReleaseEventHandler =
+            new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    sommetSelectionneView.setCursor(null);
+                    sommetSelectionneView.setOnMouseDragged(null);
+                    sommetSelectionneView = null;
+                }
+            };
+
     private EventHandler<MouseEvent> sommetOnMouseDraggedEventHandler =
             new EventHandler<MouseEvent>() {
                 @Override
-                public void handle(MouseEvent t) {
-                    sommetSelectionneView.setCoord(t.getX(), t.getY());
+                public void handle(MouseEvent event) {
+                    sommetSelectionneView.setCoord(event.getX(), event.getY());
                     grapheView.misAJourAretes(sommetSelectionneView);
-                    sommetSelectionneModel.setX((float)sommetSelectionneView.getCoord_x());
-                    sommetSelectionneModel.setY((float)sommetSelectionneView.getCoord_y());
+                    sommetSelectionneModel.setX((float)event.getX());
+                    sommetSelectionneModel.setY((float)event.getY());
                 }
             };
 
@@ -534,11 +575,16 @@ public class FXMLController extends VBox {
             if(event.getX() >= sommetSelectionneModel.getX() - sommetSelectionneModel.getTaille().width &&
                     event.getX() <= sommetSelectionneModel.getX() + sommetSelectionneModel.getTaille().width &&
                     event.getY() >= sommetSelectionneModel.getY() - sommetSelectionneModel.getTaille().height &&
-                    event.getY() <= sommetSelectionneModel.getY() + sommetSelectionneModel.getTaille().height){
+                    event.getY() <= sommetSelectionneModel.getY() + sommetSelectionneModel.getTaille().height) {
+
                 trouve = true;
+            } else {
+                ++cpt;
+                sommetSelectionneModel = null;
+                sommetSelectionneView = null;
             }
-            ++cpt;
         }
+
         return trouve;
     }
 

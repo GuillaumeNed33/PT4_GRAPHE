@@ -364,8 +364,9 @@ public class FXMLController extends VBox {
             public void handle(ActionEvent event) {
                 Color c = couleurFond.getValue();
                 if (grapheView != null) {
-                    grapheView.getCanvas().setPrefSize(grapheView.getScrollPane().getWidth(), grapheView.getScrollPane().getHeight());
+                    //grapheView.getCanvas().setPrefSize(grapheView.getScrollPane().getWidth(), grapheView.getScrollPane().getHeight());
                     grapheView.getCanvas().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
+                    grapheView.getScrollPane().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
                 }
                 else {
                     afficherFenetreAlerte("Importez un graphe avant de changer les couleurs.");

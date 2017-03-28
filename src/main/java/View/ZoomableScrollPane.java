@@ -1,5 +1,9 @@
 package View;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
@@ -36,11 +40,15 @@ public class ZoomableScrollPane extends ScrollPane {
      */
     private double delta = 0.1;
 
+
     ZoomableScrollPane(Node content) {
         this.content = content;
         setContent(this.content);
         setFitToHeight(true);
         setFitToWidth(true);
+
+
+
     }
 
     /**

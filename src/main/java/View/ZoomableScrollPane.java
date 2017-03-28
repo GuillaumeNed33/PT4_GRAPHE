@@ -1,6 +1,7 @@
 package View;
 
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
@@ -36,6 +37,8 @@ public class ZoomableScrollPane extends ScrollPane {
         setContent(this.content);
         setFitToHeight(true);
         setFitToWidth(true);
+        setPannable(true);
+        setPadding(new Insets(50.f));
     }
 
     /**
@@ -67,6 +70,8 @@ public class ZoomableScrollPane extends ScrollPane {
         scaleTransform.setPivotY(event.getY());
         scaleTransform.setX(scaleValue);
         scaleTransform.setY(scaleValue);
+        setLayoutX(0);
+        setLayoutY(70);
     }
 
 

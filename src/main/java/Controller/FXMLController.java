@@ -63,6 +63,11 @@ public class FXMLController extends VBox {
     private String tagSommetSelectionne;
 
     /**
+     * Représente le fait d'avoir déjà cliqué su importer/exporter.
+     */
+    private static boolean clicImporterExporter = false;
+
+    /**
      * Constructeur initialisant la fenêtre principale
      * @throws IOException lève une exception
      */
@@ -90,10 +95,14 @@ public class FXMLController extends VBox {
      * Fonction ouvrant une fenetre (FileChooser) permettant l'importation d'un fichier dans le logiciel.
      */
     @FXML public void clickFichierImporter() {
-        if (grapheView == null) {
+
+        if (grapheView == null && !clicImporterExporter) {
+            clicImporterExporter = true;
+
             FileChooser fileChooser = createFileChooser("Importer");
             fileChooser.setInitialDirectory(new File("./ressources/"));
             File file = fileChooser.showOpenDialog(null);
+
             if (file != null){
                 grapheView = new View.Graphe();
                 grapheModel = new Graphe(file.getAbsolutePath(), 1200, 680);
@@ -101,18 +110,25 @@ public class FXMLController extends VBox {
                 getVbox().getChildren().addAll(grapheView.getScrollPane());
                 setPane(grapheView.getCanvas());
             }
+            clicImporterExporter = false;
         }
         else {
-            FileChooser fileChooser = createFileChooser("Importer");
-            fileChooser.setInitialDirectory(new File("./ressources/"));
-            File file = fileChooser.showOpenDialog(null);
-            if (file != null) {
-                grapheModel = new Graphe(file.getAbsolutePath(), 1200,680);
-                grapheView = new View.Graphe();
-                grapheView.chargerGraphe(grapheModel);
-                getVbox().getChildren().remove(1);
-                getVbox().getChildren().add(grapheView.getScrollPane());
-                setPane(grapheView.getCanvas());
+            if (!clicImporterExporter) {
+                clicImporterExporter = true;
+
+                FileChooser fileChooser = createFileChooser("Importer");
+                fileChooser.setInitialDirectory(new File("./ressources/"));
+                File file = fileChooser.showOpenDialog(null);
+
+                if (file != null) {
+                    grapheModel = new Graphe(file.getAbsolutePath(), 1200, 680);
+                    grapheView = new View.Graphe();
+                    grapheView.chargerGraphe(grapheModel);
+                    getVbox().getChildren().remove(1);
+                    getVbox().getChildren().add(grapheView.getScrollPane());
+                    setPane(grapheView.getCanvas());
+                }
+                clicImporterExporter = false;
             }
         }
     }
@@ -121,14 +137,19 @@ public class FXMLController extends VBox {
      * Fonction ouvrant une fenetre (FileChooser) permettant l'exportation d'un fichier dans le logiciel.
      */
     @FXML public void clickFichierExporter() {
-        if (grapheModel != null) {
+        if (grapheModel != null && !clicImporterExporter) {
+            clicImporterExporter = true;
+
             FileChooser fileChooser = createFileChooser("Exporter");
             File file = fileChooser.showSaveDialog(null);
+
             if (file != null) {
                 grapheModel.sauvegarderGraphe(file.getAbsolutePath());
             }
+
+            clicImporterExporter = false;
         }
-        else {
+        else if (!clicImporterExporter) {
             afficherFenetreAlerte("Vous ne pouvez pas exporter si vous n'avez pas importé un graphe avant.");
         }
     }
@@ -343,6 +364,8 @@ public class FXMLController extends VBox {
             }
         }
     }
+
+
     /**
      * Fonction de zoom -
      */

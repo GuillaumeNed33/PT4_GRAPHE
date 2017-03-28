@@ -284,13 +284,6 @@ public class FXMLController extends VBox {
             afficherFenetreAlerte("Vous ne pouvez pas modifier la couleur du graphe si vous n'avez pas importé un graphe avant");
     }
 
-    /**
-     * Fonction fermant la fenêtre courante
-     * @param button bouton de fermeture de la fenêtre
-     */
-    protected void fermerPopup(Button button) {
-        popUpWindow.close();
-    }
 
     /**
      * Fonction traitant le ToggleButton permettant l'affichage ou non des sommets du graphe.
@@ -375,7 +368,8 @@ public class FXMLController extends VBox {
             public void handle(ActionEvent event) {
                 Color c = couleurFond.getValue();
                 if (grapheView != null) {
-                    grapheView.getCanvas().setPrefSize(grapheView.getScrollPane().getWidth(), grapheView.getScrollPane().getHeight());
+
+                    grapheView.getCanvas().setMinSize(grapheView.getScrollPane().getWidth(), grapheView.getScrollPane().getHeight());
                     grapheView.getCanvas().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
                 }
                 else {
@@ -413,7 +407,7 @@ public class FXMLController extends VBox {
     /**
      * Fonction d'insertion des options du contextMenu
      */
-    public void setContextMenu() {
+    private void setContextMenu() {
         contextMenu = new ContextMenu();
         contextMenu.getItems().addAll(proprieteSommet, modifierSommet, etiquetteSommet,supprimerSommet,copierEtiquetteSommet,collerEtquetteSommet);
 
@@ -482,7 +476,7 @@ public class FXMLController extends VBox {
      * Fonction faisant apparaitre le menu contextuel lors d'un double clic sur un sommet valide
      * @param pane Pane
      */
-    public void setPane(Pane pane){
+    private void setPane(Pane pane){
         pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -558,7 +552,7 @@ public class FXMLController extends VBox {
             if(event.getX() >= sommetSelectionneModel.getX() - sommetSelectionneModel.getTaille().width &&
                     event.getX() <= sommetSelectionneModel.getX() + sommetSelectionneModel.getTaille().width &&
                     event.getY() >= sommetSelectionneModel.getY() - sommetSelectionneModel.getTaille().height &&
-                    event.getY() <= sommetSelectionneModel.getY() + sommetSelectionneModel.getTaille().height){
+                    event.getY() <= sommetSelectionneModel.getY() + sommetSelectionneModel.getTaille().height) {
 
                 trouve = true;
             } else {

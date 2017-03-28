@@ -2,9 +2,9 @@ package View;
 
 import Model.Forme_Sommet;
 import com.sun.glass.ui.Size;
-import javafx.scene.*;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;

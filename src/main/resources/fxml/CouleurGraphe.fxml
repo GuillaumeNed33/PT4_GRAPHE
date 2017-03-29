@@ -10,8 +10,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root prefHeight="195.0" prefWidth="384.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
-   <GridPane alignment="CENTER" hgap="5.0" prefHeight="226.0" prefWidth="384.0" vgap="5.0">
+<fx:root prefHeight="186.0" prefWidth="384.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+   <GridPane alignment="CENTER" hgap="5.0" prefHeight="171.0" prefWidth="384.0" vgap="5.0">
     <columnConstraints>
       <ColumnConstraints maxWidth="204.0" minWidth="44.0" prefWidth="193.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="206.0" minWidth="10.0" prefWidth="191.0" />
@@ -19,8 +19,8 @@
    <rowConstraints>
       <RowConstraints maxHeight="77.0" minHeight="10.0" prefHeight="77.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="98.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
-         <RowConstraints maxHeight="207.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="207.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="207.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="207.0" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
    </rowConstraints>
       <Label layoutX="238.0" layoutY="53.0" text="Minimum">
          <GridPane.margin>
@@ -50,7 +50,7 @@
             <Insets left="20.0" />
          </GridPane.margin>
       </Button>
-      <Label fx:id="erreurCouleurGraphe" textFill="#ee0404" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.valignment="TOP">
+      <Label fx:id="erreurCouleurGraphe" prefHeight="34.0" textFill="#ee0404" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets left="10.0" />
          </GridPane.margin>

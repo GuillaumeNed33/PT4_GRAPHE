@@ -49,7 +49,7 @@
             </Label>
          </children>
       </GridPane>
-      <Label fx:id="erreurMessageId" textFill="#ee0000" />
+      <Label fx:id="erreurMessageId" minHeight="34.0" prefHeight="34.0" textFill="#ee0000" />
       <HBox alignment="TOP_RIGHT">
          <children>
             <Button mnemonicParsing="false" onAction="#changementTailleGraphe" text="OK">

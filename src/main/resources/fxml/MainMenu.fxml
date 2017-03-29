@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<TabPane maxHeight="Infinity" maxWidth="Infinity" prefHeight="70.0" prefWidth="911.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.102-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.FXMLController">
+<TabPane maxHeight="Infinity" maxWidth="Infinity" prefHeight="70.0" prefWidth="911.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.FXMLController">
    <tabs>
        <Tab text="Fichier">
           <content>
@@ -46,7 +46,7 @@
                             <Separator orientation="VERTICAL" />
                             <ToggleButton mnemonicParsing="false" onAction="#clickToggleSommet" text="Sommets" />
                             <ToggleButton mnemonicParsing="false" onAction="#clickToggleArete" text="Arêtes" />
-                            <ToggleButton mnemonicParsing="false" onAction="#clickToggleEtiquette" text="Étiquettes" />
+                            <ToggleButton mnemonicParsing="false" onAction="#clickToggleEtiquette" text="Tags" />
                             <Button mnemonicParsing="false" onMouseClicked="#clickCouleurGraphe" text="Couleur du graphe" />
                             <Label alignment="CENTER" text="Couleur du fond :">
                            <HBox.margin>

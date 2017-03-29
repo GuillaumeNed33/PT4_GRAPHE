@@ -129,6 +129,10 @@ public class FXMLController extends VBox {
         }
     }
 
+    /**
+     * Méthode permettant d'éviter la duplication de code pour créer des graphe (Model et View).
+     * @param file Représente le chemin sélectionné par l'utilisateur.
+     */
     private void initialisationDesGraphes(File file) {
         grapheView = new View.Graphe();
         grapheModel = new Graphe(file.getAbsolutePath(), (int)vbox.getWidth(), (int)(vbox.getHeight() - 90));

@@ -370,14 +370,16 @@ public class FXMLController extends VBox {
      * Fonction de zoom -
      */
     @FXML public void clickZoomMinus() {
-        grapheView.getScrollPane().zoomOut();
+        if (grapheModel != null)
+            grapheView.getScrollPane().zoomOut();
     }
 
     /**
      * Fonction de zoom +
      */
     @FXML public void clickZoomPlus()  throws IOException{
-        grapheView.getScrollPane().zoomIn();
+        if (grapheModel != null)
+            grapheView.getScrollPane().zoomIn();
     }
 
     /**
@@ -391,7 +393,6 @@ public class FXMLController extends VBox {
             public void handle(ActionEvent event) {
                 Color c = couleurFond.getValue();
                 if (grapheView != null) {
-
                     grapheView.getCanvas().setMinSize(grapheView.getScrollPane().getWidth(), grapheView.getScrollPane().getHeight());
                     grapheView.getCanvas().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
                 }

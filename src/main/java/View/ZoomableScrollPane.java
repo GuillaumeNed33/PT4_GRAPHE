@@ -1,7 +1,6 @@
 package View;
 
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
@@ -38,7 +37,6 @@ public class ZoomableScrollPane extends ScrollPane {
         setFitToHeight(true);
         setFitToWidth(true);
         setPannable(true);
-        setPadding(new Insets(50.f));
     }
 
     /**

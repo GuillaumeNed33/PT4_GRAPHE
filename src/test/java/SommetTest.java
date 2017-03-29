@@ -83,4 +83,35 @@ public class SommetTest {
         assertEquals(sommet.getTaille().height,15,0);
         assertEquals(sommet.getTaille().width,15,0);
     }
+
+    @Test
+    public void testFormeSommet() {
+        Sommet sommet = new Sommet("UnSommet");
+        assertEquals(Forme_Sommet.Cercle,sommet.getForme());
+
+        sommet.setForme(Forme_Sommet.Triangle);
+        assertEquals(Forme_Sommet.Triangle,sommet.getForme());
+
+        assertEquals(Forme_Sommet.getFormeViaTexte("Rectangle"),Forme_Sommet.Rectangle);
+        assertEquals(Forme_Sommet.getFormeViaTexte("Triangle"),Forme_Sommet.Triangle);
+        assertEquals(Forme_Sommet.getFormeViaTexte("Losange"),Forme_Sommet.Losange);
+        assertEquals(Forme_Sommet.getFormeViaTexte("Cercle"),Forme_Sommet.Cercle);
+        assertEquals(Forme_Sommet.getFormeViaTexte("Unknown"),Forme_Sommet.Cercle);
+
+
+        sommet.setForme("Rectangle");
+        assertEquals(sommet.getForme(),Forme_Sommet.Rectangle);
+
+        sommet.setForme("circle");
+        assertEquals(sommet.getForme(),Forme_Sommet.Cercle);
+
+        sommet.setForme("Triangle");
+        assertEquals(sommet.getForme(),Forme_Sommet.Triangle);
+
+        sommet.setForme("Losange");
+        assertEquals(sommet.getForme(),Forme_Sommet.Losange);
+
+        sommet.setForme("unknown");
+        assertEquals(sommet.getForme(),Forme_Sommet.Cercle);
+    }
 }

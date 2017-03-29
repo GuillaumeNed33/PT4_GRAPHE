@@ -37,6 +37,7 @@ public class Graphe {
     /**
      * Constructeur permettant d'initialiser l'aspect de l'affichage.
      */
+
     public Graphe() {
         canvas = new Pane();
         scrollPane = new ZoomableScrollPane(canvas);

@@ -6,12 +6,12 @@ import View.Arete;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -104,11 +104,9 @@ public class FXMLController extends VBox {
             File file = fileChooser.showOpenDialog(null);
 
             if (file != null){
-                grapheView = new View.Graphe();
-                grapheModel = new Graphe(file.getAbsolutePath(), 1200, 680);
-                grapheView.chargerGraphe(grapheModel);
+
+                initialisationDesGraphes(file);
                 getVbox().getChildren().addAll(grapheView.getScrollPane());
-                setPane(grapheView.getCanvas());
             }
             clicImporterExporter = false;
         }
@@ -121,16 +119,21 @@ public class FXMLController extends VBox {
                 File file = fileChooser.showOpenDialog(null);
 
                 if (file != null) {
-                    grapheModel = new Graphe(file.getAbsolutePath(), 1200, 680);
-                    grapheView = new View.Graphe();
-                    grapheView.chargerGraphe(grapheModel);
+
+                    initialisationDesGraphes(file);
                     getVbox().getChildren().remove(1);
                     getVbox().getChildren().add(grapheView.getScrollPane());
-                    setPane(grapheView.getCanvas());
                 }
                 clicImporterExporter = false;
             }
         }
+    }
+
+    private void initialisationDesGraphes(File file) {
+        grapheView = new View.Graphe();
+        grapheModel = new Graphe(file.getAbsolutePath(), (int)vbox.getWidth(), (int)(vbox.getHeight() - 90));
+        grapheView.chargerGraphe(grapheModel);
+        setPane(grapheView.getCanvas());
     }
 
     /**
@@ -186,9 +189,9 @@ public class FXMLController extends VBox {
      */
     @FXML public void clickRepresentationAleatoire() {
         if (grapheModel != null) {
-        grapheModel.setAlgorithmeRepresentation('a',(int)grapheView.getScrollPane().getWidth(),(int)grapheView.getScrollPane().getHeight());
-        grapheView.miseAJourPositions(grapheModel);
-        grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+            grapheModel.setAlgorithmeRepresentation('a',(int)vbox.getWidth(), (int)(vbox.getHeight() - 90));
+            grapheView.miseAJourPositions(grapheModel);
+            grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
         }
 
         else
@@ -201,7 +204,7 @@ public class FXMLController extends VBox {
      */
     @FXML public void clickRepresentationCirculaire() {
         if (grapheModel != null) {
-            grapheModel.setAlgorithmeRepresentation('c', (int) grapheView.getScrollPane().getWidth(), (int) grapheView.getScrollPane().getHeight());
+            grapheModel.setAlgorithmeRepresentation('c', (int)vbox.getWidth(), (int)(vbox.getHeight() - 90));
             grapheView.miseAJourPositions(grapheModel);
             grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
         }
@@ -216,7 +219,7 @@ public class FXMLController extends VBox {
     @FXML
     public void clickRepresentationForces() {
         if (grapheModel != null && grapheModel.indiceFixe()) {
-            grapheModel.setAlgorithmeRepresentation('f', (int) grapheView.getScrollPane().getWidth(), (int) grapheView.getScrollPane().getHeight());
+            grapheModel.setAlgorithmeRepresentation('f', (int)vbox.getWidth(), (int)(vbox.getHeight() - 90));
             grapheView.miseAJourPositions(grapheModel);
             grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
         }
@@ -370,14 +373,16 @@ public class FXMLController extends VBox {
      * Fonction de zoom -
      */
     @FXML public void clickZoomMinus() {
-        grapheView.getScrollPane().zoomOut();
+        if (grapheModel != null)
+            grapheView.getScrollPane().zoomOut();
     }
 
     /**
      * Fonction de zoom +
      */
     @FXML public void clickZoomPlus()  throws IOException{
-        grapheView.getScrollPane().zoomIn();
+        if (grapheModel != null)
+            grapheView.getScrollPane().zoomIn();
     }
 
     /**
@@ -390,13 +395,18 @@ public class FXMLController extends VBox {
             @Override
             public void handle(ActionEvent event) {
                 Color c = couleurFond.getValue();
-                if (grapheView != null) {
 
-                    grapheView.getCanvas().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
+                if (grapheView != null) {
+                    grapheView.getScrollPane().setMinSize(getVbox().getWidth(), grapheView.getCanvas().getHeight());
+                    grapheView.getCanvas().setMinSize(grapheView.getScrollPane().getWidth(), grapheView.getScrollPane().getHeight());
+                    grapheView.getScrollPane().setStyle("-fx-background: rgb(" + c.getRed() * 255 + "," + c.getGreen() * 255 + "," + c.getBlue() * 255 + ");");
+
                 }
                 else {
                     afficherFenetreAlerte("Importez un graphe avant de changer les couleurs.");
                 }
+
+
             }
         });
     }

@@ -144,6 +144,8 @@ public class GrapheTest {
         g.setIndiceDegre(s4);
         Assert.assertEquals(s2.getIndice(),1);
         Assert.assertEquals(s.getIndice(),2);
+
+        Assert.assertEquals(g.indiceFixe(),true);
     }
 
     @Test
@@ -431,5 +433,43 @@ public class GrapheTest {
 
         Assert.assertEquals(g.sommetsVoisins(s),sommetsVoisinsS);
         Assert.assertEquals(g.sommetsNonVoisins(sommetsVoisinsS2, s2), sommetsNonVoisinsS2);
+    }
+
+    @Test
+    public void testChargerGrapheGV() {
+
+        Graphe g = new Graphe("./ressources/graphvis.gv",600,400);
+        Assert.assertEquals(g.getSommets().size(),16,0);
+    }
+
+    @Test
+    public void testChargerGrapheGraphml() {
+
+        Graphe g = new Graphe("./ressources/sample.graphml",600,400);
+        Assert.assertEquals(g.getSommets().size(),6,0);
+    }
+
+    @Test
+    public void testTrouverSommetParId() {
+
+        Size m = new Size(10,10);
+        Graphe g = new Graphe();
+
+        Sommet s = new Sommet("s1",1,1);
+        s.setId(1);
+        Sommet s2 = new Sommet("s2",2,2);
+        s2.setId(2);
+        Sommet s3 = new Sommet("s3",3,3);
+        s3.setId(3);
+        Sommet s4 = new Sommet("s4",4,4);
+        s4.setId(4);
+
+        g.ajouterSommet(s,m);
+        g.ajouterSommet(s2,m);
+        g.ajouterSommet(s3,m);
+        g.ajouterSommet(s4,m);
+
+
+        Assert.assertEquals(g.trouverSommetParID(2),s2);
     }
 }

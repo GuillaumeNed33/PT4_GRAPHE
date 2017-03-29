@@ -90,7 +90,8 @@ public class Sommet extends Group {
                 vue = new Circle(taille.width ,color);
                 break;
             case Losange:
-                vue = new Polygon();
+                vue = new Rectangle(taille.width*2,taille.height*2,color);
+                vue.setRotate(45);
                 break;
             case Rectangle:
                 vue = new Rectangle(taille.width*2,taille.height*2,color);
@@ -100,7 +101,6 @@ public class Sommet extends Group {
                 break;
         }
     }
-
 
     // ACCESSEURS ET MUTATEURS
 
@@ -184,7 +184,7 @@ public class Sommet extends Group {
                 ((Circle)vue).setFill(c);
                 break;
             case Losange:
-                ((Polygon)vue).setFill(c);
+                ((Rectangle)vue).setFill(c);
                 break;
             case Rectangle:
                 ((Rectangle)vue).setFill(c);

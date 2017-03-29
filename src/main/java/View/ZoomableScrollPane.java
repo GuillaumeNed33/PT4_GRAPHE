@@ -32,12 +32,12 @@ public class ZoomableScrollPane extends ScrollPane {
      * Représente la valeur delta permettant d'incrémenter ou décrémenter l'échelle de la vue.
      */
     private double delta = 0.1;
-
     ZoomableScrollPane(Node content) {
         this.content = content;
         setContent(this.content);
         setFitToHeight(true);
         setFitToWidth(true);
+        setPannable(true);
     }
 
     /**
@@ -72,6 +72,8 @@ public class ZoomableScrollPane extends ScrollPane {
         scaleTransform.setPivotY(event.getY());
         scaleTransform.setX(scaleValue);
         scaleTransform.setY(scaleValue);
+        setLayoutX(0);
+        setLayoutY(70);
     }
 
 

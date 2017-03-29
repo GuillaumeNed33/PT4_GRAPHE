@@ -6,12 +6,12 @@ import View.Arete;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -392,13 +392,17 @@ public class FXMLController extends VBox {
             @Override
             public void handle(ActionEvent event) {
                 Color c = couleurFond.getValue();
+
                 if (grapheView != null) {
+                    grapheView.getScrollPane().setMinSize(getVbox().getWidth(), grapheView.getCanvas().getHeight());
                     grapheView.getCanvas().setMinSize(grapheView.getScrollPane().getWidth(), grapheView.getScrollPane().getHeight());
-                    grapheView.getCanvas().setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
+                    grapheView.getScrollPane().setStyle("-fx-background: rgb(" + c.getRed() * 255 + "," + c.getGreen() * 255 + "," + c.getBlue() * 255 + ");");
                 }
                 else {
                     afficherFenetreAlerte("Importez un graphe avant de changer les couleurs.");
                 }
+
+
             }
         });
     }

@@ -118,16 +118,16 @@ public class Sommet extends ComposantGraphe{
 
     public void setForme(String forme) {
 
-        if (forme.equals("circle") ||forme.equals("Cercle") || forme.equals("ellipse")) {
+        if (forme.equals("circle") ||forme.equals("Cercle") || forme.equals("ellipse") || forme.equals("Ellipse") || forme.equals("Circle")) {
             this.forme = Forme_Sommet.Cercle;
         }
-        else if (forme.equals("Rectangle") || forme.equals("square")) {
+        else if (forme.equals("Rectangle") || forme.equals("rectangle") || forme.equals("Carré") || forme.equals("carré") || forme.equals("Carre") || forme.equals("square")) {
             this.forme = Forme_Sommet.Rectangle;
         }
-        else if (forme.equals("Triangle")) {
+        else if (forme.equals("Triangle") || forme.equals("triangle")) {
             this.forme = Forme_Sommet.Triangle;
         }
-        else if (forme.equals("Losange") || forme.equals("diamond")) {
+        else if (forme.equals("Losange") || forme.equals("diamond") || forme.equals("losange") || forme.equals("Diamond")) {
             this.forme = Forme_Sommet.Losange;
         }
         else { // Par défaut

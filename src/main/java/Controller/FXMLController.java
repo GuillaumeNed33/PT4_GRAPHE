@@ -105,7 +105,7 @@ public class FXMLController extends VBox {
 
             if (file != null){
                 grapheView = new View.Graphe();
-                grapheModel = new Graphe(file.getAbsolutePath(), 1200, 680);
+                grapheModel = new Graphe(file.getAbsolutePath(), (int)vbox.getWidth(), (int)(vbox.getHeight() - 90));
                 grapheView.chargerGraphe(grapheModel);
                 getVbox().getChildren().addAll(grapheView.getScrollPane());
                 setPane(grapheView.getCanvas());
@@ -121,7 +121,7 @@ public class FXMLController extends VBox {
                 File file = fileChooser.showOpenDialog(null);
 
                 if (file != null) {
-                    grapheModel = new Graphe(file.getAbsolutePath(), 1200, 680);
+                    grapheModel = new Graphe(file.getAbsolutePath(), (int)vbox.getWidth(), (int)(vbox.getHeight() - 90));
                     grapheView = new View.Graphe();
                     grapheView.chargerGraphe(grapheModel);
                     getVbox().getChildren().remove(1);
@@ -186,7 +186,7 @@ public class FXMLController extends VBox {
      */
     @FXML public void clickRepresentationAleatoire() {
         if (grapheModel != null) {
-        grapheModel.setAlgorithmeRepresentation('a',(int)grapheView.getScrollPane().getWidth(),(int)grapheView.getScrollPane().getHeight());
+        grapheModel.setAlgorithmeRepresentation('a',(int)vbox.getWidth(), (int)(vbox.getHeight() - 90));
         grapheView.miseAJourPositions(grapheModel);
         grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
         }
@@ -201,7 +201,7 @@ public class FXMLController extends VBox {
      */
     @FXML public void clickRepresentationCirculaire() {
         if (grapheModel != null) {
-            grapheModel.setAlgorithmeRepresentation('c', (int) grapheView.getScrollPane().getWidth(), (int) grapheView.getScrollPane().getHeight());
+            grapheModel.setAlgorithmeRepresentation('c', (int)vbox.getWidth(), (int)(vbox.getHeight() - 90));
             grapheView.miseAJourPositions(grapheModel);
             grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
         }
@@ -216,7 +216,7 @@ public class FXMLController extends VBox {
     @FXML
     public void clickRepresentationForces() {
         if (grapheModel != null && grapheModel.indiceFixe()) {
-            grapheModel.setAlgorithmeRepresentation('f', (int) grapheView.getScrollPane().getWidth(), (int) grapheView.getScrollPane().getHeight());
+            grapheModel.setAlgorithmeRepresentation('f', (int)vbox.getWidth(), (int)(vbox.getHeight() - 90));
             grapheView.miseAJourPositions(grapheModel);
             grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
         }

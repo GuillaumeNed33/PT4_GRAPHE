@@ -102,6 +102,20 @@ public class Sommet extends Group {
         }
     }
 
+    /**
+     * Méthode permettant de mettre a jour les coordonnées du label (éviter duplication de code).
+     */
+    private void misAJourCoordLb() {
+        lb.relocate(coord_x + taille.width *2,coord_y);
+    }
+
+    /**
+     * Méthode permettant de mettre a jour les coordonnées de la forme graphique sommet (éviter duplication de code).
+     */
+    private void misAJourCoordVue() {
+        vue.relocate(coord_x - taille.width, coord_y - taille.height);
+    }
+
     // ACCESSEURS ET MUTATEURS
 
     public Size getTaille() {
@@ -111,15 +125,18 @@ public class Sommet extends Group {
     public void setTaille(Size taille) {
         this.taille = taille;
 
-        int indexVue = getChildren().indexOf(vue);
-        getChildren().remove(indexVue);
+        if (fs.equals(Forme_Sommet.Rectangle)) {
+            vue.setScaleX(taille.width/4);
+            vue.setScaleY(taille.height/4);
+        }
+        else {
+            vue.setScaleX(taille.width/4);
+            vue.setScaleY(taille.width/4);
+        }
 
-         redefinitionDeLaVue();
+        misAJourCoordLb();
+        misAJourCoordVue();
 
-        lb.relocate(coord_x + taille.width,coord_y);
-        vue.relocate(coord_x - taille.width, coord_y - taille.height);
-
-        getChildren().add(vue);
     }
 
     double getCoord_x() {
@@ -134,8 +151,8 @@ public class Sommet extends Group {
         this.coord_x = coord_x;
         this.coord_y = coord_y;
 
-        vue.relocate(coord_x - taille.width, coord_y - taille.height);
-        lb.relocate(coord_x + taille.width,coord_y);
+        misAJourCoordLb();
+        misAJourCoordVue();
     }
 
     public Label getLb() {

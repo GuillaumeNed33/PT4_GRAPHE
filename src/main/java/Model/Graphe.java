@@ -379,7 +379,7 @@ public class Graphe {
         if (chemin_sauvegarde.matches(".+.gv$")) {
             return sauvegarderGrapheGv(chemin_sauvegarde);
         }
-        else if (chemin_sauvegarde.matches(".+.gv$")) {
+        else if (chemin_sauvegarde.matches(".+.graphml$")) {
             return sauvegarderGrapheGraphml(chemin_sauvegarde);
         }
 
@@ -399,7 +399,6 @@ public class Graphe {
             BufferedWriter bufferedWriter = new BufferedWriter (fileWriter);
             PrintWriter fichierSortie = new PrintWriter (bufferedWriter);
 
-            //Les specs détaillés indique que se sont des graphs non orientés
             fichierSortie.println ("graph \"" + nom + "\" {");
 
             fichierSortie.println("\tsize=\"" + taille.width + "," + taille.height + "\"");
@@ -463,13 +462,13 @@ public class Graphe {
 
             if (!sommets.isEmpty()) {
                 for (Sommet sommet : sommets) {
-                    fichierSortie.println("\t\t< node id=\"" + sommet.getTag() + "\" />");
+                    fichierSortie.println("\t\t<node id=\"" + sommet.getTag() + "\" />");
                 }
             }
 
             if (!extremites.isEmpty() && !aretes.isEmpty()) {
                 for(Arete arete : aretes) {
-                    fichierSortie.println("\t\t< edge id=\"" + arete.getTag() + "\" source=\""+ extremites.get(arete).getKey().getTag() +"\" target=\"" + extremites.get(arete).getValue().getTag() + "\" />");
+                    fichierSortie.println("\t\t<edge id=\"" + arete.getId() + "\" source=\""+ extremites.get(arete).getKey().getId() +"\" target=\"" + extremites.get(arete).getValue().getId() + "\" />");
 
                 }
             }

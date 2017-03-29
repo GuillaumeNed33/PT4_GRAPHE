@@ -137,19 +137,19 @@ class SommetController {
                     ++cptDetrompeur;
                 }
                 else {
-                    messageErreur.setText("Erreur - Seul les valeurs décimales sont acceptées pour la position.");
+                    messageErreur.setText("Erreur - Seul les valeurs décimales ou entières sont acceptées pour la position.");
                     cptDetrompeur = -1; // Sortie de la boucle
                 }
 
                 ++cptElement;
             }
 
-            if (cptDetrompeur <= 2 && cptDetrompeur != 1) {
+            if (cptDetrompeur <= 2 && cptDetrompeur != -1) {
                 return new Pair<Float, Float>(coordX, coordY);
 
             }
-            else if (cptDetrompeur != 1) {
-                messageErreur.setText("Erreur - Trop de valeurs.");
+            else if (cptDetrompeur > 2 || cptDetrompeur == -1) {
+                messageErreur.setText("Erreur - Trop de valeurs ou vous avez rentré des lettres.");
             }
 
         } else {

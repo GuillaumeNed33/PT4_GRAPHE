@@ -555,9 +555,12 @@ public class FXMLController extends VBox {
             new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    sommetSelectionneView.setCursor(null);
-                    sommetSelectionneView.setOnMouseDragged(null);
-                    sommetSelectionneView = null;
+                    if (sommetSelectionneView != null){
+                        sommetSelectionneView.setCursor(null);
+                        sommetSelectionneView.setOnMouseDragged(null);
+                        sommetSelectionneView = null;
+                        sommetSelectionneModel = null;
+                    }
                 }
             };
 

@@ -75,31 +75,38 @@ public class CouleurGrapheController extends FXMLController {
      * fonction ajoute le nouveau sommet dans le Model et met à jour la View
      */
     @FXML public void colorierGraphe(){
-        if (checkAretes.isSelected()) {
-            grapheModel.changerCouleurAretes(miniCouleur.getValue(), maxiCouleur.getValue());
-            int i = 0;
-            for (Arete a : grapheView.getAretes()){
-                Color c = grapheModel.getAretes().get(i).getCouleur();
-                a.getLigne().setStroke(c);
-                i++;
+
+        if (checkAretes.isSelected() || checkSommets.isSelected()) {
+            if (checkAretes.isSelected()) {
+                grapheModel.changerCouleurAretes(miniCouleur.getValue(), maxiCouleur.getValue());
+                int i = 0;
+                for (Arete a : grapheView.getAretes()) {
+                    Color c = grapheModel.getAretes().get(i).getCouleur();
+                    a.getLigne().setStroke(c);
+                    i++;
+                }
+                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+
+                if (!checkSommets.isSelected())
+                    popUpWindow.close();
             }
-            grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
-            popUpWindow.close();
-        }
-        if (checkSommets.isSelected() && grapheModel.indiceFixe()) {
-            grapheModel.changerCouleurSommets(miniCouleur.getValue(), maxiCouleur.getValue());
-            int i = 0;
-            for (Sommet s : grapheView.getSommets()){
-                Color c = grapheModel.getSommets().get(i).getCouleur();
-                s.setColor(c);
-                s.setColorVue(c);
-                i++;
+            if (checkSommets.isSelected() && grapheModel.indiceFixe()) {
+                grapheModel.changerCouleurSommets(miniCouleur.getValue(), maxiCouleur.getValue());
+                int i = 0;
+                for (Sommet s : grapheView.getSommets()) {
+                    Color c = grapheModel.getSommets().get(i).getCouleur();
+                    s.setColor(c);
+                    s.setColorVue(c);
+                    i++;
+                }
+                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+                popUpWindow.close();
+            } else {
+                erreurCouleurGraphe.setText("Erreur - Les sommets ne sont pas indicés.");
             }
-            grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
-            popUpWindow.close();
         }
         else {
-            erreurCouleurGraphe.setText("Erreur - Les sommets ne sont pas indicés \net / ou vous n'avez pas sélectionné Sommets ou Arêtes.");
+            erreurCouleurGraphe.setText("Erreur - Vous n'avez pas sélectionné Sommets ou Arêtes.");
         }
     }
 

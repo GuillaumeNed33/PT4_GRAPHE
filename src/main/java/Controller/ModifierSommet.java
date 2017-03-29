@@ -122,9 +122,6 @@ public class ModifierSommet extends FXMLController {
 
             popUpWindow.close();
         }
-        else {
-            erreurSommet.setText("Valeurs invalides");
-        }
     }
 
     /**

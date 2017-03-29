@@ -57,26 +57,31 @@ public class TailleGrapheController extends FXMLController {
             float minArete = (float) Integer.parseInt(idMinArete.getText());
             float maxArete = (float) Integer.parseInt(idMaxArete.getText());
 
-            if ((minSommet < maxSommet && minArete < maxArete) &&
-                    (minSommet >= 1 && maxSommet > 1 && minArete >= 1 && maxArete > 1)) {
-                this.grapheModel.changerTailleGraphe(maxSommet, minSommet, maxArete, minArete);
+            if (grapheModel.indiceFixe()) {
+                if ((minSommet < maxSommet && minArete < maxArete) &&
+                        (minSommet >= 1 && maxSommet > 1 && minArete >= 1 && maxArete > 1)) {
+                    this.grapheModel.changerTailleGraphe(maxSommet, minSommet, maxArete, minArete);
 
-                int i = 0;
-                for (View.Arete a : grapheView.getAretes()){
-                    a.setEpaisseur(grapheModel.getAretes().get(i).getEpaisseur());
-                    i++;
-                }
-                i = 0;
-                for (View.Sommet s : grapheView.getSommets()){
-                    s.setTaille(grapheModel.getSommets().get(i).getTaille());
-                    grapheView.misAJourAretes(s);
-                    i++;
-                }
+                    int i = 0;
+                    for (View.Arete a : grapheView.getAretes()) {
+                        a.setEpaisseur(grapheModel.getAretes().get(i).getEpaisseur());
+                        i++;
+                    }
+                    i = 0;
+                    for (View.Sommet s : grapheView.getSommets()) {
+                        s.setTaille(grapheModel.getSommets().get(i).getTaille());
+                        grapheView.misAJourAretes(s);
+                        i++;
+                    }
 
-                grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
-                popUpWindow.close();
-            } else {
-                erreurMessageId.setText("Erreur - Valeurs incorrectes \n(max > min, min >= 1 et max > 1).");
+                    grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
+                    popUpWindow.close();
+                } else {
+                    erreurMessageId.setText("Erreur - Valeurs incorrectes \n(max >= min, min >= 1 et max > 1).");
+                }
+            }
+            else {
+                erreurMessageId.setText("Erreur - Les sommets doivent être indicés.");
             }
         } else {
             erreurMessageId.setText("Erreur - Vérifiez la présence \nde lettres, oublie de valeurs et/ou valeurs négatives.");

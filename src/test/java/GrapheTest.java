@@ -436,20 +436,6 @@ public class GrapheTest {
     }
 
     @Test
-    public void testChargerGrapheGV() {
-
-        Graphe g = new Graphe("./ressources/graphvis.gv",600,400);
-        Assert.assertEquals(g.getSommets().size(),16,0);
-    }
-
-    @Test
-    public void testChargerGrapheGraphml() {
-
-        Graphe g = new Graphe("./ressources/sample.graphml",600,400);
-        Assert.assertEquals(g.getSommets().size(),6,0);
-    }
-
-    @Test
     public void testTrouverSommetParId() {
 
         Size m = new Size(10,10);

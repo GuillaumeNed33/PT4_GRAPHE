@@ -2,11 +2,9 @@ package View;
 
 import javafx.scene.layout.Border;
 import javafx.scene.layout.Pane;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Classe représentant la version graphique du graphe.
@@ -64,13 +62,12 @@ public class Graphe {
             }
         }
 
-        for (Map.Entry<Model.Arete, Pair<Model.Sommet, Model.Sommet>> e : graphe.getM_extremites().entrySet()) {
+        for (Model.Arete arete : graphe.getAretes()) {
 
-            Sommet s1 = rechercheSommetParId(e.getValue().getKey().getId());
-            Sommet s2 = rechercheSommetParId(e.getValue().getValue().getId());
+            Sommet s1 = rechercheSommetParId(arete.getEntree().getId());
+            Sommet s2 = rechercheSommetParId(arete.getSortie().getId());
 
             aretes.add(new Arete(s1,s2));
-
         }
 
         canvas.getChildren().addAll(aretes);

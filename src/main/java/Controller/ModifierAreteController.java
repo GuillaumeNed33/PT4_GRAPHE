@@ -100,6 +100,7 @@ public class ModifierAreteController extends FXMLController {
                         public void changed(ObservableValue<? extends String> ov,
                                             String old_val, String new_val) {
                             for (Arete a : ModifierAreteController.this.grapheModel.getAretes()) {
+                                System.out.println(listViewSAretes.getSelectionModel().getSelectedItem().split("id : ")[1].split(" \\)")[0]);
                                 if(Integer.toString(a.getId()).equals(listViewSAretes.getSelectionModel().getSelectedItem().split("id : ")[1].split(" \\)")[0])) {
                                     selected = a;
                                 }

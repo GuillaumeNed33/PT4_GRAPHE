@@ -125,18 +125,15 @@ public class Sommet extends Group {
     public void setTaille(Size taille) {
         this.taille = taille;
 
-        if (fs.equals(Forme_Sommet.Rectangle)) {
-            vue.setScaleX(taille.width/4);
-            vue.setScaleY(taille.height/4);
-        }
-        else {
-            vue.setScaleX(taille.width/4);
-            vue.setScaleY(taille.width/4);
-        }
+        int indexVue = getChildren().indexOf(vue);
+        getChildren().remove(indexVue);
+
+        redefinitionDeLaVue();
 
         misAJourCoordLb();
         misAJourCoordVue();
 
+        getChildren().add(vue);
     }
 
     double getCoord_x() {

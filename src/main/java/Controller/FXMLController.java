@@ -155,6 +155,7 @@ public class FXMLController extends VBox {
             }
 
             clicImporterExporter = false;
+            
         }
         else if (!clicImporterExporter) {
             afficherFenetreAlerte("Vous ne pouvez pas exporter si vous n'avez pas importé un graphe avant.");
@@ -568,10 +569,12 @@ public class FXMLController extends VBox {
             new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    sommetSelectionneView.setCoord(event.getX(), event.getY());
-                    grapheView.misAJourAretes(sommetSelectionneView);
-                    sommetSelectionneModel.setX((float)event.getX());
-                    sommetSelectionneModel.setY((float)event.getY());
+                    if (sommetSelectionneView != null) {
+                        sommetSelectionneView.setCoord(event.getX(), event.getY());
+                        grapheView.misAJourAretes(sommetSelectionneView);
+                        sommetSelectionneModel.setX((float) event.getX());
+                        sommetSelectionneModel.setY((float) event.getY());
+                    }
                 }
             };
 

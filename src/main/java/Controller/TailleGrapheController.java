@@ -58,8 +58,8 @@ public class TailleGrapheController extends FXMLController {
             float maxArete = (float) Integer.parseInt(idMaxArete.getText());
 
             if (grapheModel.indiceFixe()) {
-                if ((minSommet < maxSommet && minArete < maxArete) &&
-                        (minSommet >= 1 && maxSommet > 1 && minArete >= 1 && maxArete > 1)) {
+                if ((minSommet <= maxSommet && minArete <= maxArete) &&
+                        (minSommet >= 5 && maxSommet >= 5 && minArete >= 1 && maxArete >= 1)) {
                     this.grapheModel.changerTailleGraphe(maxSommet, minSommet, maxArete, minArete);
 
                     int i = 0;
@@ -77,7 +77,7 @@ public class TailleGrapheController extends FXMLController {
                     grapheView.getScrollPane().updateScrollPane(grapheView.getCanvas());
                     popUpWindow.close();
                 } else {
-                    erreurMessageId.setText("Erreur - Valeurs incorrectes \n(max >= min, min >= 1 et max > 1).");
+                    erreurMessageId.setText("Erreur - Valeurs incorrectes (max >= min) \nArêtes min et max >= 1, sommets min et max >= 5.");
                 }
             }
             else {

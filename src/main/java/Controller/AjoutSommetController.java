@@ -93,7 +93,7 @@ public class AjoutSommetController extends FXMLController {
 
             String tag = tagSommet.getText().trim();
 
-            Sommet sommet = new Sommet(tag, coordSommet.getKey(), coordSommet.getValue());
+            Sommet sommet = new Sommet(tag.replace(" ", "_"), coordSommet.getKey(), coordSommet.getValue());
 
             Color couleur = colorPickerSommet.getValue();
             String forme = comboBoxForme.getValue().toString();
@@ -107,7 +107,7 @@ public class AjoutSommetController extends FXMLController {
             }
             else {
                 popUpWindow.close();
-                View.Sommet sommetVue = new View.Sommet(sommet.getId(), tag, Forme_Sommet.getFormeViaTexte(forme),sommet.getX(), sommet.getY());
+                View.Sommet sommetVue = new View.Sommet(sommet.getId(), tag.replace(" ", "_"), Forme_Sommet.getFormeViaTexte(forme),sommet.getX(), sommet.getY());
                 sommetVue.setTaille(sommet.getTaille());
                 sommetVue.setColorVue(sommet.getCouleur());
                 grapheView.getSommets().add(sommetVue);

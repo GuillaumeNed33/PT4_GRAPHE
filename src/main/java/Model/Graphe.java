@@ -176,6 +176,7 @@ public class Graphe {
             if (matcher.find()) { // Si le label existe
                 String label = matcher.group().split("=\"")[1];
                 label = label.replaceAll("\"$", "");
+                label = label.replace(" ", "_");
                 sommet.setTag(label);
             }
 
@@ -207,6 +208,7 @@ public class Graphe {
         if (matcher.find()) { // Si le label existe
             String tag = matcher.group().split("=\"")[1];
             tag = tag.replaceAll("\"$", "");
+            tag = tag.replace(" ", "_");
             arete.setTag(tag);
         }
     }

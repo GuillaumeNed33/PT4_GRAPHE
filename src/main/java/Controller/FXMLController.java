@@ -151,11 +151,22 @@ public class FXMLController extends VBox {
             File file = fileChooser.showSaveDialog(null);
 
             if (file != null) {
-                grapheModel.sauvegarderGraphe(file.getAbsolutePath());
+
+                String tempString = file.getAbsolutePath();
+                if (!tempString.contains(".graphml") || !tempString.contains(".gv")) {
+                    if (fileChooser.getSelectedExtensionFilter().getDescription().equals("GV")) {
+                        tempString += ".gv";
+                    }
+                    else {
+                        tempString += ".graphml";
+                    }
+                }
+
+                grapheModel.sauvegarderGraphe(tempString);
             }
 
             clicImporterExporter = false;
-            
+
         }
         else if (!clicImporterExporter) {
             afficherFenetreAlerte("Vous ne pouvez pas exporter si vous n'avez pas importé un graphe avant.");
